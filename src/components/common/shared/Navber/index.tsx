@@ -1,0 +1,75 @@
+"use client"
+import { Button } from '@/components/ui'
+import { AlignJustify,X } from 'lucide-react';
+import React, { useEffect, useState } from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
+
+interface Navprops {
+  id: string;
+  name: string;
+  path: string;
+}
+
+
+export default function Navber() {
+ const [isOpen,setIsOpen]=useState<Boolean>(false)
+
+
+  const items: Navprops[] = [
+    { id: crypto.randomUUID(), name: "Home", path: "/" },
+    { id: crypto.randomUUID(), name: "Doctors", path: "/" },
+    { id: crypto.randomUUID(), name: "Patients", path: "/" },
+    { id: crypto.randomUUID(), name: "Blog", path: "/" },
+  ];
+
+  return (
+    <nav className="container">
+      <div className="flex justify-between items-center py-3">
+        <Image
+          src={
+            "https://doccure.dreamstechnologies.com/html/template/assets/img/logo-01.svg"
+          }
+          width={140}
+          height={100}
+          alt="logo"
+        />
+        <ul className="hidden lg:flex space-x-3">
+          {items?.map((item) => (
+            <li key={item.id}>
+              <Link href={item.path}>{item.name}</Link>
+            </li>
+          ))}
+        </ul>
+        <Button className="hidden lg:block" size="lg">
+          Login
+        </Button>
+        <div
+          onClick={() => setIsOpen(!isOpen)}
+          className="block cursor-pointer lg:hidden"
+        >
+          {isOpen ? <X /> : <AlignJustify />}
+        </div>
+      </div>
+      {/* small divice */}
+      <div  className={`fixed navMenu inset-0 bg-[#0f50dc] z-50 flex flex-col items-center justify-center     lg:hidden transition-opacity duration-200 ${
+          isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+      }`}>
+        <X
+          onClick={() => setIsOpen(!isOpen)}
+          className="absolute cursor-pointer top-4 right-4"
+        />
+        <ul className="flex flex-col items-center gap-4">
+          {items?.map((item) => (
+            <li key={item.id}>
+              <Link href={item.path}>{item.name}</Link>
+            </li>
+          ))}
+        </ul>
+        <Button className="mt-3" size="lg">
+          Login
+        </Button>
+      </div>
+    </nav>
+  );
+}
