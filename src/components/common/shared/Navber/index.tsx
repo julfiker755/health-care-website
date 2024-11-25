@@ -1,7 +1,7 @@
 "use client"
 import { Button } from '@/components/ui'
 import { AlignJustify,X } from 'lucide-react';
-import React, { useEffect, useState } from 'react'
+import React, {useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -27,9 +27,7 @@ export default function Navber() {
     <nav className="container">
       <div className="flex justify-between items-center py-3">
         <Image
-          src={
-            "https://doccure.dreamstechnologies.com/html/template/assets/img/logo-01.svg"
-          }
+          src={"https://doccure.dreamstechnologies.com/html/template/assets/img/logo-01.svg"}
           width={140}
           height={100}
           alt="logo"

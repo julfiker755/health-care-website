@@ -1,10 +1,12 @@
 import Navber from '@/components/common/shared/Navber'
 import React from 'react'
 
-function Rootpage() {
+function landingpage() {
   return (
-     <Navber/>
+    <div>
+        <Navber/>
+    </div>
   )
 }
 
-export default Rootpage
+export default landingpage
