@@ -24,6 +24,7 @@ const buttonVariants = cva(
           "border-2 border-input text-[#0087BE] border-[#0087BE] shadow-sm hover:bg-[#0087BE] hover:text-white",
         link:
          "text-[#6ea8fe] underline underline-offset-2 hover:text-[#6ea8fe]/90",
+        ghost: "bg-transparent",
       },
       size: {
         default: "grid place-items-center h-9  px-4 py-2",

@@ -1,5 +1,5 @@
 "use client"
-import { Button } from '@/components/ui'
+import { Button } from '@/components/ui/button'
 import { AlignJustify,X } from 'lucide-react';
 import React, {useState } from 'react'
 import Image from 'next/image'
@@ -25,23 +25,23 @@ export default function Navber() {
 
   return (
     <nav className="container">
-      <div className="flex justify-between items-center py-3">
+      <div className="flex justify-between items-center py-2">
         <Image
           src={"https://doccure.dreamstechnologies.com/html/template/assets/img/logo-01.svg"}
           width={140}
           height={100}
           alt="logo"
         />
-        <ul className="hidden lg:flex space-x-3">
+        <ul className="hidden lg:flex space-x-5">
           {items?.map((item) => (
             <li key={item.id}>
               <Link href={item.path}>{item.name}</Link>
             </li>
           ))}
         </ul>
-        <Button className="hidden lg:block" size="lg">
-          Login
-        </Button>
+         <Link href={"/auth"}>
+            <Button className="hidden px-5 lg:block" size="sm">Login</Button>
+        </Link>
         <div
           onClick={() => setIsOpen(!isOpen)}
           className="block cursor-pointer lg:hidden"
@@ -64,9 +64,9 @@ export default function Navber() {
             </li>
           ))}
         </ul>
-        <Button className="mt-3" size="lg">
-          Login
-        </Button>
+        <Link href={"/auth"}>
+            <Button size={"lg"} className="mt-3">Login</Button>
+        </Link>
       </div>
     </nav>
   );
