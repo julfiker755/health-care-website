@@ -18,7 +18,8 @@ export function CalendarTable({
   placeholder = "Pick a date",
   className,
 }: CalendarFormProps) {
-  console.log(selectedDate)
+  // const today = new Date();
+  // const isDisabled = (date: Date) => ); 
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -42,7 +43,7 @@ export function CalendarTable({
           mode="single"
           selected={selectedDate}
           onSelect={onDateChange}
-          // disabled={disabledDates}
+          disabled={(date: Date) => date.getTime() < new Date().setHours(0, 0, 0, 0)}
           initialFocus
         />
       </PopoverContent>
