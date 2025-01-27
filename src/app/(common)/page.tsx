@@ -1,10 +1,10 @@
-import Navber from '@/components/common/shared/Navber'
-import Specialities from '@/components/specialities'
-import HeroSec from '@/components/hero-sec'
-import BestDoctors from '@/components/best-doctors'
-import Works from '@/components/works'
+import Navber from '@/components/shared/navber'
+import Specialities from '@/components/view/specialities'
+import HeroSec from '@/components/view/hero-sec'
+import BestDoctors from '@/components/view/best-doctors'
+import Works from '@/components/view/works'
+import FeqQuestion from '@/components/view/feq-questions'
 import React from 'react'
-import FeqQuestion from '@/components/feq-questions'
 
 
 function landingpage() {

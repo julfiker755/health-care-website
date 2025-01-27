@@ -32,7 +32,7 @@ export const Accordion: React.FC<accordionProps> = ({ questions }) => {
         {questions.map((item, index) => (
           <div
             key={index}
-            className="py-[10px] px-5 mb-4 rounded-md backdrop-blur-[60px] bg-[#F3F4F6] cursor-pointer bg-inherit"
+            className="py-[10px] px-5 mb-4 rounded-md  !bg-[#F3F4F6] cursor-pointer bg-inherit"
           >
             <div
               className="flex items-center justify-between"

@@ -1,8 +1,8 @@
 import React from "react";
 import { Title } from "@/components/reusable";
-import { Accordion } from "@/components/common";
 import Image from "next/image";
 import questionImg from '@/assets/feq_question.jpg'
+import { Accordion } from "@/components/common/accordion"
 
 
 export default function Works() {
