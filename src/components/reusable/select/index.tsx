@@ -9,55 +9,63 @@ import {
   ControllerFieldState,
 } from "react-hook-form";
 import { Input, Label } from "@/components/ui";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui"
 
 interface formInputProps {
   name: string;
   type?: string;
   label?: string;
-  eye?: boolean;
   placeholder?: string;
 }
 
-export default function FormInput({
+export  function SingleSelect({
   name,
-  type = "text",
-  eye = false,
   label,
   placeholder,
 }: formInputProps) {
-  const [isPasswordVisible, setIsPasswordVisible] = useState<Boolean>(true);
   const { control } = useFormContext();
 
-  const inputType = eye && isPasswordVisible ? "password" : type;
+  const gender=[
+    {label:"Male",value:"MALE"},
+    {label:"Female",value:"FEMALE"}
+  ]
 
   return (
     <Controller
       control={control}
       name={name}
       render={({
-        field,
-        fieldState: { error },
+        field: { onChange, value },
+        fieldState: { error }
       }: {
         field: ControllerRenderProps<FieldValues>;
         fieldState: ControllerFieldState;
       }) => (
         <div>
           {label && <Label>{label}</Label>}
-          <div className="relative">
-            <Input {...field} type={inputType} placeholder={placeholder} />
-            {eye && (
-              <h1
-                onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-                className="absolute cursor-pointer  top-[6px] right-2"
-              >
-                {isPasswordVisible ? (
-                  <EyeOff className="text-muted-foreground" size={20} />
-                ) : (
-                  <Eye className="text-muted-foreground" size={20} />
-                )}
-              </h1>
-            )}
-          </div>
+          <Select 
+           onValueChange={onChange}
+           value={value || ""}
+          >
+      <SelectTrigger className="w-full">
+        <SelectValue  placeholder={placeholder} />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+           {gender.map((item,index)=>(
+            <SelectItem key={index} value={item.value}>{item.label}</SelectItem>
+           ))}
+        </SelectGroup>
+      </SelectContent>
+    </Select>
           {error?.message && (
             <h3 className="text-sm pt-[1px] text-end text-[#f73f4e] flex gap-1 items-center justify-end">
               {error.message}

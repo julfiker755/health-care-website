@@ -1,52 +1,33 @@
-import { FieldValues, FormProvider, SubmitHandler, useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { cn } from '@/lib/utils'
-import React from 'react'
+import React from "react";
+import {
+  FieldValues,
+  FormProvider,
+  SubmitHandler
+} from "react-hook-form";
+import { cn } from "@/lib/utils";
 
 
-type resolverProps = {
-    resolver?: any,
-    defaultValues?: Record<string, any>
-}
 
 type fromProps = {
-    className?:string,
-    children: React.ReactNode,
-    onSubmit: SubmitHandler<FieldValues>,
-    resolver?: any
-} & resolverProps
+  className?: string;
+  children: React.ReactNode;
+  onSubmit: (data: FieldValues) => void;
+  from:any 
+};
 
-function Form({ children,className, onSubmit, defaultValues, resolver }:fromProps) {
-    const resolverConfig: resolverProps = {}
-
-    if(defaultValues) {
-        resolverConfig["defaultValues"] = defaultValues
-    }
-
-    if (resolver) {
-        resolverConfig["resolver"] = zodResolver(resolver)
-    }
-
-    const methods = useForm(resolverConfig)
-
-  
-  const {handleSubmit,reset}=methods
-
-
- const submit:SubmitHandler<FieldValues> = (data) => {
-    onSubmit(data)
-    reset()
-}
+function Form({ children, className, onSubmit, from }: fromProps) {
+  const submit: SubmitHandler<FieldValues> = (data) => {
+    onSubmit(data);
+    // form.reset(); 
+  };
 
   return (
-    <FormProvider {...methods}>
-    <form onSubmit={handleSubmit(submit)}>
-       <div className={cn('w-full',className)}>
-       {children}
-       </div>
-    </form>
-  </FormProvider>
-  )
+    <FormProvider {...from}>
+      <form onSubmit={from.handleSubmit(submit)}>
+        <div className={cn("w-full", className)}>{children}</div>
+      </form>
+    </FormProvider>
+  );
 }
 
-export default Form
+export default Form;
