@@ -19,7 +19,7 @@ export default function Navber() {
 
   const items: Navprops[] = [
     { id: crypto.randomUUID(), name: "Home", path: "/" },
-    { id: crypto.randomUUID(), name: "Doctors", path: "/" },
+    { id: crypto.randomUUID(), name: "Doctors", path: "/doctors" },
     { id: crypto.randomUUID(), name: "Patients", path: "/" },
     { id: crypto.randomUUID(), name: "Blog", path: "/" },
   ];

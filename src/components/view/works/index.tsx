@@ -32,11 +32,12 @@ export default function Works() {
       <div className="container grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="self-center hidden lg:block">
            <Image src={assets.images.solution.workImg}
-           className="rounded-md"
-               width={200}
+           className="rounded-md object-cover"
+               width={800}
                height={100}
                style={{
                  width:'100%',
+                height:'335px',
                  display: 'block',
                  margin: 'auto',
                  maxWidth: '100%',

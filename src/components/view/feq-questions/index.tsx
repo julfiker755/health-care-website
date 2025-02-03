@@ -53,7 +53,7 @@ export default function Works() {
         </div>
         <div className="hidden lg:block">
            <Image src={questionImg}
-               className="rounded-sm"
+               className="rounded-sm object-cover"
                width={800}
                height={100}
                quality={100}
@@ -62,6 +62,7 @@ export default function Works() {
                 display: 'block',
                 margin: 'auto',
                 maxWidth: '100%',
+                height:'370px'
                }}
                alt="solution"
            />
