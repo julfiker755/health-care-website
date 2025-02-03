@@ -3,7 +3,8 @@ import { IconStarFilled } from '@tabler/icons-react';
 import { Title } from "@/components/reusable";
 import Image from "next/image";
 
-export default function BestDoctors() {
+export default function 
+BestDoctors() {
   const doctorItem = [
     { id: 1 },
     { id: 2 },

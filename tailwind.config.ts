@@ -26,6 +26,7 @@ const config: Config = {
   		},
   		colors: {
 			color:"#1F2937",
+			color1:"#6B7280",
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

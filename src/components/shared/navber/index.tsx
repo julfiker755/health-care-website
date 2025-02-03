@@ -4,6 +4,7 @@ import { AlignJustify,X } from 'lucide-react';
 import React, {useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import assets from '@/assets';
 
 interface Navprops {
   id: string;
@@ -27,7 +28,7 @@ export default function Navber() {
     <nav className="container">
       <div className="flex justify-between items-center py-2">
         <Image
-          src={"https://doccure.dreamstechnologies.com/html/template/assets/img/logo-01.svg"}
+          src={assets.images.logo}
           width={140}
           height={100}
           alt="logo"

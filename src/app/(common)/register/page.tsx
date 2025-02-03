@@ -1,29 +1,28 @@
 "use client";
 import FromInput from "@/components/reusable/from-input";
 import Form from "@/components/shared/from";
-import { authSchema, registerSchema } from "@/components/types";
+import {registerSchema } from "@/components/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm } from "react-hook-form";
 import { Button } from "@/components/ui";
-import Link from "next/link";
 import { SingleSelect } from "@/components/reusable/select";
+import Link from "next/link";
 
 export default function Register() {
   const from = useForm({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      name:"",
+      name: "",
       email: "",
       password: "",
-      confirm_password:"",
-      contactNumber:"",
-      gender:""
+      confirm_password: "",
+      contactNumber: "",
+      gender: "",
     },
   });
 
   const handleSubmit = (values: FieldValues) => {
     console.log(values);
-  
   };
 
   return (

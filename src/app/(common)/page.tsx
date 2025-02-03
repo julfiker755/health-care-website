@@ -5,6 +5,10 @@ import BestDoctors from '@/components/view/best-doctors'
 import Works from '@/components/view/works'
 import FeqQuestion from '@/components/view/feq-questions'
 import React from 'react'
+import OurPartners from '@/components/view/our-partners'
+import Fooder from '@/components/shared/fooder'
+import CopyRight from '@/components/common/copy-right'
+import NewsSubscribe from '@/components/common/news-subscribe'
 
 
 function landingpage() {
@@ -16,6 +20,10 @@ function landingpage() {
         <BestDoctors/>
         <Works/>
         <FeqQuestion/>
+        <OurPartners/>
+        <NewsSubscribe/>
+        <Fooder/>
+        <CopyRight/>
     </>
   )
 }
