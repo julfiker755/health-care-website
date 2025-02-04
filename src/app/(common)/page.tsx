@@ -1,9 +1,9 @@
-import Specialities from '@/components/view/specialities'
-import HeroSec from '@/components/view/hero-sec'
-import BestDoctors from '@/components/view/best-doctors'
-import Works from '@/components/view/works'
-import FeqQuestion from '@/components/view/feq-questions'
-import OurPartners from '@/components/view/our-partners'
+import Specialities from '@/components/views/specialities'
+import HeroSec from '@/components/views/hero-sec'
+import BestDoctors from '@/components/views/best-doctors'
+import Works from '@/components/views/works'
+import FeqQuestion from '@/components/views/feq-questions'
+import OurPartners from '@/components/views/our-partners'
 import NewsSubscribe from '@/components/common/news-subscribe'
 
 

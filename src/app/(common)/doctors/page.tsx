@@ -7,7 +7,9 @@ import { IconStarFilled } from '@tabler/icons-react';
 import { formatDate } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
-import Pagination from '@/components/reusable/pagination';
+import { Pagination } from '@/components/reusable';
+
+
 
 
 

@@ -1,4 +1,3 @@
-"use client"
 import ResponsivePagination from 'react-responsive-pagination';
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -11,7 +10,7 @@ interface PaginationProps {
     className?: string;
 }
 
-export default function Pagination({ page,onPageChange, totalPage, per_page,className}:PaginationProps) {
+export function Pagination({ page,onPageChange, totalPage, per_page,className}:PaginationProps) {
     const total = Math.ceil(totalPage / per_page)
     return (
         <div className={cn("w-full", className)}>
