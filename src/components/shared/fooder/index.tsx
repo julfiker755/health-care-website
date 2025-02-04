@@ -2,6 +2,7 @@ import assets from '@/assets'
 import Image from 'next/image'
 import React from 'react'
 import { MapPin, Phone, Mail } from 'lucide-react';
+import Link from 'next/link';
 
 export default function Fooder() {
   return (
@@ -28,8 +29,8 @@ export default function Fooder() {
          <div className='col-span-2'>
             <h1 className='font-medium text-lg mb-2'>Quick Links</h1>
             <ul className='space-y-1'>
-               <li className='text-gray-600'>Home</li>
-               <li className='text-gray-600'>Doctors</li>
+               <li className='text-gray-600'><Link href={"/"}>Home</Link></li>
+               <li className='text-gray-600'><Link href={"/doctors"}>Doctors</Link></li>
                <li className='text-gray-600'>Patients</li>
                <li className='text-gray-600'>Blog</li>
             </ul>
