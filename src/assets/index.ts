@@ -10,11 +10,13 @@ import partners4 from "@/assets/partners/partners-4.svg"
 import partners5 from "@/assets/partners/partners-5.svg"
 import partners6 from "@/assets/partners/partners-6.svg"
 import logo from "@/assets/logo.svg"
+import logo2 from "@/assets/logo2.svg"
 
 
 const assets = {
   images: {
     logo:logo,
+    logo2:logo2,
     solution: {
       workImg,
       findImg,
