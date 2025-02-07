@@ -5,9 +5,14 @@ import { authSchema } from "@/components/types";
 import { Button, Checkbox } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm } from "react-hook-form";
+import { loginAuth } from "@/services/actions/loginAuth";
+import { ResponseApiErrors, ShowToast} from "@/helpers";
 import Link from "next/link";
+import { useState } from "react";
+
 
 export default function AuthPage() {
+  const [isLoading,setIsLoading]=useState<boolean>(false)
   const from = useForm({
     resolver: zodResolver(authSchema),
     defaultValues: {
@@ -16,22 +21,22 @@ export default function AuthPage() {
     },
   });
 
-  const handleSubmit = (values: FieldValues) => {
-    console.log(!!values);
-    if (!!values) {
-      from.setError("password", {
-        type: "manual",
-        message: "Invalid value",
+  const handleSubmit = async (values: FieldValues) => {
+    setIsLoading(true)
+    const res = await loginAuth(values);
+    if (res.success) {
+      ShowToast({
+        type: "success",
+        title: "Login Successful",
+        description: "You have successfully logged in",
       });
+      from.reset()
     }
+    ResponseApiErrors(res, from);
+    setIsLoading(false)
   };
 
-  // useEffect(()=>{
-  //   from.setError("password", {
-  //     type: 'manual',
-  //     message:'Password not match',
-  // });
-  // },[])
+
 
   return (
     <div className="h-screen flex justify-center items-center">
@@ -66,7 +71,7 @@ export default function AuthPage() {
               </Link>
             </li>
           </ul>
-          <Button className="w-full">Submit</Button>
+          <Button disabled={isLoading} className="w-full">Submit</Button>
         </Form>
         <p className="text-sm text-center">
           Don&apos;t have an account?{" "}

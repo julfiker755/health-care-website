@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   description: "A platform for doctors",
 };
 
+
+
 export default function RootLayout({
   children,
 }: Readonly<{
