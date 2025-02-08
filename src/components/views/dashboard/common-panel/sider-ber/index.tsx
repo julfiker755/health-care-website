@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { X, LayoutDashboard, Settings, Table, Boxes } from 'lucide-react';
+import { X, LayoutDashboard, Settings, Table, Boxes, PackagePlus} from 'lucide-react';
 import Image from 'next/image';
 import assets from '@/assets';
 
@@ -74,7 +74,7 @@ const Sidebar= ({ sidebarOpen, setSidebarOpen }:sidebarProps) => {
             </li>
             <li>
               <Link href="/dashboard/admin/specialities" className="flex items-center gap-3 p-2 hover:text-white text-white bg-[#2da6ed]">
-                <LayoutDashboard size={20} /> Specialities
+                <PackagePlus size={20} /> Specialities
               </Link>
             </li>
           </ul>

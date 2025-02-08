@@ -7,8 +7,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm } from "react-hook-form";
 import { loginAuth } from "@/services/actions/loginAuth";
 import { ResponseApiErrors, ShowToast} from "@/helpers";
-import Link from "next/link";
+import { AccessAuthInfo } from "@/services/auth.services";
 import { useState } from "react";
+import Link from "next/link";
 
 
 export default function AuthPage() {
@@ -36,7 +37,7 @@ export default function AuthPage() {
     setIsLoading(false)
   };
 
-
+  AccessAuthInfo()
 
   return (
     <div className="h-screen flex justify-center items-center">
