@@ -11,11 +11,13 @@ interface tableProps {
   className?: string;
   headers: string[];
   children: React.ReactNode;
+  pagination:any
 }
 
-export const Table = ({ className, headers = [], children}: tableProps) => {
+export const Table = ({ className, headers = [],pagination, children}: tableProps) => {
   return (
-    <div className={cn("border rounded-lg", className)}>
+   <div>
+       <div className={cn("border rounded-lg", className)}>
       <TableArea>
         {headers && headers.length > 0 && (
           <TableHeader>
@@ -31,5 +33,9 @@ export const Table = ({ className, headers = [], children}: tableProps) => {
         <TableBody>{children}</TableBody>
       </TableArea>
     </div>
+    <div className="flex justify-end mt-4">
+        {pagination}
+    </div>
+   </div>
   );
 };

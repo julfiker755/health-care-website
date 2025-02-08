@@ -13,7 +13,7 @@ interface PaginationProps {
 export function Pagination({ page,onPageChange, totalPage, per_page,className}:PaginationProps) {
     const total = Math.ceil(totalPage / per_page)
     return (
-        <div className={cn("w-full", className)}>
+        <div className={cn("w-[320px] flex justify-end", className)}>
             <ResponsivePagination
             previousLabel={<ChevronLeft className="h-4 w-4" />} nextLabel={<ChevronRight className="h-4 w-4" />}
             className="flex flex-row gap-1 w-fit"

@@ -84,7 +84,6 @@ export default function Doctors() {
       {/* pagination format */}
                <div className='flex justify-end mt-4'>
                <Pagination
-                className='w-[320px] flex justify-end'
                 page={currentPage}
                 totalPage={totalPages}
                 onPageChange={setCurrentPage}
