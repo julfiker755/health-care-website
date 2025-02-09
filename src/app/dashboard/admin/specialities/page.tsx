@@ -27,21 +27,19 @@ import { useEffect, useState } from "react";
 import { ShowToast } from "@/helpers";
 import { useConfirmation } from "@/components/common";
 
-
 interface SpecialityProps {
-  id:string;
+  id: string;
   title: string;
   file?: string;
 }
 
-
 export default function Specialities() {
-  const {confirm}=useConfirmation()
+  const { confirm } = useConfirmation();
   const [search, setSearch] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [isPage, setIsPage] = useState<number>(1);
-  const [updateData,UpdateData]=useState<SpecialityProps | null>(null)
+  const [updateData, UpdateData] = useState<SpecialityProps | null>(null);
   const query: Record<string, any> = { page: isPage };
   const debouncedTerm = useDebonunced({ searchQuery: search, delay: 600 });
   if (!!debouncedTerm) query["search"] = search;
@@ -50,23 +48,23 @@ export default function Specialities() {
   });
   const [createSpecialities, { isLoading: createLoading }] =
     useCreateSpecialitiesMutation();
-  const [updateSpecialities, { isLoading:updateLoading}] =
-  useUpdateSpecialitiesMutation();
-  const [deleteSpecialities]=useDeleteSpecialitiesMutation()
+  const [updateSpecialities, { isLoading: updateLoading }] =
+    useUpdateSpecialitiesMutation();
+  const [deleteSpecialities] = useDeleteSpecialitiesMutation();
   const headers = ["Scrial", "Icon", "Title", "createdAt", "Action"];
 
   const handleDelete = async (id: string) => {
     const confirmed = await confirm();
-        if (confirmed) {
-          const res=await deleteSpecialities(id).unwrap()
-          if (res?.id) {
-            ShowToast({
-              type: "success",
-              title: "Delete Successful",
-              description: "You have Specialities delete successfully",
-            });
-          }
-        }
+    if (confirmed) {
+      const res = await deleteSpecialities(id).unwrap();
+      if (res?.id) {
+        ShowToast({
+          type: "success",
+          title: "Delete Successful",
+          description: "You have Specialities delete successfully",
+        });
+      }
+    }
   };
 
   // Store Specialities
@@ -96,32 +94,31 @@ export default function Specialities() {
   const editFrom = useForm({
     resolver: zodResolver(specialitiesSchema),
     defaultValues: {
-      title:"",
+      title: "",
       file: "",
     },
   });
 
-  useEffect(()=>{
+  useEffect(() => {
     editFrom.reset({
-      title:updateData?.title
-    })
-  },[updateData,editFrom])
+      title: updateData?.title,
+    });
+  }, [updateData, editFrom]);
   // handleEdit
   const handleEdit = async (values: FieldValues) => {
-    const data=modifyPayload(values)
-    const res=await updateSpecialities({id:updateData?.id,data}).unwrap()
-    if(res?.id){
+    const data = modifyPayload(values);
+    const res = await updateSpecialities({ id: updateData?.id, data }).unwrap();
+    if (res?.id) {
       ShowToast({
         type: "success",
         title: "Edit Successful",
         description: "You have Specialities Edit successfully",
       });
-      UpdateData(null)
-      setIsEdit(false)
-      editFrom.reset()
+      UpdateData(null);
+      setIsEdit(false);
+      editFrom.reset();
     }
   };
- 
 
   return (
     <div>
@@ -180,16 +177,16 @@ export default function Specialities() {
                     actions={[
                       {
                         type: "button",
-                        label: "Update",
-                        onClick: () =>{
-                          UpdateData(item)
-                          setIsEdit(true)
-                        }
+                        label: "Edit",
+                        onClick: () => {
+                          UpdateData(item);
+                          setIsEdit(true);
+                        },
                       },
                       {
                         type: "button",
                         label: "Delete",
-                        onClick: () => handleDelete(item.id)
+                        onClick: () => handleDelete(item.id),
                       },
                     ]}
                   />
@@ -250,7 +247,9 @@ export default function Specialities() {
               placeholder="Enter your icon"
             ></FileInput>
             <div className="flex justify-end">
-              <Button disabled={updateLoading} className="w-fit">Submit</Button>
+              <Button disabled={updateLoading} className="w-fit">
+                Submit
+              </Button>
             </div>
           </div>
         </Form>

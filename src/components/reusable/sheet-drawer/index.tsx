@@ -20,11 +20,13 @@ export function SheetDrawer({ children,className,title, description, isOpen=fals
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetContent>
-        <SheetHeader>
+        <SheetHeader autoFocus={true}>
           <SheetTitle>{title}</SheetTitle>
           <SheetDescription>{description}</SheetDescription>
         </SheetHeader>
-        <div className={cn('mt-3',className)}>{children}</div>
+        <div className={cn('mt-3',className)}>
+          {children}
+        </div>
       </SheetContent>
     </Sheet>
   );
