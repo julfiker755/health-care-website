@@ -32,3 +32,10 @@ export const registerSchema = z
     path: ["confirm_password"],
     message: "Passwords must be match.",
   });
+
+
+
+  export const specialitiesSchema =z.object({
+    title: z.string().nonempty("Title is required"),
+    file:z.any().optional(),
+  });

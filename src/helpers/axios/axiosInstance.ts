@@ -1,3 +1,5 @@
+import { getLocalStroage, setLocalStroage } from "@/lib/utils";
+import { GenerateAccessToken } from "@/services/auth.services";
 import { ResponseErrorProps, ResponseSuccessProps } from "@/types";
 import axios from "axios";
 
@@ -9,19 +11,17 @@ instance.defaults.timeout = 60000;
 // Add a request interceptor
 instance.interceptors.request.use(
   function (config) {
-    // Do something before request is sent
-    const accessToken = ''
-
+    const accessToken =getLocalStroage("AccessToken")
     if (accessToken) {
       config.headers.Authorization = accessToken;
     }
     return config;
   },
   function (error) {
-    // Do something with request error
     return Promise.reject(error);
   }
 );
+
 
 // Add a response interceptor
 instance.interceptors.response.use(
@@ -33,14 +33,23 @@ instance.interceptors.response.use(
     };
     return responseObject;
   },
-  function (error) {
-    const responseObject:ResponseErrorProps = {
-      statusCode: error?.response?.data?.statusCode || 500,
-      message: error?.response?.data?.message || "Something went wrong!!!",
-      errorMessages: error?.response?.data?.message,
-    };
-    // return Promise.reject(error);
-    return responseObject;
+ async function (error) {
+    const config=error.config
+    if(error?.response?.status === 500 && !config?.sent){
+      config.sent=true
+      const response=await GenerateAccessToken()
+      const accessToken=response?.data.accessToken
+      config.headers["Authorization"]=accessToken
+      setLocalStroage("AccessToken",accessToken)
+      return instance(config)
+    }else {
+      const responseObject:ResponseErrorProps = {
+        statusCode: error?.response?.data?.statusCode || 500,
+        message: error?.response?.data?.message || "Something went wrong!!!",
+        errorMessages: error?.response?.data?.message,
+      };
+      return responseObject;
+    }
   }
 );
 

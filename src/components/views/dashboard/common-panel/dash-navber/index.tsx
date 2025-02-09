@@ -7,7 +7,7 @@ import DropdownUser from '../droupdown';
 
 const Header = ({sidebarOpen,setSidebarOpen}:sidebarProps) => {
     return (
-        <div className='sticky top-0 z-999 flex w-full bg-[#038bd9]/90
+        <div className='sticky top-0 z-[9] flex w-full bg-[#038bd9]/95
          py-2 shadow-1'>
       <header className="w-full px-3">
       <div className="flex justify-between items-center">

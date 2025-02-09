@@ -19,7 +19,7 @@ interface SheetProps {
 export function SheetDrawer({ children,className,title, description, isOpen=false,setIsOpen}:SheetProps) {
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetContent>
+      <SheetContent autoFocus>
         <SheetHeader>
           <SheetTitle>{title}</SheetTitle>
           <SheetDescription>{description}</SheetDescription>

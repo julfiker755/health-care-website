@@ -1,9 +1,9 @@
 "use client";
-import FromInput from "@/components/reusable/from-input";
+import { FromInput } from "@/components/reusable";
 import Form from "@/components/shared/from";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm } from "react-hook-form";
-import { forgotSchema } from "@/components/types";
+import { forgotSchema } from "@/types/schema";
 import { Button} from "@/components/ui";
 import Link from "next/link";
 

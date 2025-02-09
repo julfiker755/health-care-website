@@ -9,15 +9,24 @@ const specialitiesApi = baseApi.injectEndpoints({
         method: "GET",
         params: arg,
       }),
-      transformResponse: (response:any,meta:any) => {
+      transformResponse: (response: any, meta: any) => {
         return {
-            specialities:response,
-            meta
-        }
+          specialities: response,
+          meta,
+        };
       },
       providesTags: [tagTypes.specialities],
+    }),
+    createSpecialities: build.mutation({
+      query: (data) => ({
+        url: "/specialities/store",
+        method: "POST",
+        ContentType: "multipart/form-data",
+        data,
+      }),
+      invalidatesTags: [tagTypes.specialities],
     }),
   }),
 });
 
-export const { useGetAllSpecialitiesQuery } = specialitiesApi;
+export const { useGetAllSpecialitiesQuery,useCreateSpecialitiesMutation } = specialitiesApi;

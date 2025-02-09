@@ -1,6 +1,8 @@
 "use client";
 import {
   DroupdownActions,
+  FileInput,
+  FromInput,
   Pagination,
   SheetDrawer,
   Table,
@@ -8,28 +10,91 @@ import {
   TableSkeleton,
 } from "@/components/reusable";
 import { Button, Input, TableCell, TableRow } from "@/components/ui";
-import { useGetAllSpecialitiesQuery } from "@/redux/api/specialitiesApi";
+import {
+  useCreateSpecialitiesMutation,
+  useGetAllSpecialitiesQuery,
+} from "@/redux/api/specialitiesApi";
+import { formatDate, modifyPayload } from "@/lib/utils";
+import { FieldValues, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Form from "@/components/shared/from";
+import { specialitiesSchema } from "@/types";
 import { useDebonunced } from "@/redux/hooks";
-import { formatDate } from "@/lib/utils";
 import Image from "next/image";
 import { useState } from "react";
-
+import { ShowToast } from "@/helpers";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from '@/components/ui';
 
 export default function Specialities() {
   const [search, setSearch] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isPage, setIsPage] = useState<number>(1)
-  const query: Record<string, any> = {page: isPage};
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [isPage, setIsPage] = useState<number>(1);
+  const query: Record<string, any> = { page: isPage };
   const debouncedTerm = useDebonunced({ searchQuery: search, delay: 600 });
   if (!!debouncedTerm) query["search"] = search;
-  const {data,isLoading } = useGetAllSpecialitiesQuery({
+  const { data, isLoading } = useGetAllSpecialitiesQuery({
     ...query,
   });
-  const headers = ["Scrial", "Icon", "Title", "createdAt", "Action"]
+  const [createSpecialities, { isLoading: createLoading }] =
+    useCreateSpecialitiesMutation();
+  const headers = ["Scrial", "Icon", "Title", "createdAt", "Action"];
 
+  const handleDelete = async (id: string) => {
+    console.log(id);
+  };
 
-  const handleDelete = async (id: string) => {};
+  // Store Specialities
+  const addFrom = useForm({
+    resolver: zodResolver(specialitiesSchema),
+    defaultValues: {
+      title: "",
+      file: "",
+    },
+  });
 
+  const handleSubmit = async (values: FieldValues) => {
+    const data = modifyPayload(values);
+    const res = await createSpecialities(data).unwrap();
+    if (res?.id) {
+      ShowToast({
+        type: "success",
+        title: "Store Successful",
+        description: "You have Specialities Store successfully",
+      });
+      setIsOpen(!isOpen);
+      addFrom.reset();
+    }
+  };
+
+  // Edit Specialities
+  const editFrom = useForm({
+    resolver: zodResolver(specialitiesSchema),
+    defaultValues: {
+      title: "",
+      file: "",
+    },
+  });
+  // handleEdit
+  const handleEdit = async (values: FieldValues) => {
+    console.log(values);
+    // const data=modifyPayload(values)
+    // const res=await createSpecialities(data).unwrap()
+    // if(res?.id){
+    //   ShowToast({
+    //     type: "success",
+    //     title: "Store Successful",
+    //     description: "You have Specialities Store successfully",
+    //   });
+    //   setIsOpen(!isOpen)
+    //   addfrom.reset()
+    // }
+  };
 
   return (
     <div>
@@ -41,19 +106,23 @@ export default function Specialities() {
           ></Input>
         </li>
         <li>
-          <Button onClick={() => setIsOpen(!isOpen)}>Add Specialty</Button>
+          <Button onClick={() => setIsOpen(true)}>Add Specialty</Button>
         </li>
       </ul>
       <div>
-        <Table className="mt-8" headers={headers} 
-         pagination={
-           data?.meta?.total > data?.meta?.limit &&  <Pagination
-            page={isPage}
-            totalPage={data?.meta?.total}
-            onPageChange={setIsPage}
-            per_page={data?.meta?.limit}
-          />
-         }
+        <Table
+          className="mt-8"
+          headers={headers}
+          pagination={
+            data?.meta?.total > data?.meta?.limit && (
+              <Pagination
+                page={isPage}
+                totalPage={data?.meta?.total}
+                onPageChange={setIsPage}
+                per_page={data?.meta?.limit}
+              />
+            )
+          }
         >
           {isLoading ? (
             <TableSkeleton colSpan={headers?.length} />
@@ -63,25 +132,51 @@ export default function Specialities() {
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>
                   <Image
-                    className="w-full h-full"
-                    src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${item.icon}`}
+                    className="w-full h-full rounded-sm"
+                    src={
+                      item.icon !== null
+                        ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${item.icon}`
+                        : "https://placehold.co/600x400.png"
+                    }
                     width={30}
                     height={100}
-                    alt="image in picture"
+                    alt={index?.toString() + "-icon"}
                     style={{
                       width: "30px",
                     }}
-                  ></Image>
+                  />
                 </TableCell>
                 <TableCell>{item.title}</TableCell>
                 <TableCell>{formatDate(item.createdAt)}</TableCell>
                 <TableCell>
-                  <DroupdownActions
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button aria-haspopup="true" size="icon" variant="ghost">
+                        <MoreHorizontal className="h-4 w-4" />
+                        <span className="sr-only">Toggle menu</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem
+                        onClick={() =>() =>setIsEdit(true)}
+                      >
+                        Edit
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                      >
+                        View
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleDelete(item.id)}>
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                  {/* <DroupdownActions
                     actions={[
                       {
-                        type: "link",
-                        label: "View",
-                        to: `/admin/offer/view/${item?.id}`,
+                        type: "button",
+                        label: "Update",
+                        onClick: () =>setIsEdit(true),
                       },
                       {
                         type: "button",
@@ -89,7 +184,7 @@ export default function Specialities() {
                         onClick: () => handleDelete(item.id),
                       },
                     ]}
-                  />
+                  /> */}
                 </TableCell>
               </TableRow>
             ))
@@ -105,10 +200,52 @@ export default function Specialities() {
         isOpen={isOpen}
         setIsOpen={setIsOpen}
       >
-        <ul>
-          <li>12334</li>
-          <li>54545</li>
-        </ul>
+        <Form from={addFrom} onSubmit={handleSubmit}>
+          <div className="space-y-3">
+            <FromInput
+              label="Title"
+              name="title"
+              placeholder="Enter your title"
+            ></FromInput>
+            <FileInput
+              className="py-1 px-2"
+              label="Icon"
+              name="file"
+              placeholder="Enter your icon"
+            ></FileInput>
+            <div className="flex justify-end">
+              <Button disabled={createLoading} className="w-fit">
+                Submit
+              </Button>
+            </div>
+          </div>
+        </Form>
+      </SheetDrawer>
+      {/* Edit Specialities */}
+      <SheetDrawer
+        title="Edit Specialty"
+        description="Please fill in the required information to Edit a new specialty"
+        isOpen={isEdit}
+        setIsOpen={setIsEdit}
+      >
+        <Form from={editFrom} onSubmit={handleEdit}>
+          <div className="space-y-3">
+            <FromInput
+              label="Title"
+              name="title"
+              placeholder="Enter your title"
+            ></FromInput>
+            <FileInput
+              className="py-1 px-2"
+              label="Icon"
+              name="file"
+              placeholder="Enter your icon"
+            ></FileInput>
+            <div className="flex justify-end">
+              <Button className="w-fit">Submit</Button>
+            </div>
+          </div>
+        </Form>
       </SheetDrawer>
     </div>
   );

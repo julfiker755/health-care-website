@@ -1,7 +1,7 @@
 "use client";
-import FromInput from "@/components/reusable/from-input";
+import { FromInput } from "@/components/reusable";
 import Form from "@/components/shared/from";
-import {registerSchema } from "@/components/types";
+import {registerSchema } from "@/types/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm } from "react-hook-form";
 import { Button } from "@/components/ui";

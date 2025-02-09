@@ -6,7 +6,7 @@ import Image from "next/image";
 import React from "react";
 
 export default function Specialities() {
-  const { data: specialities, isLoading } = useGetAllSpecialitiesQuery({});
+  const { data, isLoading } = useGetAllSpecialitiesQuery({});
   return (
     <div className="container py-10 lg:py-20">
       <Title className="pb-5" title="Specialities"></Title>
@@ -24,9 +24,9 @@ export default function Specialities() {
               </div>
             </div>
           ))
-        ) : !!specialities?.length ? (
+        ) : !!data?.specialities?.length ? (
           <>
-            {specialities.map((item: any, index: any) => (
+            {data?.specialities?.slice(0,6).map((item: any, index: any) => (
               <div
                 className="border rounded-md p-3 lg:flex items-center gap-1"
                 key={index}

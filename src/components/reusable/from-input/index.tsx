@@ -16,14 +16,16 @@ interface formInputProps {
   label?: string;
   eye?: boolean;
   placeholder?: string;
+  className?:string
 }
 
-export default function FormInput({
+export  function FromInput({
   name,
   type = "text",
   eye = false,
   label,
   placeholder,
+  className
 }: formInputProps) {
   const [isPasswordVisible, setIsPasswordVisible] = useState<Boolean>(true);
   const { control } = useFormContext();
@@ -44,7 +46,7 @@ export default function FormInput({
         <div>
           {label && <Label>{label}</Label>}
           <div className="relative">
-            <Input {...field} type={inputType} placeholder={placeholder} />
+            <Input className={className} {...field} type={inputType} placeholder={placeholder} />
             {eye && (
               <h1
                 onClick={() => setIsPasswordVisible(!isPasswordVisible)}

@@ -1,3 +1,4 @@
+"use client"
 import {
     DropdownMenu,
     DropdownMenuTrigger,
@@ -18,7 +19,7 @@ interface actionProps{
 export function DroupdownActions({ actions = [] }:{actions:actionProps[]}) {
   return (
     <DropdownMenu>
-    <DropdownMenuTrigger className='border-none' asChild>
+    <DropdownMenuTrigger  className='border-none' asChild>
         <button>
             <h1 className='px-3'> <MoreHorizontal className="h-4 w-4" /></h1>
         </button>

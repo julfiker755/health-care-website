@@ -1,7 +1,6 @@
 "use client";
-import FromInput from "@/components/reusable/from-input";
 import Form from "@/components/shared/from";
-import { authSchema } from "@/components/types";
+import { authSchema } from "@/types/schema";
 import { Button, Checkbox } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm } from "react-hook-form";
@@ -10,6 +9,9 @@ import { ResponseApiErrors, ShowToast} from "@/helpers";
 import { AccessAuthInfo } from "@/services/auth.services";
 import { useState } from "react";
 import Link from "next/link";
+import { FromInput } from "@/components/reusable";
+import { setLocalStroage } from "@/lib/utils";
+
 
 
 export default function AuthPage() {
@@ -31,6 +33,7 @@ export default function AuthPage() {
         title: "Login Successful",
         description: "You have successfully logged in",
       });
+      setLocalStroage("AccessToken",res.data.accessToken)
       from.reset()
     }
     ResponseApiErrors(res, from);
