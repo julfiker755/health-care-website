@@ -12,7 +12,9 @@ import {
 import { Button, Input, TableCell, TableRow } from "@/components/ui";
 import {
   useCreateSpecialitiesMutation,
+  useDeleteSpecialitiesMutation,
   useGetAllSpecialitiesQuery,
+  useUpdateSpecialitiesMutation,
 } from "@/redux/api/specialitiesApi";
 import { formatDate, modifyPayload } from "@/lib/utils";
 import { FieldValues, useForm } from "react-hook-form";
@@ -21,20 +23,25 @@ import Form from "@/components/shared/from";
 import { specialitiesSchema } from "@/types";
 import { useDebonunced } from "@/redux/hooks";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ShowToast } from "@/helpers";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from '@/components/ui';
+import { useConfirmation } from "@/components/common";
+
+
+interface SpecialityProps {
+  id:string;
+  title: string;
+  file?: string;
+}
+
 
 export default function Specialities() {
+  const {confirm}=useConfirmation()
   const [search, setSearch] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [isPage, setIsPage] = useState<number>(1);
+  const [updateData,UpdateData]=useState<SpecialityProps | null>(null)
   const query: Record<string, any> = { page: isPage };
   const debouncedTerm = useDebonunced({ searchQuery: search, delay: 600 });
   if (!!debouncedTerm) query["search"] = search;
@@ -43,10 +50,23 @@ export default function Specialities() {
   });
   const [createSpecialities, { isLoading: createLoading }] =
     useCreateSpecialitiesMutation();
+  const [updateSpecialities, { isLoading:updateLoading}] =
+  useUpdateSpecialitiesMutation();
+  const [deleteSpecialities]=useDeleteSpecialitiesMutation()
   const headers = ["Scrial", "Icon", "Title", "createdAt", "Action"];
 
   const handleDelete = async (id: string) => {
-    console.log(id);
+    const confirmed = await confirm();
+        if (confirmed) {
+          const res=await deleteSpecialities(id).unwrap()
+          if (res?.id) {
+            ShowToast({
+              type: "success",
+              title: "Delete Successful",
+              description: "You have Specialities delete successfully",
+            });
+          }
+        }
   };
 
   // Store Specialities
@@ -76,25 +96,32 @@ export default function Specialities() {
   const editFrom = useForm({
     resolver: zodResolver(specialitiesSchema),
     defaultValues: {
-      title: "",
+      title:"",
       file: "",
     },
   });
+
+  useEffect(()=>{
+    editFrom.reset({
+      title:updateData?.title
+    })
+  },[updateData,editFrom])
   // handleEdit
   const handleEdit = async (values: FieldValues) => {
-    console.log(values);
-    // const data=modifyPayload(values)
-    // const res=await createSpecialities(data).unwrap()
-    // if(res?.id){
-    //   ShowToast({
-    //     type: "success",
-    //     title: "Store Successful",
-    //     description: "You have Specialities Store successfully",
-    //   });
-    //   setIsOpen(!isOpen)
-    //   addfrom.reset()
-    // }
+    const data=modifyPayload(values)
+    const res=await updateSpecialities({id:updateData?.id,data}).unwrap()
+    if(res?.id){
+      ShowToast({
+        type: "success",
+        title: "Edit Successful",
+        description: "You have Specialities Edit successfully",
+      });
+      UpdateData(null)
+      setIsEdit(false)
+      editFrom.reset()
+    }
   };
+ 
 
   return (
     <div>
@@ -149,42 +176,23 @@ export default function Specialities() {
                 <TableCell>{item.title}</TableCell>
                 <TableCell>{formatDate(item.createdAt)}</TableCell>
                 <TableCell>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button aria-haspopup="true" size="icon" variant="ghost">
-                        <MoreHorizontal className="h-4 w-4" />
-                        <span className="sr-only">Toggle menu</span>
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem
-                        onClick={() =>() =>setIsEdit(true)}
-                      >
-                        Edit
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                      >
-                        View
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => handleDelete(item.id)}>
-                        Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                  {/* <DroupdownActions
+                  <DroupdownActions
                     actions={[
                       {
                         type: "button",
                         label: "Update",
-                        onClick: () =>setIsEdit(true),
+                        onClick: () =>{
+                          UpdateData(item)
+                          setIsEdit(true)
+                        }
                       },
                       {
                         type: "button",
                         label: "Delete",
-                        onClick: () => handleDelete(item.id),
+                        onClick: () => handleDelete(item.id)
                       },
                     ]}
-                  /> */}
+                  />
                 </TableCell>
               </TableRow>
             ))
@@ -242,7 +250,7 @@ export default function Specialities() {
               placeholder="Enter your icon"
             ></FileInput>
             <div className="flex justify-end">
-              <Button className="w-fit">Submit</Button>
+              <Button disabled={updateLoading} className="w-fit">Submit</Button>
             </div>
           </div>
         </Form>

@@ -33,7 +33,7 @@ export function DroupdownActions({ actions = [] }:{actions:actionProps[]}) {
             ) : (
                 <DropdownMenuItem
                     key={index}
-                    onClick={action.onClick}
+                    onClick={() => action.onClick && setTimeout(action.onClick, 1)}
                     className={'cursor-pointer hover:bg-gray-100'}
                 >
                     {action.label}
