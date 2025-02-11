@@ -135,7 +135,8 @@ export default function Specialities() {
       </ul>
       <div>
         <Table
-          className="mt-8"
+          title="All Specialities"
+          description="Manage your specialities and view their details"
           headers={headers}
           pagination={
             data?.meta?.total > data?.meta?.limit && (

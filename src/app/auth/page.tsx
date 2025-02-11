@@ -40,7 +40,7 @@ export default function AuthPage() {
     setIsLoading(false)
   };
 
-  AccessAuthInfo()
+ 
 
   return (
     <div className="h-screen flex justify-center items-center">

@@ -67,6 +67,10 @@ export default function Register() {
             placeholder="Enter your contact"
           ></FromInput>
           <SingleSelect
+            items={[
+                { label: "Male", value: "MALE" },
+                { label: "Female", value: "FEMALE" },
+              ]}
             label="Gender"
             name="gender"
             placeholder="Select gender"

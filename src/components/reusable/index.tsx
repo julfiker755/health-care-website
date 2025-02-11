@@ -8,3 +8,4 @@ export * from './table-droupdown'
 export * from './sheet-drawer'
 export * from './file-input'
 export * from './from-input'
+export * from "./select"
