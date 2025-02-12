@@ -5,7 +5,7 @@ type ApiResponseProps = {
   };
   
   export const ResponseApiErrors = (res:ApiResponseProps, form: any) => {
-    if (!res.success && res.errors) {
+    if (!res?.success && res?.errors) {
       res.errors.forEach((error) => {
         form.setError(error.field, {
           type: 'manual',

@@ -16,7 +16,7 @@ import {
   useGetAllSpecialitiesQuery,
   useUpdateSpecialitiesMutation,
 } from "@/redux/api/specialitiesApi";
-import { formatDate, modifyPayload } from "@/lib/utils";
+import { formatDate, modifyPayload, PlaceholderImg} from "@/lib/utils";
 import { FieldValues, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Form from "@/components/shared/from";
@@ -51,21 +51,9 @@ export default function Specialities() {
   const [updateSpecialities, { isLoading: updateLoading }] =
     useUpdateSpecialitiesMutation();
   const [deleteSpecialities] = useDeleteSpecialitiesMutation();
-  const headers = ["Scrial", "Icon", "Title", "createdAt", "Action"];
+  const headers = [ "Specialty","Icon","Doctor","createdAt", "Action"];
 
-  const handleDelete = async (id: string) => {
-    const confirmed = await confirm();
-    if (confirmed) {
-      const res = await deleteSpecialities(id).unwrap();
-      if (res?.id) {
-        ShowToast({
-          type: "success",
-          title: "Delete Successful",
-          description: "You have Specialities delete successfully",
-        });
-      }
-    }
-  };
+
 
   // Store Specialities
   const addFrom = useForm({
@@ -119,6 +107,21 @@ export default function Specialities() {
       editFrom.reset();
     }
   };
+  
+
+  const handleDelete = async (id: string) => {
+    const confirmed = await confirm();
+    if (confirmed) {
+      const res = await deleteSpecialities(id).unwrap();
+      if (res?.id) {
+        ShowToast({
+          type: "success",
+          title: "Delete Successful",
+          description: "You have Specialities delete successfully",
+        });
+      }
+    }
+  };
 
   return (
     <div>
@@ -154,14 +157,15 @@ export default function Specialities() {
           ) : !!data?.specialities?.length ? (
             data?.specialities?.map((item: any, index: any) => (
               <TableRow key={index}>
-                <TableCell>{index + 1}</TableCell>
+                <TableCell>{item.title}</TableCell>
                 <TableCell>
+                  <div className="size-[30px]">
                   <Image
                     className="w-full h-full rounded-sm"
                     src={
                       item.icon !== null
                         ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${item.icon}`
-                        : "https://placehold.co/600x400.png"
+                        : PlaceholderImg()
                     }
                     width={30}
                     height={100}
@@ -170,8 +174,9 @@ export default function Specialities() {
                       width: "30px",
                     }}
                   />
+                  </div>
                 </TableCell>
-                <TableCell>{item.title}</TableCell>
+                <TableCell>{item.doctor?.length || 0}</TableCell>
                 <TableCell>{formatDate(item.createdAt)}</TableCell>
                 <TableCell>
                   <DroupdownActions

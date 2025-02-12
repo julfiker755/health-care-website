@@ -17,37 +17,43 @@ const doctorsApi = baseApi.injectEndpoints({
       },
       providesTags: [tagTypes.doctor],
     }),
-    createSpecialities: build.mutation({
+    getSingleDoctor: build.query({
+      query: (id:string) => ({
+        url: `/doctor/${id}`,
+        method: "GET",
+      }),
+      providesTags: [tagTypes.doctor],
+    }),
+    createDoctor: build.mutation({
       query: (data) => ({
-        url: "/specialities/store",
+        url: "/user/doctor-store",
         method: "POST",
-        ContentType: "multipart/form-data",
         data,
       }),
-      invalidatesTags: [tagTypes.specialities],
+      invalidatesTags: [tagTypes.doctor],
     }),
-    updateSpecialities: build.mutation({
-      query: ({ id, data }) => ({
-        url: `/specialities/update/${id}`,
-        method: "PUT",
-        ContentType: "multipart/form-data",
-        data,
-      }),
-      invalidatesTags: [tagTypes.specialities],
-    }),
-    deleteSpecialities: build.mutation({
+    // updateSpecialities: build.mutation({
+    //   query: ({ id, data }) => ({
+    //     url: `/specialities/update/${id}`,
+    //     method: "PUT",
+    //     ContentType: "multipart/form-data",
+    //     data,
+    //   }),
+    //   invalidatesTags: [tagTypes.specialities],
+    // }),
+    deleteDoctor: build.mutation({
       query: (id) => ({
-        url: `/specialities/${id}`,
+        url:`/doctor/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: [tagTypes.specialities],
+      invalidatesTags: [tagTypes.doctor],
     }),
   }),
 });
 
 export const {
   useGetAllDoctorQuery,
-  useCreateSpecialitiesMutation,
-  useUpdateSpecialitiesMutation,
-  useDeleteSpecialitiesMutation
+  useGetSingleDoctorQuery,
+  useCreateDoctorMutation,
+  useDeleteDoctorMutation
 } = doctorsApi

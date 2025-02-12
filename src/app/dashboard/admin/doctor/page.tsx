@@ -12,7 +12,7 @@ import { useDebonunced } from "@/redux/hooks";
 import { useState } from "react";
 import { ShowToast } from "@/helpers";
 import { useConfirmation } from "@/components/common";
-import { useGetAllDoctorQuery } from "@/redux/api/doctorApi";
+import { useDeleteDoctorMutation, useGetAllDoctorQuery } from "@/redux/api/doctorApi";
 import Link from "next/link";
 
 export default function Doctors() {
@@ -23,9 +23,9 @@ export default function Doctors() {
   const debouncedTerm = useDebonunced({ searchQuery: search, delay: 600 });
   if (!!debouncedTerm) query["email"] = search;
   const { data, isLoading } = useGetAllDoctorQuery({ ...query });
+  const [deleteDoctor]=useDeleteDoctorMutation()
 
   const headers = [
-    "Scrial",
     "Name",
     "Email",
     "Contact",
@@ -37,15 +37,14 @@ export default function Doctors() {
   const handleDelete = async (id: string) => {
     const confirmed = await confirm();
     if (confirmed) {
-      console.log(id);
-      // const res = await deleteSpecialities(id).unwrap();
-      // if (res?.id) {
-      //   ShowToast({
-      //     type: "success",
-      //     title: "Delete Successful",
-      //     description: "You have Specialities delete successfully",
-      //   });
-      // }
+      const res = await deleteDoctor(id).unwrap();
+      if (res?.id) {
+        ShowToast({
+          type: "success",
+          title: "Delete Successful",
+          description: "You have Doctor delete successfully",
+        });
+      }
     }
   };
 
@@ -85,7 +84,6 @@ export default function Doctors() {
           ) : !!data?.doctors?.length ? (
             data?.doctors?.map((item: any, index: any) => (
               <TableRow key={index}>
-                <TableCell>{index+1}</TableCell>
                 <TableCell>{item.name}</TableCell>
                 <TableCell>{item.email}</TableCell>
                 <TableCell>{item.contactNumber}</TableCell>
@@ -100,8 +98,8 @@ export default function Doctors() {
                     actions={[
                       {
                         type: "link",
-                        label: "Edit",
-                        to: `/dashboard/admin/doctor/edit/${item.id}`,
+                        label: "Details",
+                        to: `/dashboard/admin/doctor/${item.id}`,
                       },
                       {
                         type: "button",

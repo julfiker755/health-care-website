@@ -1,6 +1,5 @@
 "use client";
-import React, { useState } from "react";
-import { CircleAlert, Eye, EyeOff } from "lucide-react";
+import { CircleAlert} from "lucide-react";
 import {
   Controller,
   useFormContext,
@@ -18,15 +17,14 @@ import {
   SelectValue,
 } from "@/components/ui";
 
-interface formInputProps {
+interface FormInputProps {
   name: string;
-  type?: string;
   label?: string;
   placeholder?: string;
   items:{label:string,value:string}[]
 }
 
-export function SingleSelect({ name, label, placeholder,items }: formInputProps) {
+export function SingleSelect({ name, label, placeholder,items }: FormInputProps) {
   const { control } = useFormContext();
 
   

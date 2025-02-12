@@ -44,3 +44,13 @@ export const getLocalStroage = (key: string) => {
   if (!key || typeof window === "undefined") return "";
   return localStorage.getItem(key);
 };
+
+// delay Time
+export const delay = (ms: number) => (
+  new Promise(resolve => setTimeout(resolve, ms))
+);
+
+// placeholder Image
+export const PlaceholderImg=(width:number=600,height:number=400):string=>{
+  return `https://placehold.co/${width}x${height}.png`
+}

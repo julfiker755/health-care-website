@@ -1,54 +1,59 @@
 "use client";
 import { FromInput, SingleSelect } from "@/components/reusable";
+import { useCreateDoctorMutation } from "@/redux/api/doctorApi";
 import { DashTitle } from "@/components/reusable/dash-title";
+import { ResponseApiErrors, ShowToast } from "@/helpers";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FieldValues, useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import Form from "@/components/shared/from";
 import { Button } from "@/components/ui";
 import { doctorSchema } from "@/types";
-import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
-import { FieldValues, useForm } from "react-hook-form";
+import { delay } from "@/lib/utils";
 
 export default function DoctorStore() {
+  const router = useRouter();
+  const [createDoctor, { isLoading }] = useCreateDoctorMutation();
   const from = useForm({
     resolver: zodResolver(doctorSchema),
     defaultValues: {
       password: "",
-      name:"",
+      name: "",
       email: "",
-      contactNumber:"",
-      address:"",
-      registrationNumber:"",
-      experience:"",
-      gender:"",
-      appointmentFee:"",
-      qualification:"",
-      currentWorkingPlace:"",
-      designation:"",
+      contactNumber: "",
+      address: "",
+      registrationNumber: "",
+      experience: "",
+      gender: "",
+      appointmentFee: "",
+      qualification: "",
+      currentWorkingPlace: "",
+      designation: "",
     },
   });
 
   const handleSubmit = async (values: FieldValues) => {
-    values.experience=Number(values.experience) || 0
-    values.appointmentFee=Number(values.appointmentFee) || 0
-    values.contactNumber=values.contactNumber.toString()
-
-    const data ={
-      password:values.password,
-      doctor:{
-        name:values.name,
-        email:values.email,
-        contactNumber:values.contactNumber,
-        address:values.address,
-        registrationNumber:values.registrationNumber,
-        experience:values.experience,
-        gender:values.gender,
-        appointmentFee:values.appointmentFee,
-        qualification:values.qualification,
-        currentWorkingPlace:values.currentWorkingPlace,
-        designation:values.designation,
-      }
+    const { password, experience, appointmentFee, ...doctorData } = values;
+    const data = {
+      password,
+      doctor: {
+        ...doctorData,
+        experience: Number(experience) || 0,
+        appointmentFee: Number(appointmentFee) || 0,
+      },
+    };
+    const res = await createDoctor(data).unwrap();
+    if (res?.id) {
+      ShowToast({
+        type: "success",
+        title: "Store Successful",
+        description: "You have Doctor Store successfully",
+      });
+      await delay(4000);
+      from.reset();
+      router.push("/dashboard/admin/doctor");
     }
-    console.log(data)
+    ResponseApiErrors(res, from);
   };
 
   return (
@@ -56,11 +61,11 @@ export default function DoctorStore() {
       <DashTitle
         className="mb-5"
         title="Add Doctor"
-        description="Add and manage detailed doctor profiles efficiently."
+        description="Add and manage detailed doctor profiles efficiently"
       ></DashTitle>
 
       <Form
-        className="gap-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+        className="gap-y-5 gap-x-4 grid grid-cols-1 lg:grid-cols-3"
         from={from}
         onSubmit={handleSubmit}
       >
@@ -92,7 +97,7 @@ export default function DoctorStore() {
         <FromInput
           label="Contact Number"
           name="contactNumber"
-          type="number"
+          type="tel"
           placeholder="Enter your contact"
         ></FromInput>
         <FromInput
@@ -130,10 +135,12 @@ export default function DoctorStore() {
         <FromInput
           label="Address"
           name="address"
-          placeholder="Enter your working address"
+          placeholder="Enter your address"
         ></FromInput>
-        <div className="col-span-3 flex justify-end">
-          <Button className="w-fit">Submit</Button>
+        <div className="lg:col-span-3 flex justify-end">
+          <Button disabled={isLoading} className="w-fit">
+            Submit
+          </Button>
         </div>
       </Form>
     </div>

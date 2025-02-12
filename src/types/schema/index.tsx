@@ -48,10 +48,7 @@ export const registerSchema = z
     password: z.string().nonempty("Password is required"),
     name: z.string().nonempty("Name is required"),
     email: z.string().nonempty("Email is required").email("Please enter a valid email"),
-    contactNumber: z
-      .string()
-      .nonempty("Contact Number is required")
-      .transform((val) => Number(val) || 0),
+    contactNumber: z.string().nonempty("Contact Number is required"),
     address: z.string().nonempty("Address is required"),
     registrationNumber: z.string().nonempty("Registration Number is required"),
     experience: z
