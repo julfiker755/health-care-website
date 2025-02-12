@@ -12,7 +12,7 @@ interface FormFileProps {
   className?: string;
 }
 
-export function FileInput({ name, label, placeholder, className }:FormFileProps) {
+export function FileInput({ name, label, placeholder, className}:FormFileProps) {
   const { control } = useFormContext();
 
   return (
@@ -20,7 +20,7 @@ export function FileInput({ name, label, placeholder, className }:FormFileProps)
       control={control}
       name={name}
       defaultValue={null}
-      render={({ field: { onChange, ...field }, fieldState: { error } }) => (
+      render={({ field: { onChange}, fieldState: { error } }) => (
         <div>
           {label && <Label>{label}</Label>}
           <div className="relative">

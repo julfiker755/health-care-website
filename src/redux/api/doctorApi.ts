@@ -32,15 +32,6 @@ const doctorsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.doctor],
     }),
-    // updateSpecialities: build.mutation({
-    //   query: ({ id, data }) => ({
-    //     url: `/specialities/update/${id}`,
-    //     method: "PUT",
-    //     ContentType: "multipart/form-data",
-    //     data,
-    //   }),
-    //   invalidatesTags: [tagTypes.specialities],
-    // }),
     deleteDoctor: build.mutation({
       query: (id) => ({
         url:`/doctor/${id}`,

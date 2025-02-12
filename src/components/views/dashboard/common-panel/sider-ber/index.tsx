@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { X, LayoutDashboard, Settings, Table, Boxes, PackagePlus} from 'lucide-react';
+import { X, LayoutDashboard, Settings, Table, UserRound,Boxes, PackagePlus} from 'lucide-react';
 import Image from 'next/image';
 import assets from '@/assets';
 
@@ -69,12 +69,17 @@ const Sidebar= ({ sidebarOpen, setSidebarOpen }:sidebarProps) => {
             </li>
             <li>
               <Link href="/dashboard/admin/doctor" className="flex items-center gap-3 p-2 hover:text-white text-white bg-[#2da6ed]">
-                <LayoutDashboard size={20} /> Doctors
+                <UserRound size={20} /> Doctors
               </Link>
             </li>
             <li>
               <Link href="/dashboard/admin/specialities" className="flex items-center gap-3 p-2 hover:text-white text-white bg-[#2da6ed]">
                 <PackagePlus size={20} /> Specialities
+              </Link>
+            </li>
+            <li>
+              <Link href="/dashboard/admin/settings" className="flex items-center gap-3 p-2 hover:text-white text-white bg-[#2da6ed]">
+                <Settings size={20} /> Settings
               </Link>
             </li>
           </ul>

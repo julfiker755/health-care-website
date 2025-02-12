@@ -16,16 +16,18 @@ interface formInputProps {
   label?: string;
   eye?: boolean;
   placeholder?: string;
-  className?:string
+  className?: string;
+  readOnly?: boolean;
 }
 
-export  function FromInput({
+export function FromInput({
   name,
   type = "text",
   eye = false,
   label,
+  readOnly = false,
   placeholder,
-  className
+  className,
 }: formInputProps) {
   const [isPasswordVisible, setIsPasswordVisible] = useState<Boolean>(true);
   const { control } = useFormContext();
@@ -46,7 +48,13 @@ export  function FromInput({
         <div>
           {label && <Label>{label}</Label>}
           <div className="relative">
-            <Input className={className} {...field} type={inputType} placeholder={placeholder} />
+            <Input
+              className={className}
+              {...field}
+              type={inputType}
+              placeholder={placeholder}
+              readOnly={readOnly}
+            />
             {eye && (
               <h1
                 onClick={() => setIsPasswordVisible(!isPasswordVisible)}

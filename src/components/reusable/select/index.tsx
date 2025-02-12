@@ -22,9 +22,10 @@ interface FormInputProps {
   label?: string;
   placeholder?: string;
   items:{label:string,value:string}[]
+  defaultValue?:string
 }
 
-export function SingleSelect({ name, label, placeholder,items }: FormInputProps) {
+export function SingleSelect({ name, label, placeholder,items, defaultValue }: FormInputProps) {
   const { control } = useFormContext();
 
   
@@ -42,7 +43,7 @@ export function SingleSelect({ name, label, placeholder,items }: FormInputProps)
       }) => (
         <div>
           {label && <Label>{label}</Label>}
-          <Select onValueChange={onChange} value={value || ""}>
+          <Select onValueChange={onChange} value={value ||  defaultValue || ""}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder={placeholder} />
             </SelectTrigger>

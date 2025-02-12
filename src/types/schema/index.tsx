@@ -22,6 +22,19 @@ export const resetSchema = z
     message: "Passwords must be match.",
   });
 
+ // changeSchema
+export const changeSchema = z
+.object({
+  oldPassword:z.string().nonempty("Old Password is required"),
+  new_password: z.string().nonempty("Password is required"),
+  confirm_password: z.string().nonempty("Confirm password is required"),
+})
+.refine((value) => value.new_password === value.confirm_password, {
+  path: ["confirm_password"],
+  message: "Passwords must be match.",
+});
+
+
   // registerSchema
 export const registerSchema = z
   .object({
@@ -65,3 +78,4 @@ export const registerSchema = z
     designation: z.string().nonempty("Designation is required"),
   });
   
+

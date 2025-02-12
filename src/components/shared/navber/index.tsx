@@ -1,10 +1,11 @@
 "use client"
 import { Button } from '@/components/ui/button'
 import { AlignJustify,X } from 'lucide-react';
-import React, {useState } from 'react'
+import React, {useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import assets from '@/assets';
+import Cookies from 'js-cookie';
 
 interface Navprops {
   id: string;
@@ -15,6 +16,11 @@ interface Navprops {
 
 export default function Navber() {
  const [isOpen,setIsOpen]=useState<Boolean>(false)
+ 
+ useEffect(() => {
+  const token = Cookies.get("refreshToken");
+  console.log(token)
+}, []);
 
 
   const items: Navprops[] = [
