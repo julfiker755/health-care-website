@@ -1,17 +1,45 @@
 import { instance } from '@/helpers/axios/axiosInstance';
-import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
+import { jwtDecode} from "jwt-decode"
+
+
+interface AuthProps {
+  email: string;
+  role: string;
+  iat: number;
+  exp: number;
+}
+export const  decodedToken=(token:string)=> jwtDecode<AuthProps>(token)
 
 export const AccessAuthInfo = () => {
-    const [authInfo, setAuthInfo] = useState(null);
+  const [authInfo, setAuthInfo] = useState<AuthProps>();
 
-    useEffect(() => {
-        const token = Cookies.get("refreshToken");
-        console.log(token)
-      
-    }, []);
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      setAuthInfo(decodedToken(token));
+    }
+  }, []);
 
-}
+  return authInfo;
+};
+// export const AccessAuthInfo = () => {
+//     const [authInfo, setAuthInfo] = useState<AuthProps | null>(null);
+  
+//     const memoizedAuthInfo = useMemo(() => {
+//       const token = localStorage.getItem("accessToken");
+//       if (token) {
+//         return decodedToken(token);
+//       }
+//       return null;
+//     }, []);
+//     useEffect(() => {
+//       if (memoizedAuthInfo) {
+//         setAuthInfo(memoizedAuthInfo);
+//       }
+//     }, [memoizedAuthInfo]);
+//     return authInfo;
+//   };
 
 
 export const GenerateAccessToken=async()=>{

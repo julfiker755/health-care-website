@@ -6,11 +6,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm } from "react-hook-form";
 import { loginAuth } from "@/services/actions/loginAuth";
 import { ResponseApiErrors, ShowToast} from "@/helpers";
-import { AccessAuthInfo } from "@/services/auth.services";
 import { useState } from "react";
 import Link from "next/link";
 import { FromInput } from "@/components/reusable";
 import { setLocalStroage } from "@/lib/utils";
+import { authKey } from "@/contants";
 
 
 
@@ -33,7 +33,7 @@ export default function AuthPage() {
         title: "Login Successful",
         description: "You have successfully logged in",
       });
-      setLocalStroage("AccessToken",res.data.accessToken)
+      setLocalStroage(authKey,res.data.accessToken)
       from.reset()
     }
     ResponseApiErrors(res, from);

@@ -39,6 +39,10 @@ export const setLocalStroage = (key: string, token: string) => {
   if (!key || typeof window === "undefined") return "";
   return localStorage.setItem(key, token);
 };
+export const localStroageRemove = (key: string) => {
+  if (!key || typeof window === "undefined") return "";
+  return localStorage.removeItem(key);
+};
 
 export const getLocalStroage = (key: string) => {
   if (!key || typeof window === "undefined") return "";
@@ -54,3 +58,25 @@ export const delay = (ms: number) => (
 export const PlaceholderImg=(width:number=600,height:number=400):string=>{
   return `https://placehold.co/${width}x${height}.png`
 }
+
+// dynamic path dashboard
+export const PathRoute = (route: string) => {
+  let path = "";
+  switch (route) {
+    case "SUPER_ADMIN":
+      path = "/dashboard/super-admin";
+      break;
+    case "ADMIN":
+      path = "/dashboard/admin";
+      break;
+    case "DOCTOR":
+      path = "/dashboard/doctor";
+      break;
+    case "PATIENT":
+      path = "/dashboard/patient";
+      break;
+    default:
+      path = "/";
+  }
+  return path;
+};

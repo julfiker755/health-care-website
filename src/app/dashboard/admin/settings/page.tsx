@@ -15,6 +15,7 @@ import { ShowToast } from "@/helpers";
 import Image from "next/image";
 import { changeSchema } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AccessAuthInfo } from "@/services/auth.services";
 
 export default function Settings() {
   const { data: user, isLoading } = useGetSingleProfileQuery({});
@@ -93,6 +94,7 @@ export default function Settings() {
     }
   };
   
+  AccessAuthInfo()
   return (
     <div>
       <TabMenu
@@ -246,7 +248,7 @@ export default function Settings() {
             </h1>
             <div className="mt-3">
               <h1 className="text-base font-medium">Are you sure you want to delete your account?</h1>
-              <p className="text-sm font-medium text-gray-600 w-1/2">Refers to the action of permanently removing a user's account and associated data from a system, service and platform.</p>
+              <p className="text-sm font-medium text-gray-600 w-1/2">Refers to the action of permanently removing a user&apos;s account and associated data from a system, service and platform.</p>
               <Button className="mt-4">Delete Account</Button>
             </div>
           </div>

@@ -1,11 +1,13 @@
-"use client"
-import { Button } from '@/components/ui/button'
-import { AlignJustify,X } from 'lucide-react';
-import React, {useEffect, useState } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
-import assets from '@/assets';
-import Cookies from 'js-cookie';
+"use client";
+import { Button } from "@/components/ui/button";
+import { AlignJustify, X } from "lucide-react";
+import React, { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import assets from "@/assets";
+import { AccessAuthInfo } from "@/services/auth.services";
+import dynamic from "next/dynamic";
+
 
 interface Navprops {
   id: string;
@@ -13,15 +15,10 @@ interface Navprops {
   path: string;
 }
 
-
 export default function Navber() {
- const [isOpen,setIsOpen]=useState<Boolean>(false)
- 
- useEffect(() => {
-  const token = Cookies.get("refreshToken");
-  console.log(token)
-}, []);
-
+  const [isOpen, setIsOpen] = useState<Boolean>(false);
+  const authToken = AccessAuthInfo();
+  const  AuthInfo = dynamic(() => import('@/components/common/access-auth'), { ssr: false })
 
   const items: Navprops[] = [
     { id: crypto.randomUUID(), name: "Home", path: "/" },
@@ -30,15 +27,12 @@ export default function Navber() {
     { id: crypto.randomUUID(), name: "Blog", path: "/" },
   ];
 
+ 
+
   return (
     <nav className="container">
       <div className="flex justify-between items-center py-2">
-        <Image
-          src={assets.images.logo}
-          width={140}
-          height={100}
-          alt="logo"
-        />
+        <Image src={assets.images.logo} width={140} height={100} alt="logo" />
         <ul className="hidden lg:flex space-x-5">
           {items?.map((item) => (
             <li key={item.id}>
@@ -46,9 +40,15 @@ export default function Navber() {
             </li>
           ))}
         </ul>
-         <Link href={"/auth"}>
-            <Button className="hidden px-5 lg:block" size="sm">Login</Button>
-        </Link>
+        {!!authToken?.email?.length ? (
+          <AuthInfo/>
+        ) : (
+          <Link href={"/auth"}>
+            <Button className="hidden px-5 lg:block" size="sm">
+              Login
+            </Button>
+          </Link>
+        )}
         <div
           onClick={() => setIsOpen(!isOpen)}
           className="block cursor-pointer lg:hidden"
@@ -57,9 +57,11 @@ export default function Navber() {
         </div>
       </div>
       {/* small divice */}
-      <div  className={`fixed navMenu inset-0 bg-[#0f50dc] z-50 flex flex-col items-center justify-center     lg:hidden transition-opacity duration-200 ${
-          isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-      }`}>
+      <div
+        className={`fixed navMenu inset-0 bg-[#0f50dc] z-50 flex flex-col items-center justify-center     lg:hidden transition-opacity duration-200 ${
+          isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      >
         <X
           onClick={() => setIsOpen(!isOpen)}
           className="absolute cursor-pointer top-4 right-4"
@@ -72,7 +74,9 @@ export default function Navber() {
           ))}
         </ul>
         <Link href={"/auth"}>
-            <Button size={"lg"} className="mt-3">Login</Button>
+          <Button size={"lg"} className="mt-3">
+            Login
+          </Button>
         </Link>
       </div>
     </nav>
