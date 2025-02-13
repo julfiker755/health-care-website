@@ -79,7 +79,7 @@ export default function Settings() {
   const handlePassword = async (values: FieldValues) => {
     const data = {
       oldPassword: values.oldPassword,
-      newpassword: values.new_password,
+      newPassword: values.new_password,
     };
 
     const res = await updatePassword(data).unwrap();
