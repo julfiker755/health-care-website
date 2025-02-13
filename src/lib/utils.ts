@@ -59,7 +59,7 @@ export const PlaceholderImg=(width:number=600,height:number=400):string=>{
   return `https://placehold.co/${width}x${height}.png`
 }
 
-// dynamic path dashboard
+// PathRoute 
 export const PathRoute = (route: string) => {
   let path = "";
   switch (route) {

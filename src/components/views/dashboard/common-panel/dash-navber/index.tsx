@@ -2,10 +2,13 @@ import React from 'react';
 import { AlignJustify } from 'lucide-react';
 import { sidebarProps } from '../sider-ber';
 import Search from '../search';
-import DropdownUser from '../droupdown';
+import dynamic from 'next/dynamic';
+import useAuth from '@/components/context/auth-info';
 
 
 const Header = ({sidebarOpen,setSidebarOpen}:sidebarProps) => {
+  const {authInfo}=useAuth()
+  const  AuthDiv = dynamic(() => import('@/components/common/access-auth'), { ssr: false })
     return (
         <div className='sticky top-0 z-[9] flex w-full bg-[#038bd9]/95
          py-2 shadow-1'>
@@ -27,7 +30,7 @@ const Header = ({sidebarOpen,setSidebarOpen}:sidebarProps) => {
           </div>
           {/* right side */}
          <div>
-            <DropdownUser/>
+            {!!authInfo && <AuthDiv/>}
          </div>
       </div>
     </header>

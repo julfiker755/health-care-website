@@ -15,7 +15,7 @@ import { ShowToast } from "@/helpers";
 import Image from "next/image";
 import { changeSchema } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AccessAuthInfo } from "@/services/auth.services";
+
 
 export default function Settings() {
   const { data: user, isLoading } = useGetSingleProfileQuery({});
@@ -94,7 +94,7 @@ export default function Settings() {
     }
   };
   
-  AccessAuthInfo()
+
   return (
     <div>
       <TabMenu

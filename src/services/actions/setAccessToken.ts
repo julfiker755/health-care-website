@@ -4,11 +4,10 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 
-
 const setAccessToken = (key:string,token: string, option?: any) => {
   cookies().set(key, token);
-  if (option) {
-    redirect(`${PathRoute(option.route)}`);
+  if (option?.route) {
+    redirect(`${PathRoute(option?.route)}`);
   }
 };
 

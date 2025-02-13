@@ -25,7 +25,9 @@ import { useDebonunced } from "@/redux/hooks";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { ShowToast } from "@/helpers";
-import { useConfirmation } from "@/components/common";
+import useConfirmation  from "@/components/context/delete-modal";
+
+
 
 interface SpecialityProps {
   id: string;

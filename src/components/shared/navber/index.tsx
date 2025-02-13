@@ -1,12 +1,13 @@
 "use client";
+import useAuth from "@/components/context/auth-info";
 import { Button } from "@/components/ui/button";
 import { AlignJustify, X } from "lucide-react";
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import assets from "@/assets";
-import { AccessAuthInfo } from "@/services/auth.services";
 import dynamic from "next/dynamic";
+
 
 
 interface Navprops {
@@ -17,7 +18,7 @@ interface Navprops {
 
 export default function Navber() {
   const [isOpen, setIsOpen] = useState<Boolean>(false);
-  const authToken = AccessAuthInfo();
+  const {authInfo}=useAuth()
   const  AuthInfo = dynamic(() => import('@/components/common/access-auth'), { ssr: false })
 
   const items: Navprops[] = [
@@ -27,7 +28,6 @@ export default function Navber() {
     { id: crypto.randomUUID(), name: "Blog", path: "/" },
   ];
 
- 
 
   return (
     <nav className="container">
@@ -40,7 +40,7 @@ export default function Navber() {
             </li>
           ))}
         </ul>
-        {!!authToken?.email?.length ? (
+        {!!authInfo ? (
           <AuthInfo/>
         ) : (
           <Link href={"/auth"}>

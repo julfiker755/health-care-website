@@ -23,7 +23,7 @@ function Form({ children, className, onSubmit, from }: fromProps) {
 
   return (
     <FormProvider {...from}>
-      <form onSubmit={from.handleSubmit(submit)}>
+      <form noValidate onSubmit={from.handleSubmit(submit)}>
         <div className={cn("w-full", className)}>{children}</div>
       </form>
     </FormProvider>

@@ -8,7 +8,7 @@ const commonApi = baseApi.injectEndpoints({
         url: "/user/my-profile",
         method: "GET",
       }),
-      providesTags: [tagTypes.common],
+      providesTags: [tagTypes.user],
     }),
     updatePassword: build.mutation({
       query: (data) => ({
@@ -25,4 +25,3 @@ export const {
   useUpdatePasswordMutation
 } =commonApi
 
-// /auth/change-password

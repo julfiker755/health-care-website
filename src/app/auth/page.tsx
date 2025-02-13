@@ -4,18 +4,19 @@ import { authSchema } from "@/types/schema";
 import { Button, Checkbox } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm } from "react-hook-form";
-import { loginAuth } from "@/services/actions/loginAuth";
-import { ResponseApiErrors, ShowToast} from "@/helpers";
-import { useState } from "react";
+import { ResponseApiErrors, ShowToast } from "@/helpers";
 import Link from "next/link";
 import { FromInput } from "@/components/reusable";
 import { setLocalStroage } from "@/lib/utils";
 import { authKey } from "@/contants";
-
-
+import { useUserLoginMutation } from "@/redux/api/authApi";
+import setAccessToken from "@/services/actions/setAccessToken";
+import { decodedToken } from "@/services/auth.services";
+import useAuth from "@/components/context/auth-info";
 
 export default function AuthPage() {
-  const [isLoading,setIsLoading]=useState<boolean>(false)
+  const {setAuthInfo}=useAuth()
+  const [userLogin, { isLoading }] = useUserLoginMutation();
   const from = useForm({
     resolver: zodResolver(authSchema),
     defaultValues: {
@@ -25,22 +26,23 @@ export default function AuthPage() {
   });
 
   const handleSubmit = async (values: FieldValues) => {
-    setIsLoading(true)
-    const res = await loginAuth(values);
-    if (res.success) {
+    const res = await userLogin(values).unwrap();
+    if (res.accessToken) {
+      setLocalStroage(authKey, res.accessToken);
+      const user = decodedToken(res.accessToken);
+      setAuthInfo(user)
+      setAccessToken(authKey, res.accessToken, {
+        route: user.role,
+      });
       ShowToast({
         type: "success",
         title: "Login Successful",
         description: "You have successfully logged in",
       });
-      setLocalStroage(authKey,res.data.accessToken)
-      from.reset()
+      from.reset();
     }
     ResponseApiErrors(res, from);
-    setIsLoading(false)
   };
-
- 
 
   return (
     <div className="h-screen flex justify-center items-center">
@@ -75,7 +77,9 @@ export default function AuthPage() {
               </Link>
             </li>
           </ul>
-          <Button disabled={isLoading} className="w-full">Submit</Button>
+          <Button disabled={isLoading} className="w-full">
+            Submit
+          </Button>
         </Form>
         <p className="text-sm text-center">
           Don&apos;t have an account?{" "}

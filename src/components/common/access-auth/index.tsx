@@ -3,17 +3,21 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { UserRound } from "lucide-react";
 import { useGetSingleProfileQuery } from "@/redux/api/commonApi";
-import { localStroageRemove, PathRoute } from "@/lib/utils";
+import { localStroageRemove, PathRoute} from "@/lib/utils";
 import Image from "next/image";
 import { deleteCookies } from "@/services/actions/deleteCookies";
-import { authKey } from "@/contants";
+import { authKey, refreshKey } from "@/contants";
 import { useRouter } from "next/navigation";
+import useAuth from "@/components/context/auth-info";
 
-interface ProfileSubData {
+
+interface ProfileProps {
   id: number;
   path: string;
   pathname: string;
 }
+
+
 
 export const RoleName = (route: string) => {
   let name = "";
@@ -37,7 +41,8 @@ export const RoleName = (route: string) => {
 };
 
 // PathRoute
-const AccessAuth: React.FC = () => {
+const AccessAuth= () => {
+  const {setAuthInfo}=useAuth()
   const { data: profile, isLoading } = useGetSingleProfileQuery({});
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -62,7 +67,7 @@ const AccessAuth: React.FC = () => {
   }, []);
 
   // Profile submenu data
-  const profileSubData: ProfileSubData[] = [
+  const profileSubData:ProfileProps[] = [
     {
       id: 1,
       path: PathRoute(profile?.role),
@@ -77,8 +82,10 @@ const AccessAuth: React.FC = () => {
   // handleLogOut
   const handleLogOut = () => {
     localStroageRemove(authKey);
-    deleteCookies([authKey, "refreshToken"]);
+    deleteCookies([authKey,refreshKey]);
+    setAuthInfo(null)
     router.refresh()
+    router.push("/")
   };
   return (
     <div className="relative">
