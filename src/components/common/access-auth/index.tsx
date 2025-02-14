@@ -1,14 +1,14 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import { UserRound } from "lucide-react";
 import { useGetSingleProfileQuery } from "@/redux/api/commonApi";
-import { localStroageRemove, PathRoute} from "@/lib/utils";
-import Image from "next/image";
+import { cn, localStroageRemove, PathRoute } from "@/lib/utils";
 import { deleteCookies } from "@/services/actions/deleteCookies";
+import useAuth from "@/components/context/auth-info";
 import { authKey, refreshKey } from "@/contants";
 import { useRouter } from "next/navigation";
-import useAuth from "@/components/context/auth-info";
+import { UserRound } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 
 interface ProfileProps {
@@ -16,8 +16,6 @@ interface ProfileProps {
   path: string;
   pathname: string;
 }
-
-
 
 export const RoleName = (route: string) => {
   let name = "";
@@ -41,13 +39,13 @@ export const RoleName = (route: string) => {
 };
 
 // PathRoute
-const AccessAuth= () => {
-  const {setAuthInfo}=useAuth()
+const AccessAuth = ({ className }: { className?: string }) => {
+  const { setAuthInfo } = useAuth();
   const { data: profile, isLoading } = useGetSingleProfileQuery({});
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const router=useRouter()
+  const router = useRouter();
 
   // Close on outside click
   useEffect(() => {
@@ -67,7 +65,7 @@ const AccessAuth= () => {
   }, []);
 
   // Profile submenu data
-  const profileSubData:ProfileProps[] = [
+  const profileSubData: ProfileProps[] = [
     {
       id: 1,
       path: PathRoute(profile?.role),
@@ -82,10 +80,10 @@ const AccessAuth= () => {
   // handleLogOut
   const handleLogOut = () => {
     localStroageRemove(authKey);
-    deleteCookies([authKey,refreshKey]);
-    setAuthInfo(null)
-    router.refresh()
-    router.push("/")
+    deleteCookies([authKey, refreshKey]);
+    setAuthInfo(null);
+    router.refresh();
+    router.push("/");
   };
   return (
     <div className="relative">
@@ -95,10 +93,15 @@ const AccessAuth= () => {
         className="flex items-center gap-2 cursor-default"
       >
         <span className="hidden text-right lg:block">
-          <span className="block capitalize text-sm font-medium black">
+          <span
+            className={cn(
+              "block capitalize text-sm font-medium black",
+              className
+            )}
+          >
             {profile?.name}
           </span>
-          <span className="block text-xs  text-black">
+          <span className={cn("block text-xs  text-black", className)}>
             {RoleName(profile?.role)}
           </span>
         </span>
@@ -116,7 +119,7 @@ const AccessAuth= () => {
               alt={profile?.profilePhoto?.toString() + "-icon"}
             />
           ) : (
-            <UserRound className="text-gray-500" size={30} />
+            <UserRound className={cn("text-gray-500",className)} size={30} />
           )}
         </span>
       </button>

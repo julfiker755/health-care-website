@@ -8,8 +8,6 @@ import Link from "next/link";
 import assets from "@/assets";
 import dynamic from "next/dynamic";
 
-
-
 interface Navprops {
   id: string;
   name: string;
@@ -18,8 +16,10 @@ interface Navprops {
 
 export default function Navber() {
   const [isOpen, setIsOpen] = useState<Boolean>(false);
-  const {authInfo}=useAuth()
-  const  AuthInfo = dynamic(() => import('@/components/common/access-auth'), { ssr: false })
+  const { authInfo } = useAuth();
+  const AuthInfo = dynamic(() => import("@/components/common/access-auth"), {
+    ssr: false,
+  });
 
   const items: Navprops[] = [
     { id: crypto.randomUUID(), name: "Home", path: "/" },
@@ -28,20 +28,21 @@ export default function Navber() {
     { id: crypto.randomUUID(), name: "Blog", path: "/" },
   ];
 
-
   return (
     <nav className="container">
       <div className="flex justify-between items-center py-2">
-        <Image src={assets.images.logo} width={140} height={100} alt="logo" />
+        <div className="w-[140px] h-[35px] flex items-center">
+          <Image src={assets.images.logo} width={140} height={100} alt="logo" />
+        </div>
         <ul className="hidden lg:flex space-x-5">
-          {items?.map((item) => (
+          {items?.map((item: any) => (
             <li key={item.id}>
               <Link href={item.path}>{item.name}</Link>
             </li>
           ))}
         </ul>
         {!!authInfo ? (
-          <AuthInfo/>
+          <AuthInfo />
         ) : (
           <Link href={"/auth"}>
             <Button className="hidden px-5 lg:block" size="sm">

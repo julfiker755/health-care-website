@@ -6,25 +6,25 @@ import {
   TableNoItem,
   TableSkeleton,
 } from "@/components/reusable";
-import { Badge, Button, Input, TableCell, TableRow } from "@/components/ui";
+import { useDeleteAdminMutation, useGetAllAdminQuery } from "@/redux/api/adminApi";
+import {Button, Input, TableCell, TableRow } from "@/components/ui";
 import { formatDate } from "@/lib/utils";
 import { useDebonunced } from "@/redux/hooks";
 import { useState } from "react";
 import { ShowToast } from "@/helpers";
 import  useConfirmation  from "@/components/context/delete-modal";
-import { useDeleteDoctorMutation, useGetAllDoctorQuery } from "@/redux/api/doctorApi";
 import Link from "next/link";
-import { RoleName } from "@/components/common/access-auth";
 
-export default function Doctors() {
+export default function Admin() {
   const { confirm } = useConfirmation();
   const [search, setSearch] = useState<string>("");
   const [isPage, setIsPage] = useState<number>(1);
   const query: Record<string, any> = { page: isPage };
   const debouncedTerm = useDebonunced({ searchQuery: search, delay: 600 });
   if (!!debouncedTerm) query["email"] = search;
-  const { data, isLoading } = useGetAllDoctorQuery({ ...query });
-  const [deleteDoctor]=useDeleteDoctorMutation()
+  const {data,isLoading}= useGetAllAdminQuery({...query})
+  const [deleteAdmin]=useDeleteAdminMutation()
+
 
   const headers = [
     "Name",
@@ -38,16 +38,17 @@ export default function Doctors() {
   const handleDelete = async (id: string) => {
     const confirmed = await confirm();
     if (confirmed) {
-      const res = await deleteDoctor(id).unwrap();
+      const res = await  deleteAdmin(id).unwrap();
       if (res?.id) {
         ShowToast({
           type: "success",
           title: "Delete Successful",
-          description: "You have Doctor delete successfully",
+          description: "You have Admin delete successfully",
         });
       }
     }
   };
+
 
   return (
     <div>
@@ -60,14 +61,14 @@ export default function Doctors() {
         </li>
         <li>
           <Button>
-            <Link href="/dashboard/admin/doctor/store">Add Doctor</Link>
+            <Link href="/dashboard/super-admin/admin/store">Add Admin</Link>
           </Button>
         </li>
       </ul>
       <div>
         <Table
-          title="All Doctors"
-          description="Manage your doctor and view their details"
+          title="All Admin"
+          description="Manage your admin and view their details"
           headers={headers}
           pagination={
             data?.meta?.total > data?.meta?.limit && (
@@ -82,8 +83,8 @@ export default function Doctors() {
         >
           {isLoading ? (
             <TableSkeleton colSpan={headers?.length} />
-          ) : !!data?.doctors?.length ? (
-            data?.doctors?.map((item: any, index: any) => (
+          ) : !!data?.admins?.length ? (
+            data?.admins?.map((item: any, index: any) => (
               <TableRow key={index}>
                 <TableCell>{item.name}</TableCell>
                 <TableCell>{item.email}</TableCell>
@@ -95,11 +96,6 @@ export default function Doctors() {
                 <TableCell>
                   <DroupdownActions
                     actions={[
-                      {
-                        type: "link",
-                        label: "Details",
-                        to: `/dashboard/admin/doctor/${item.id}`,
-                      },
                       {
                         type: "button",
                         label: "Delete",

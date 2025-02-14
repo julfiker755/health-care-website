@@ -9,11 +9,6 @@ export type ResponseSuccessProps = {
   meta?: MetaProps;
 };
 
-export type ResponseErrorProps = {
-  statusCode: number;
-  message: string;
-  errorMessages: ResponseErrorProps[];
-};
 
 export type AuthProps = {
   email: string;

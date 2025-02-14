@@ -27,7 +27,7 @@ export default function AuthPage() {
 
   const handleSubmit = async (values: FieldValues) => {
     const res = await userLogin(values).unwrap();
-    if (res.accessToken) {
+    if (res?.accessToken) {
       setLocalStroage(authKey, res.accessToken);
       const user = decodedToken(res.accessToken);
       setAuthInfo(user)

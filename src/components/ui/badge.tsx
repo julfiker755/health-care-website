@@ -3,6 +3,9 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
+
+
+
 const badgeVariants = cva(
   "inline-flex items-center rounded-md border px-2 py-[1px] text-xs font-medium transition-colors",
   {
@@ -10,8 +13,6 @@ const badgeVariants = cva(
       variant: {
         default:
           "border-transparent bg-primary text-white",
-          // default:
-          // "border-transparent bg-destructive text-white",
           no:
           "border-transparent bg-destructive text-white",
           yes:
@@ -20,7 +21,9 @@ const badgeVariants = cva(
           "border-transparent bg-green-600 text-white",
           active:
           "border-transparent bg-green-600 text-white",
-          deactivate:
+          blocked:
+          "border-transparent bg-destructive text-white",
+          deleted:
           "border-transparent bg-destructive text-white",
          outline: "text-foreground",
       },

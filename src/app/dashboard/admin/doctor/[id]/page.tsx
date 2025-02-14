@@ -7,13 +7,13 @@ import { useGetSingleDoctorQuery } from "@/redux/api/doctorApi";
 import Image from "next/image";
 import React from "react";
 
-interface DoctorDetailsProps {
+interface ParamsProps {
   params: {
     id: string;
   };
 }
 
-export default function DoctorDetails({ params: { id } }: DoctorDetailsProps) {
+export default function DoctorDetails({ params: { id } }:ParamsProps) {
   const { data,isLoading} = useGetSingleDoctorQuery(id);
   return (
     <div>

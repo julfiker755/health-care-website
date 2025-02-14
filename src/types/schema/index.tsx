@@ -35,7 +35,7 @@ export const changeSchema = z
 });
 
 
-  // registerSchema
+// registerSchema
 export const registerSchema = z
   .object({
     name:z.string().nonempty("Name is required"),
@@ -78,4 +78,16 @@ export const registerSchema = z
     designation: z.string().nonempty("Designation is required"),
   });
   
+
+ // adminSchema
+  export const adminSchema = z.object({
+    password: z.string().nonempty("Password is required"),
+    name: z.string().nonempty("Name is required"),
+    email: z.string().nonempty("Email is required").email("Please enter a valid email"),
+    contactNumber: z.string().nonempty("Contact Number is required"),
+    address: z.string().nonempty("Address is required"),
+    gender: z.string().nonempty("Gender is required"),
+  });
+  
+
 

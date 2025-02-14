@@ -1,19 +1,22 @@
-'use client';
-import { useEffect, useRef } from 'react';
-import Link from 'next/link';
-import { X, LayoutDashboard, Settings, Table, UserRound,Boxes, PackagePlus} from 'lucide-react';
-import Image from 'next/image';
-import assets from '@/assets';
+"use client";
+import { useEffect, useRef } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import assets from "@/assets";
+import { usePathname } from "next/navigation";
+import useAuth from "@/components/context/auth-info";
+import MenuList from "../menu-item";
 
 export interface sidebarProps {
   sidebarOpen: boolean;
-  setSidebarOpen: (open:any) => void;
+  setSidebarOpen: (open: any) => void;
 }
 
-const Sidebar= ({ sidebarOpen, setSidebarOpen }:sidebarProps) => {
+const Sidebar = ({ sidebarOpen, setSidebarOpen }: sidebarProps) => {
+  const { authInfo } = useAuth();
   const trigger = useRef<HTMLButtonElement | null>(null);
   const sidebar = useRef<HTMLDivElement | null>(null);
-
+  const pathname = usePathname();
   // Close on click outside
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
@@ -26,62 +29,55 @@ const Sidebar= ({ sidebarOpen, setSidebarOpen }:sidebarProps) => {
         return;
       setSidebarOpen(false);
     };
-    document.addEventListener('click', clickHandler);
-    return () => document.removeEventListener('click', clickHandler);
+    document.addEventListener("click", clickHandler);
+    return () => document.removeEventListener("click", clickHandler);
   }, [sidebarOpen, setSidebarOpen]);
 
   return (
     <aside
       ref={sidebar}
       className={`absolute left-0 top-0 z-[10] flex h-screen w-56 flex-col overflow-y-hidden bg-[#038bd9] text-black transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 ${
-        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        sidebarOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
       <div className="py-3">
         {/* Sidebar Header */}
         <div className="flex items-center justify-between px-6 py-2">
-          <Link href="/">
-          <Image
-          src={assets.images.logo2}
-          className=''
-          width={140}
-          height={100}
-          alt="logo"
-        />
-          </Link>
+          <div className="w-[140px] h-[30px] flex items-center">
+            <Link href="/">
+              <Image
+                src={assets.images.logo2}
+                className=""
+                width={140}
+                height={100}
+                alt="logo"
+              />
+            </Link>
+          </div>
           <button
             ref={trigger}
             onClick={() => setSidebarOpen(!sidebarOpen)}
             aria-controls="sidebar"
             aria-expanded={sidebarOpen}
             className="lg:hidden"
-          >
-          </button>
+          ></button>
         </div>
 
         {/* Sidebar Navigation */}
         <nav className="mt-2">
-          <ul className='space-y-2'>
-            <li>
-              <Link href="/dashboard/admin" className="flex items-center gap-3 p-2 hover:text-white text-white bg-[#2da6ed]">
-                <LayoutDashboard size={20} /> Dashboard
-              </Link>
-            </li>
-            <li>
-              <Link href="/dashboard/admin/doctor" className="flex items-center gap-3 p-2 hover:text-white text-white bg-[#2da6ed]">
-                <UserRound size={20} /> Doctors
-              </Link>
-            </li>
-            <li>
-              <Link href="/dashboard/admin/specialities" className="flex items-center gap-3 p-2 hover:text-white text-white bg-[#2da6ed]">
-                <PackagePlus size={20} /> Specialities
-              </Link>
-            </li>
-            <li>
-              <Link href="/dashboard/admin/settings" className="flex items-center gap-3 p-2 hover:text-white text-white bg-[#2da6ed]">
-                <Settings size={20} /> Settings
-              </Link>
-            </li>
+          <ul className="space-y-2">
+            {MenuList(authInfo?.role as string).map((item, index) => (
+              <li key={index}>
+                <Link
+                  href={item?.path}
+                  className={`flex items-center gap-3 p-2 text-white ${
+                    pathname === item.path && "bg-[#2da6ed]"
+                  }`}
+                >
+                  <item.icon size={20} /> {item.name}
+                </Link>
+              </li>
+            ))}
           </ul>
         </nav>
       </div>
@@ -89,6 +85,4 @@ const Sidebar= ({ sidebarOpen, setSidebarOpen }:sidebarProps) => {
   );
 };
 
-
-
-export default Sidebar
+export default Sidebar;

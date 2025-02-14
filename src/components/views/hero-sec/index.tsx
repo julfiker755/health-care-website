@@ -15,7 +15,7 @@ export default function HeroSec() {
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
       }}
-      className="relative h-[calc(100vh-57px)]"
+      className="relative h-[calc(100vh-50px)]"
     >
       {/* <Image
         src={heroImg}
