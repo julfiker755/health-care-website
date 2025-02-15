@@ -1,6 +1,12 @@
 import { decodedToken } from "@/services/auth.services";
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { AuthProps } from "@/types";
+import Cookies from "js-cookie";
 
 interface AuthContextType {
   authInfo: AuthProps | null;
@@ -9,35 +15,37 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-
-export const AuthProvider= ({ children }:{ children: React.ReactNode }) => {
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [authInfo, setAuthInfo] = useState<AuthProps | null>(null);
 
   useEffect(() => {
-    const  unsubscribe=()=>{
-        const token = localStorage.getItem("accessToken");
-        if (token) {
+    const unsubscribe = () => {
+      const token = Cookies.get("authToken");
+      if (token) {
+        try {
           setAuthInfo(decodedToken(token));
+        } catch (error) {
+          // console.error("Error decoding token:", error);
         }
-    }
-    return ()=>{
-        unsubscribe();
-    }
+      }
+    };
+
+    unsubscribe();
+
+    return unsubscribe;
   }, []);
 
   return (
-    <AuthContext.Provider value={{authInfo, setAuthInfo}}>
+    <AuthContext.Provider value={{ authInfo, setAuthInfo }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export default function useAuth():AuthContextType {
-   const context = useContext(AuthContext);
+export default function useAuth(): AuthContextType {
+  const context = useContext(AuthContext);
   if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 }
-
-

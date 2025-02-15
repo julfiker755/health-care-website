@@ -2,12 +2,7 @@
 import { cookies } from "next/headers"
 
 export const getCookies = (keys: string[]) => {
-    const cookieStore = cookies()
-    const cookieValues: { [key: string]: string | undefined } = {}
-
-    keys.forEach((key) => {
-        cookieValues[key] = cookieStore.get(key)?.value
+    keys.forEach((key)=>{
+        cookies().get(key)
     })
-
-    return cookieValues
 }

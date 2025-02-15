@@ -1,6 +1,5 @@
 import { authKey } from "@/contants";
 import { getLocalStroage, setLocalStroage } from "@/lib/utils";
-import setAccessToken from "@/services/actions/setAccessToken";
 import { GenerateAccessToken } from "@/services/auth.services";
 import {ResponseSuccessProps } from "@/types";
 import axios from "axios";
@@ -43,7 +42,6 @@ instance.interceptors.response.use(
       const accessToken = response?.data.accessToken;
       config.headers["Authorization"] = accessToken;
       setLocalStroage(authKey, accessToken);
-      setAccessToken(authKey, accessToken);
       return instance(config);
     }
     return error?.response;

@@ -5,14 +5,14 @@ import { Button, Checkbox } from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm } from "react-hook-form";
 import { ResponseApiErrors, ShowToast } from "@/helpers";
-import Link from "next/link";
 import { FromInput } from "@/components/reusable";
 import { setLocalStroage } from "@/lib/utils";
-import { authKey } from "@/contants";
+import { authKey, authToken } from "@/contants";
 import { useUserLoginMutation } from "@/redux/api/authApi";
-import setAccessToken from "@/services/actions/setAccessToken";
 import { decodedToken } from "@/services/auth.services";
 import useAuth from "@/components/context/auth-info";
+import setAuthToken from "@/services/actions/setAuthToken";
+import Link from "next/link";
 
 export default function AuthPage() {
   const {setAuthInfo}=useAuth()
@@ -31,7 +31,7 @@ export default function AuthPage() {
       setLocalStroage(authKey, res.accessToken);
       const user = decodedToken(res.accessToken);
       setAuthInfo(user)
-      setAccessToken(authKey, res.accessToken, {
+      setAuthToken(authToken,res.authToken, {
         route: user.role,
       });
       ShowToast({
