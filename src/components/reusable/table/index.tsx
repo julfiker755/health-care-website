@@ -16,7 +16,8 @@ interface tableProps {
   className?: string;
   headers: string[];
   children: React.ReactNode;
-  pagination: any;
+  pagination?: any;
+  rightSec?:any
 }
 
 export const Table = ({
@@ -26,10 +27,14 @@ export const Table = ({
   headers = [],
   pagination,
   children,
+  rightSec
 }: tableProps) => {
   return (
     <div className={cn("mt-4", className)}>
-      <DashTitle title={title} description={description} />
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+        <DashTitle title={title} description={description} />
+        {rightSec && rightSec}
+      </div>
       <div className={"mt-3 border rounded-lg"}>
         <TableArea>
           {headers && headers.length > 0 && (

@@ -32,7 +32,7 @@ const adminApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.admin],
     }),
-    updateDoctor: build.mutation({
+    updateAdmin: build.mutation({
       query: (data) => ({
         url: "/admin/update",
         method: "PUT",
@@ -48,5 +48,5 @@ export const {
   useGetAllAdminQuery,
   useCreateAdminMutation,
   useDeleteAdminMutation,
-  useUpdateDoctorMutation,
+  useUpdateAdminMutation,
 } = adminApi;

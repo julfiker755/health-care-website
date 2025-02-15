@@ -20,7 +20,7 @@ export function SheetDrawer({ children,className,title, description, isOpen=fals
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetContent>
-        <SheetHeader autoFocus={true}>
+        <SheetHeader>
           <SheetTitle>{title}</SheetTitle>
           <SheetDescription>{description}</SheetDescription>
         </SheetHeader>

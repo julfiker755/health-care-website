@@ -10,16 +10,16 @@ import React, { useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import Form from "@/components/shared/from";
 import { Button, Skeleton } from "@/components/ui";
-import { useUpdateDoctorMutation } from "@/redux/api/adminApi";
 import { ShowToast } from "@/helpers";
 import Image from "next/image";
 import { changeSchema } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useUpdateAdminMutation } from "@/redux/api/adminApi";
 
 
 export default function Settings() {
   const { data: user, isLoading } = useGetSingleProfileQuery({});
-  const [updateDoctor, { isLoading: saveloading }] = useUpdateDoctorMutation();
+  const [updateAdmin, { isLoading: saveloading }] = useUpdateAdminMutation();
   const [updatePassword, { isLoading: updateLoading }] =
     useUpdatePasswordMutation();
   const [isTab, setIsTab] = useState("Profile");
@@ -56,7 +56,7 @@ export default function Settings() {
       file: values?.file,
     };
     const data = modifyPayload(dataItem);
-    const res = await updateDoctor(data).unwrap();
+    const res = await updateAdmin(data).unwrap();
     if (res?.id) {
       ShowToast({
         type: "success",

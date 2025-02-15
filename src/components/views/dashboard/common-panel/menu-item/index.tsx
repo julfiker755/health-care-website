@@ -81,7 +81,17 @@ const menuItem: MenuItemProps = {
     {
       name: "Patint",
       icon: UserRound,
-      path: "/dashboard/admin/doctor",
+      path: "/dashboard/doctor/patient",
+    },
+    {
+      name: "Specialities",
+      icon: PackagePlus,
+      path: "/dashboard/doctor/specialities",
+    },
+    {
+      name: "Settings",
+      icon: Settings,
+      path: "/dashboard/doctor/settings",
     },
   ],
   PATIENT: [

@@ -4,7 +4,7 @@ import { useGetSingleProfileQuery } from "@/redux/api/commonApi";
 import { cn, localStroageRemove, PathRoute } from "@/lib/utils";
 import { deleteCookies } from "@/services/actions/deleteCookies";
 import useAuth from "@/components/context/auth-info";
-import { authKey, refreshKey } from "@/contants";
+import { authKey, authToken, refreshKey } from "@/contants";
 import { useRouter } from "next/navigation";
 import { UserRound } from "lucide-react";
 import Image from "next/image";
@@ -80,7 +80,7 @@ const AccessAuth = ({ className }: { className?: string }) => {
   // handleLogOut
   const handleLogOut = () => {
     localStroageRemove(authKey);
-    deleteCookies([authKey, refreshKey]);
+    deleteCookies([authToken, refreshKey]);
     setAuthInfo(null);
     router.refresh();
     router.push("/");

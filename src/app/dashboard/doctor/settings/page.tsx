@@ -14,12 +14,11 @@ import { ShowToast } from "@/helpers";
 import Image from "next/image";
 import { changeSchema } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useUpdateAdminMutation } from "@/redux/api/adminApi";
-
+import { useUpdateDoctorMutation } from "@/redux/api/doctorApi";
 
 export default function Settings() {
   const { data: user, isLoading } = useGetSingleProfileQuery({});
-  const [updateAdmin, { isLoading: saveloading }] = useUpdateAdminMutation()
+  const [updateDoctor, { isLoading: saveloading }] = useUpdateDoctorMutation();
   const [updatePassword, { isLoading: updateLoading }] =
     useUpdatePasswordMutation();
   const [isTab, setIsTab] = useState("Profile");
@@ -29,9 +28,15 @@ export default function Settings() {
       email: "",
       contactNumber: "",
       address: "",
+      currentWorkingPlace: "",
       role: "",
       gender: "",
       file: null,
+      appointmentFee: null,
+      registrationNumber: null,
+      experience: null,
+      averageRating: null,
+      qualification: "",
     },
   });
 
@@ -41,9 +46,15 @@ export default function Settings() {
       email: user?.email,
       contactNumber: user?.contactNumber,
       address: user?.address,
+      currentWorkingPlace: user?.currentWorkingPlace,
       role: user?.role,
       gender: user?.gender,
       file: user?.file,
+      appointmentFee: user?.appointmentFee,
+      registrationNumber: user?.registrationNumber,
+      experience: user?.experience,
+      averageRating: user?.averageRating,
+      qualification: user?.qualification,
     });
   }, [user, ProfileFrom]);
 
@@ -52,11 +63,15 @@ export default function Settings() {
       name: values?.name,
       contactNumber: values?.contactNumber,
       address: values?.address,
+      currentWorkingPlace: values?.currentWorkingPlace,
       gender: values?.gender,
       file: values?.file,
+      appointmentFee: values.appointmentFee,
+      experience: values.experience,
+      qualification: values.qualification,
     };
     const data = modifyPayload(dataItem);
-    const res = await updateAdmin(data).unwrap();
+    const res = await updateDoctor(data).unwrap();
     if (res?.id) {
       ShowToast({
         type: "success",
@@ -93,7 +108,6 @@ export default function Settings() {
       ChangeFrom.reset();
     }
   };
-  
 
   return (
     <div>
@@ -169,20 +183,25 @@ export default function Settings() {
                       placeholder="Enter your email"
                     ></FromInput>
                     <FromInput
-                      label="Contact Number"
-                      name="contactNumber"
-                      placeholder="Enter your Contact Number"
-                    ></FromInput>
-                    <FromInput
-                      label="Address"
-                      name="address"
-                      placeholder="Enter your address"
-                    ></FromInput>
-                    <FromInput
                       readOnly={true}
                       label="Role"
                       name="role"
                       placeholder="Enter your role"
+                    ></FromInput>
+
+                    <FromInput
+                      readOnly={true}
+                      type="number"
+                      label="Average Rating"
+                      name="averageRating"
+                      placeholder="Enter your averageRating"
+                    ></FromInput>
+                    <FromInput
+                      readOnly={true}
+                      type="number"
+                      label="Registration Number"
+                      name="registrationNumber"
+                      placeholder="Enter your registration Number"
                     ></FromInput>
                     <SingleSelect
                       items={[
@@ -194,6 +213,38 @@ export default function Settings() {
                       name="gender"
                       placeholder="Select gender"
                     ></SingleSelect>
+                    <FromInput
+                      label="Contact Number"
+                      name="contactNumber"
+                      placeholder="Enter your Contact Number"
+                    ></FromInput>
+                    <FromInput
+                      type="number"
+                      label="Appointment Fee"
+                      name="appointmentFee"
+                      placeholder="Enter your appointmentFee"
+                    ></FromInput>
+                    <FromInput
+                      type="number"
+                      label="Experience"
+                      name="experience"
+                      placeholder="Enter your experience"
+                    ></FromInput>
+                    <FromInput
+                      label="Qualification"
+                      name="qualification"
+                      placeholder="Enter your qualification"
+                    ></FromInput>
+                    <FromInput
+                      label="Address"
+                      name="address"
+                      placeholder="Enter your address"
+                    ></FromInput>
+                    <FromInput
+                      label="Working Place"
+                      name="currentWorkingPlace"
+                      placeholder="Enter your working place"
+                    ></FromInput>
                     <div className="col-span-3 flex justify-end mt-4">
                       <Button disabled={saveloading}>Save Changes</Button>
                     </div>
@@ -247,8 +298,13 @@ export default function Settings() {
               Delete Account
             </h1>
             <div className="mt-3">
-              <h1 className="text-base font-medium">Are you sure you want to delete your account?</h1>
-              <p className="text-sm font-medium text-gray-600 w-1/2">Refers to the action of permanently removing a user&apos;s account and associated data from a system, service and platform.</p>
+              <h1 className="text-base font-medium">
+                Are you sure you want to delete your account?
+              </h1>
+              <p className="text-sm font-medium text-gray-600 w-1/2">
+                Refers to the action of permanently removing a user&apos;s
+                account and associated data from a system, service and platform.
+              </p>
               <Button className="mt-4">Delete Account</Button>
             </div>
           </div>

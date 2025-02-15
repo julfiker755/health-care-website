@@ -30,7 +30,8 @@ const Header = ({sidebarOpen,setSidebarOpen}:sidebarProps) => {
           </div>
           {/* right side */}
          <div>
-            {!!authInfo && <AuthDiv className='text-white'/>}
+         {/* <AuthDiv className='text-white'/> */}
+            {/* {!!authInfo && <AuthDiv className='text-white'/>} */}
          </div>
       </div>
     </header>
