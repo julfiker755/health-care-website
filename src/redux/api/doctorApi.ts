@@ -48,6 +48,28 @@ const doctorsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.user],
     }),
+    getDoctorSpecialty: build.query({
+      query: () => ({
+        url: "/doctor/specialities/collect",
+        method: "GET",
+      }),
+      providesTags: [tagTypes.doctorSpecialty],
+    }),
+    createDoctorSpecialty: build.mutation({
+      query: (data) => ({
+        url: "/doctor/specialities-store",
+        method: "POST",
+        data,
+      }),
+      invalidatesTags: [tagTypes.doctorSpecialty],
+    }),
+    deleteDoctorSpecialty: build.mutation({
+      query: (id) => ({
+        url: `/doctor/specialities/remove/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [tagTypes.doctorSpecialty, tagTypes.specialities],
+    }),
   }),
 });
 
@@ -57,4 +79,7 @@ export const {
   useCreateDoctorMutation,
   useDeleteDoctorMutation,
   useUpdateDoctorMutation,
+  useCreateDoctorSpecialtyMutation,
+  useGetDoctorSpecialtyQuery,
+  useDeleteDoctorSpecialtyMutation,
 } = doctorsApi;

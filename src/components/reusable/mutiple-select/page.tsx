@@ -15,13 +15,7 @@ import {
 } from "@/components/ui";
 
 import { useRef, useState } from "react";
-import {
-  Controller,
-  useFormContext,
-  FieldValues,
-  ControllerRenderProps,
-  ControllerFieldState,
-} from "react-hook-form";
+import { Controller, useFormContext, FieldValues } from "react-hook-form";
 
 interface FormInputProps {
   name: string;
@@ -46,13 +40,7 @@ export function MultiSelect({
     <Controller
       control={control}
       name={name}
-      render={({
-        field: { onChange, value },
-        fieldState: { error },
-      }: {
-        field: ControllerRenderProps<FieldValues>;
-        fieldState: ControllerFieldState;
-      }) => {
+      render={({ field: { onChange, value }, fieldState: { error } }) => {
         const selectedValues = Array.isArray(value) ? value : [];
 
         const handleSelect = (selected: string) => {
@@ -82,15 +70,20 @@ export function MultiSelect({
                 >
                   {selectedValues.length > 0 ? (
                     <div className="flex gap-1 flex-wrap">
-                      {selectedValues.slice(0, 2).map((selected) => (
-                        <Badge variant="outline" key={selected}>
-                          {options.find((f) => f.value === selected)?.label}
-                          <X
-                            onClick={(e) => removeSelection(selected, e)}
-                            className="ml-1 h-3 w-3 cursor-pointer"
-                          />
-                        </Badge>
-                      ))}
+                      {selectedValues.slice(0, 2).map((selected) => {
+                        const selectedOption = options.find(
+                          (opt) => opt.value === selected
+                        );
+                        return (
+                          <Badge variant="outline" key={selected}>
+                            {selectedOption?.label}
+                            <X
+                              onClick={(e) => removeSelection(selected, e)}
+                              className="ml-1 h-3 w-3 cursor-pointer"
+                            />
+                          </Badge>
+                        );
+                      })}
                       {selectedValues.length > 2 && (
                         <Badge variant="outline">
                           + {selectedValues.length - 2}
@@ -134,6 +127,9 @@ export function MultiSelect({
                 </Command>
               </PopoverContent>
             </Popover>
+            {error && (
+              <p className="text-red-500 text-xs mt-1">{error.message}</p>
+            )}
           </div>
         );
       }}
