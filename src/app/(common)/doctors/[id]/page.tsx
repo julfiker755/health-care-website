@@ -1,7 +1,17 @@
+"use client"
+import { useGetSingleDoctorQuery } from '@/redux/api/doctorApi'
 import Link from 'next/link'
 import React from 'react'
 
-export default function Doctor() {
+interface ParamsProps {
+  params: {
+    id: string;
+  };
+}
+
+export default function Doctor({ params: { id } }:ParamsProps) {
+  const {data,isLoading}= useGetSingleDoctorQuery(id)
+  console.log(data)
   return (
     <div>
          <div className='text-center py-12'>

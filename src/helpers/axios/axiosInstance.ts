@@ -1,7 +1,7 @@
 import { authKey } from "@/contants";
 import { getLocalStroage, setLocalStroage } from "@/lib/utils";
 import { GenerateAccessToken } from "@/services/auth.services";
-import {ResponseSuccessProps } from "@/types";
+import { ResponseSuccessProps } from "@/types";
 import axios from "axios";
 
 const instance = axios.create();
@@ -36,7 +36,8 @@ instance.interceptors.response.use(
   },
   async function (error) {
     const config = error.config;
-    if (error?.response?.status === 500 && !config?.sent) {
+    const exp = error?.response.data.errors.scretCode === "R1lCfyF3XN";
+    if (exp && !config?.sent) {
       config.sent = true;
       const response = await GenerateAccessToken();
       const accessToken = response?.data.accessToken;
