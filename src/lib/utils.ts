@@ -50,7 +50,7 @@ export const getLocalStroage = (key: string) => {
 };
 
 // delay Time
-export const delay = (ms: number = 4000) =>
+export const delay = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
 // placeholder Image
