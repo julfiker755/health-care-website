@@ -13,6 +13,8 @@ import { authKey } from "@/contants";
 import { ShowToast } from "@/helpers";
 import { useEffect } from "react";
 
+export const dynamic = "force-dynamic";
+
 export default function ResetPassword() {
   const router = useRouter();
   const searchParams = useSearchParams();
