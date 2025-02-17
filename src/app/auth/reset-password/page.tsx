@@ -1,17 +1,17 @@
 "use client";
-import { FromInput } from "@/components/reusable";
-import Form from "@/components/shared/from";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { FieldValues, useForm } from "react-hook-form";
-import { resetSchema } from "@/types/schema";
-import { Button } from "@/components/ui";
-import { useRouter, useSearchParams } from "next/navigation";
-import { decodedToken } from "@/services/auth.services";
-import { useEffect } from "react";
-import { authKey } from "@/contants";
 import { delay, localStroageRemove, setLocalStroage } from "@/lib/utils";
 import { useResetPasswordMutation } from "@/redux/api/authApi";
+import { useRouter, useSearchParams } from "next/navigation";
+import { decodedToken } from "@/services/auth.services";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FieldValues, useForm } from "react-hook-form";
+import { FromInput } from "@/components/reusable";
+import Form from "@/components/shared/from";
+import { resetSchema } from "@/types/schema";
+import { Button } from "@/components/ui";
+import { authKey } from "@/contants";
 import { ShowToast } from "@/helpers";
+import { useEffect } from "react";
 
 export default function ResetPassword() {
   const router = useRouter();
@@ -34,6 +34,7 @@ export default function ResetPassword() {
   }, [token]);
 
   const handleSubmit = async (values: FieldValues) => {
+    if (!tokenInfo) return;
     const currentTime = Math.floor(Date.now() / 1000);
     if (currentTime > tokenInfo?.exp) {
       ShowToast({
@@ -43,8 +44,8 @@ export default function ResetPassword() {
       });
       localStroageRemove(authKey);
       await delay(4000);
-      router.push("/auth/forgot-password")
-      return ;
+      router.push("/auth/forgot-password");
+      return;
     }
 
     const data = {

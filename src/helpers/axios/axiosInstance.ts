@@ -36,7 +36,7 @@ instance.interceptors.response.use(
   },
   async function (error) {
     const config = error.config;
-    const exp = error?.response.data.errors.scretCode === "R1lCfyF3XN";
+    const exp = error?.response?.data?.errors?.scretCode === "R1lCfyF3XN";
     if (exp && !config?.sent) {
       config.sent = true;
       const response = await GenerateAccessToken();
