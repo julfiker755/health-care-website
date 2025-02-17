@@ -1,25 +1,21 @@
 "use client";
-import { delay, localStroageRemove, setLocalStroage } from "@/lib/utils";
-import { useResetPasswordMutation } from "@/redux/api/authApi";
-import { useRouter, useSearchParams } from "next/navigation";
-import { decodedToken } from "@/services/auth.services";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { FieldValues, useForm } from "react-hook-form";
 import { FromInput } from "@/components/reusable";
 import Form from "@/components/shared/from";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FieldValues, useForm } from "react-hook-form";
 import { resetSchema } from "@/types/schema";
 import { Button } from "@/components/ui";
+import { useRouter} from "next/navigation";
+import { decodedToken } from "@/services/auth.services";
+import { useEffect, useState } from "react";
 import { authKey } from "@/contants";
+import { delay, localStroageRemove, setLocalStroage } from "@/lib/utils";
+import { useResetPasswordMutation } from "@/redux/api/authApi";
 import { ShowToast } from "@/helpers";
-import { useEffect } from "react";
-
-export const dynamic = "force-dynamic";
 
 export default function ResetPassword() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const token = searchParams.get("token");
-  const tokenInfo = decodedToken(token as string) as any;
+  const [tokenInfo, setTokenInfo] = useState<any>(null);
   const [resetPassword, { isLoading }] = useResetPasswordMutation();
   const from = useForm({
     resolver: zodResolver(resetSchema),
@@ -30,19 +26,24 @@ export default function ResetPassword() {
   });
 
   useEffect(() => {
-    if (token) {
-      setLocalStroage(authKey, token);
+    const searchParams = new URLSearchParams(window.location.search);
+    const tokenParam = searchParams.get("token");
+    
+    if (tokenParam) {
+      setLocalStroage(authKey, tokenParam);
+      setTokenInfo(decodedToken(tokenParam));
     }
-  }, [token]);
+  }, []);
 
   const handleSubmit = async (values: FieldValues) => {
     if (!tokenInfo) return;
+
     const currentTime = Math.floor(Date.now() / 1000);
     if (currentTime > tokenInfo?.exp) {
       ShowToast({
         type: "error",
         title: "Expired",
-        description: "Your Link is expire",
+        description: "Your Link has expired",
       });
       localStroageRemove(authKey);
       await delay(4000);
@@ -55,6 +56,7 @@ export default function ResetPassword() {
       password: values.new_password,
     };
     const res = await resetPassword(data).unwrap();
+
     if (res?.email) {
       localStroageRemove(authKey);
       await delay(4000);
@@ -63,7 +65,7 @@ export default function ResetPassword() {
       ShowToast({
         type: "success",
         title: "Change Successful",
-        description: "You have Password Change successfully",
+        description: "You have successfully changed your password",
       });
     }
   };
