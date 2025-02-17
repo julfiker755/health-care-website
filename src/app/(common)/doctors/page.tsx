@@ -1,98 +1,130 @@
-"use client"
-import FilterSec from '@/components/common/filter-sec'
-import { Input } from '@/components/ui'
-import React, {useState } from 'react'
-import { AlignJustify,LayoutDashboard,Calendar} from 'lucide-react';
-import { IconStarFilled } from '@tabler/icons-react';
-import { formatDate } from '@/lib/utils'
-import Image from 'next/image'
-import Link from 'next/link'
-import { Pagination } from '@/components/reusable';
-
-
-
-
-
-
+"use client";
+import { AlignJustify, LayoutDashboard, Calendar } from "lucide-react";
+import { NoItemData, Pagination } from "@/components/reusable";
+import { useGetAllDoctorQuery } from "@/redux/api/doctorApi";
+import FilterSec from "@/components/common/filter-sec";
+import { IconStarFilled } from "@tabler/icons-react";
+import React, { useEffect, useState } from "react";
+import { useDebonunced } from "@/redux/hooks";
+import { useRouter } from "next/navigation";
+import { formatDate } from "@/lib/utils";
+import { Input } from "@/components/ui";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Doctors() {
-  const [isSearch,setIsSearch]=useState('')
-  const [currentPage, setCurrentPage] = useState(2)
-  const totalPages = 20;
-   const per_page=5
+  const router = useRouter();
+  const [isFilter, setIsFilter] = useState<any>({});
+  const [isSearch, setIsSearch] = useState<string>("");
+  const [isPage, setIsPage] = useState<number>(1);
+  const query: Record<string, any> = { page: isPage, limit: 6 };
+  const debouncedTerm = useDebonunced({ searchQuery: isSearch, delay: 600 });
+  if (!!debouncedTerm) query["search"] = isSearch;
+  if (isFilter?.title && isFilter?.value) {
+    query[isFilter.title.toLowerCase()] = isFilter.value;
+  }
+  const { data, isLoading } = useGetAllDoctorQuery({ ...query });
 
-  const doctorItem = [
-    { id: 1 },
-    { id: 2 },
-    { id: 3 },
-    { id: 4},
-    { id: 5 },
-    { id: 6 },
-
-  ];
+  useEffect(() => {
+    if (isFilter?.title) {
+      router.refresh();
+    }
+  }, [isFilter?.title, router]);
 
   return (
     <div>
-      <div className='text-center py-14'>
-      <h1 className='text-xl lg:text-3xl font-bold'>Search Doctors</h1>
-      <h2 className='text-sm'><Link href={"/"}>Home</Link> / Search Doctors</h2>
+      <div className="text-center py-14">
+        <h1 className="text-xl lg:text-3xl font-bold">Search Doctors</h1>
+        <h2 className="text-sm">
+          <Link href={"/"}>Home</Link> / Search Doctors
+        </h2>
       </div>
-      <div className='container grid grid-cols-1 lg:grid-cols-8 gap-5 pb-12'>
-          <div className='border p-3 rounded-md lg:col-span-2'>
-             <h1 className='text-lg font-medium py-1'>Filter</h1>
-             <FilterSec setIsSearch={setIsSearch} isSearch={isSearch}/>
+      <div className="container grid grid-cols-1 lg:grid-cols-8 gap-5 pb-12">
+        <div className="border p-3 rounded-md lg:col-span-2">
+          <h1 className="text-lg font-medium py-1">Filter</h1>
+          <FilterSec setIsFilter={setIsFilter} />
+        </div>
+        <div className="lg:col-span-6 rounded-md">
+          <div className="flex justify-between">
+            <Input
+              onChange={(e) => setIsSearch(e.target.value)}
+              className="w-fit"
+              placeholder="Doctors Search hare"
+            ></Input>
+            <ul className="flex items-center gap-2">
+              <li className="flex items-center gap-[2px] text-muted-foreground">
+                <h1 className="border w-fit p-[2px] rounded-sm">
+                  <Calendar size={19} />
+                </h1>
+                {formatDate(new Date())}
+              </li>
+              <li className="text-muted-foreground border w-fit p-[2px] rounded-sm">
+                <AlignJustify size={20} />
+              </li>
+              <li className="bg-[#0087BE] text-white  text-muted-foreground border w-fit p-[2px] rounded-sm">
+                <LayoutDashboard size={20} />
+              </li>
+            </ul>
           </div>
-          <div className='lg:col-span-6 rounded-md'>
-             <div className='flex justify-between'>
-                 <Input className='w-fit' placeholder='Doctors Search hare'></Input>
-                 <ul className='flex items-center gap-2'>
-                      <li className='flex items-center gap-[2px] text-muted-foreground'><h1 className='border w-fit p-[2px] rounded-sm'><Calendar size={19} /></h1>{formatDate(new Date())}</li>
-                     <li className='text-muted-foreground border w-fit p-[2px] rounded-sm'><AlignJustify size={20}/></li>
-                     <li className='bg-[#0087BE] text-white  text-muted-foreground border w-fit p-[2px] rounded-sm'><LayoutDashboard size={20} /></li>
-                 </ul>
-             </div>
-             <div className='mt-5'>
-             <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
-                {doctorItem.map((item) => (
+          <div className="mt-5">
+            <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
+              {isLoading ? (
+                <div className="col-span-3">
+                  <h1>Loading...</h1>
+                </div>
+              ) : data?.doctors?.length > 0 ? (
+                data?.doctors?.map((item: any) => (
                   <div key={item.id} className="border rounded-md p-2">
                     <div className="relative">
-                    <Image src="https://doccure.dreamstechnologies.com/html/template/assets/img/doctors/doctor-02.jpg"
-                    alt="77"
-                    className='m-auto relative'
-                    width={200}
-                    height={100}
-                    style={{
-                      width:'100%',
-                      display: 'block',
-                      margin: 'auto',
-                      maxWidth: '100%',
-                      height: '180px',
-                    }}
-            
-            ></Image>
+                      <Image
+                        src="https://doccure.dreamstechnologies.com/html/template/assets/img/doctors/doctor-02.jpg"
+                        alt="77"
+                        className="m-auto relative"
+                        width={200}
+                        height={100}
+                        style={{
+                          width: "100%",
+                          display: "block",
+                          margin: "auto",
+                          maxWidth: "100%",
+                          height: "180px",
+                        }}
+                      ></Image>
+                    </div>
+                    <div className="py-2 flex justify-between">
+                      <ul>
+                        <li className="text-lg font-medium">{item.name}</li>
+                        <li className="text-gray-600 text-sm">
+                          Maxillofacial Surgery
+                        </li>
+                      </ul>
+                      <div className="bg-[#1C5B91] flex items-center gap-[2px] w-fit h-fit text-white px-2 rounded-md text-sm">
+                        <IconStarFilled size={16} />
+                        4.8
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="col-span-3">
+                  <NoItemData title="No Doctor Found" />
+                </div>
+              )}
             </div>
-            <div className="py-2 flex justify-between">
-              <ul>
-                <li className="text-lg font-medium">Dr. Ruby Perrin</li>
-                <li className="text-gray-600 text-sm">Maxillofacial Surgery</li>
-              </ul>
-              <div className="bg-[#1C5B91] flex items-center gap-[2px] w-fit h-fit text-white px-2 rounded-md text-sm"><IconStarFilled size={16} />4.8</div>
+            {/* pagination format */}
+            <div className="flex justify-end mt-4">
+              {data?.meta?.total > data?.meta?.limit && (
+                <Pagination
+                  page={isPage}
+                  totalPage={data?.meta?.total}
+                  onPageChange={setIsPage}
+                  per_page={data?.meta?.limit}
+                />
+              )}
             </div>
           </div>
-        ))}
-      </div>
-      {/* pagination format */}
-               <div className='flex justify-end mt-4'>
-               <Pagination
-                page={currentPage}
-                totalPage={totalPages}
-                onPageChange={setCurrentPage}
-                per_page={per_page}
-              />
-               </div>
-             </div>
-          </div>
+        </div>
       </div>
     </div>
-  )
+  );
 }

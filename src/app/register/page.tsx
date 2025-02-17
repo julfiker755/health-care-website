@@ -1,14 +1,20 @@
 "use client";
-import { FromInput } from "@/components/reusable";
-import Form from "@/components/shared/from";
-import {registerSchema } from "@/types/schema";
+import { useCreatePatientMutation } from "@/redux/api/patientApi";
+import { SingleSelect } from "@/components/reusable/select";
+import { ResponseApiErrors, ShowToast } from "@/helpers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm } from "react-hook-form";
+import { FromInput } from "@/components/reusable";
+import { registerSchema } from "@/types/schema";
+import Form from "@/components/shared/from";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui";
-import { SingleSelect } from "@/components/reusable/select";
+import { delay } from "@/lib/utils";
 import Link from "next/link";
 
 export default function Register() {
+  const router = useRouter();
+  const [createPatient, { isLoading }] = useCreatePatientMutation();
   const from = useForm({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -21,8 +27,25 @@ export default function Register() {
     },
   });
 
-  const handleSubmit = (values: FieldValues) => {
-    console.log(values);
+  const handleSubmit = async (values: FieldValues) => {
+    const { password, confirm_password, ...valuesInfo } = values;
+    const data = {
+      password: password,
+      patient: { ...valuesInfo },
+    };
+
+    const res = await createPatient(data).unwrap();
+    if (res?.id) {
+      ShowToast({
+        type: "success",
+        title: "Register Successful",
+        description: "You have Register successfully",
+      });
+      await delay(4000);
+      router.push("/auth");
+      from.reset();
+    }
+    ResponseApiErrors(res, from);
   };
 
   return (
@@ -62,20 +85,26 @@ export default function Register() {
             placeholder="Enter your password"
           ></FromInput>
           <FromInput
+            type="tel"
             label="Contact Number"
             name="contactNumber"
             placeholder="Enter your contact"
           ></FromInput>
           <SingleSelect
             items={[
-                { label: "Male", value: "MALE" },
-                { label: "Female", value: "FEMALE" },
-              ]}
+              { label: "Male", value: "MALE" },
+              { label: "Female", value: "FEMALE" },
+            ]}
             label="Gender"
             name="gender"
             placeholder="Select gender"
           ></SingleSelect>
-          <Button className="w-full col-span-1 lg:col-span-2">Submit</Button>
+          <Button
+            disabled={isLoading}
+            className="w-full col-span-1 lg:col-span-2"
+          >
+            Submit
+          </Button>
         </Form>
         <p className="text-sm text-center">
           Already have an account?{" "}

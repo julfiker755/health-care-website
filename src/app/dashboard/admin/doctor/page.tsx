@@ -1,4 +1,10 @@
 "use client";
+import { Button, Input, TableCell, TableRow } from "@/components/ui";
+import useConfirmation from "@/components/context/delete-modal";
+import {
+  useDeleteDoctorMutation,
+  useGetAllDoctorQuery,
+} from "@/redux/api/doctorApi";
 import {
   DroupdownActions,
   Pagination,
@@ -6,15 +12,12 @@ import {
   TableNoItem,
   TableSkeleton,
 } from "@/components/reusable";
-import { Badge, Button, Input, TableCell, TableRow } from "@/components/ui";
 import { formatDate } from "@/lib/utils";
 import { useDebonunced } from "@/redux/hooks";
 import { useState } from "react";
 import { ShowToast } from "@/helpers";
-import  useConfirmation  from "@/components/context/delete-modal";
-import { useDeleteDoctorMutation, useGetAllDoctorQuery } from "@/redux/api/doctorApi";
 import Link from "next/link";
-import { RoleName } from "@/components/common/access-auth";
+
 
 export default function Doctors() {
   const { confirm } = useConfirmation();
@@ -24,16 +27,9 @@ export default function Doctors() {
   const debouncedTerm = useDebonunced({ searchQuery: search, delay: 600 });
   if (!!debouncedTerm) query["email"] = search;
   const { data, isLoading } = useGetAllDoctorQuery({ ...query });
-  const [deleteDoctor]=useDeleteDoctorMutation()
+  const [deleteDoctor] = useDeleteDoctorMutation();
 
-  const headers = [
-    "Name",
-    "Email",
-    "Contact",
-    "Gender",
-    "createdAt",
-    "Action",
-  ];
+  const headers = ["Name", "Email", "Contact", "Gender", "createdAt", "Action"];
 
   const handleDelete = async (id: string) => {
     const confirmed = await confirm();
@@ -89,7 +85,7 @@ export default function Doctors() {
                 <TableCell>{item.email}</TableCell>
                 <TableCell>{item.contactNumber}</TableCell>
                 <TableCell>
-                   {item.gender == "MALE" ? "Male" :"Female" }
+                  {item.gender == "MALE" ? "Male" : "Female"}
                 </TableCell>
                 <TableCell>{formatDate(item.createdAt)}</TableCell>
                 <TableCell>

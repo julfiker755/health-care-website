@@ -8,6 +8,6 @@ interface ParamsProps {
 
 export default function SingleUser({params:{id}}:ParamsProps) {
   return (
-    <div>{id}</div>
+    <div className='text-gray-500'>Patient Single Data comming..</div>
   )
 }

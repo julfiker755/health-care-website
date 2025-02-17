@@ -52,14 +52,14 @@ const menuItem: MenuItemProps = {
       path: "/dashboard/admin",
     },
     {
-      name: "Doctors",
+      name: "Doctor",
       icon: UserRound,
       path: "/dashboard/admin/doctor",
     },
     {
-      name: "User",
-      icon: UsersRound,
-      path: "/dashboard/admin/user",
+      name: "Patient",
+      icon: UserRound,
+      path: "/dashboard/admin/patient",
     },
     {
       name: "Specialities",
@@ -98,7 +98,7 @@ const menuItem: MenuItemProps = {
     {
       name: "Dashboard",
       icon: LayoutDashboard,
-      path: "/dashboard/patinet",
+      path: "/dashboard/patient",
     },
   ],
 };

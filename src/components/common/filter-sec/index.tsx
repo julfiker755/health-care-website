@@ -1,20 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import FilterMenu from "@/components/reusable/filter-menu";
 import { Checkbox } from "@/components/ui";
 
-interface filterItemProps {
+interface FilterItemProps {
   title: string;
   items: { label: string; value: string }[];
 }
 
-interface filterSecProps {
-  isSearch: string;
-  setIsSearch: (value: string) => void;
+interface FilterSecProps {
+  setIsFilter: (filter: { title?: string; value?: string }) => void;
 }
 
+export default function FilterSec({ setIsFilter }: FilterSecProps) {
+  const [selectedFilters, setSelectedFilters] = useState<{
+    [key: string]: string;
+  }>({});
 
-export default function FilterSec({ setIsSearch,isSearch}:filterSecProps) {
-  const filterItem: filterItemProps[] = [
+  const filterItem: FilterItemProps[] = [
     {
       title: "Gender",
       items: [
@@ -35,9 +37,9 @@ export default function FilterSec({ setIsSearch,isSearch}:filterSecProps) {
     {
       title: "Experience",
       items: [
-        { label: "1-5 Years", value: "5" },
-        { label: "5+ Years", value: "6" },
-        { label: "6+ Years", value: "7" },
+        { label: "1-2 Years", value: "2" },
+        { label: "3-5 Years", value: "5" },
+        { label: "6+ Years", value: "6" },
       ],
     },
     {
@@ -50,15 +52,51 @@ export default function FilterSec({ setIsSearch,isSearch}:filterSecProps) {
       ],
     },
   ];
+
+  const handleCheckboxChange = (
+    filter: string,
+    value: string,
+    isChecked: Boolean
+  ) => {
+    setSelectedFilters((prev) => {
+      const newFilters = { ...prev };
+
+      if (newFilters[filter] === value) {
+        delete newFilters[filter];
+      } else {
+        newFilters[filter] = value;
+      }
+
+      return newFilters;
+    });
+    if (isChecked) {
+      setIsFilter({ title: filter, value });
+    } else {
+      setIsFilter({});
+    }
+  };
+
   return (
     <>
       {filterItem.map((item, index) => (
         <FilterMenu key={index} title={item.title}>
           <ul className="space-y-1">
-            {item.items.map((item, index) => (
-              <li key={index} className="text-sm text-muted-foreground flex items-center gap-2">
-                <Checkbox onClick={()=>setIsSearch(item.value)} />
-                {item.label}
+            {item.items.map((filterItem, idx) => (
+              <li
+                key={idx}
+                className="text-sm text-muted-foreground flex items-center gap-2"
+              >
+                <Checkbox
+                  checked={selectedFilters[item.title] === filterItem.value}
+                  onCheckedChange={(isChecked: boolean) => {
+                    handleCheckboxChange(
+                      item.title,
+                      filterItem.value,
+                      isChecked
+                    );
+                  }}
+                />
+                {filterItem.label}
               </li>
             ))}
           </ul>

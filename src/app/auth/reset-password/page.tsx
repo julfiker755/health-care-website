@@ -5,20 +5,64 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm } from "react-hook-form";
 import { resetSchema } from "@/types/schema";
 import { Button } from "@/components/ui";
-
-
+import { useRouter, useSearchParams } from "next/navigation";
+import { decodedToken } from "@/services/auth.services";
+import { useEffect } from "react";
+import { authKey } from "@/contants";
+import { delay, localStroageRemove, setLocalStroage } from "@/lib/utils";
+import { useResetPasswordMutation } from "@/redux/api/authApi";
+import { ShowToast } from "@/helpers";
 
 export default function ResetPassword() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
+  const tokenInfo = decodedToken(token as string) as any;
+  const [resetPassword, { isLoading }] = useResetPasswordMutation();
   const from = useForm({
     resolver: zodResolver(resetSchema),
     defaultValues: {
-      new_password:"",
-      confirm_password:""
+      new_password: "",
+      confirm_password: "",
     },
   });
 
-  const handleSubmit = (values: FieldValues) => {
-    console.log(values);
+  useEffect(() => {
+    if (token) {
+      setLocalStroage(authKey, token);
+    }
+  }, [token]);
+
+  const handleSubmit = async (values: FieldValues) => {
+    const currentTime = Math.floor(Date.now() / 1000);
+    if (currentTime > tokenInfo?.exp) {
+      ShowToast({
+        type: "error",
+        title: "Expired",
+        description: "Your Link is expire",
+      });
+      localStroageRemove(authKey);
+      await delay(4000);
+      router.push("/auth/forgot-password")
+      return ;
+    }
+
+    const data = {
+      id: tokenInfo?.id,
+      password: values.new_password,
+    };
+    const res = await resetPassword(data).unwrap();
+    if (res?.email) {
+      localStroageRemove(authKey);
+      await delay(4000);
+      from.reset();
+      router.push("/auth");
+      ShowToast({
+        type: "success",
+        title: "Change Successful",
+        description: "You have Password Change successfully",
+      });
+    }
   };
 
   return (
@@ -42,7 +86,9 @@ export default function ResetPassword() {
             name="confirm_password"
             placeholder="Enter your password"
           />
-          <Button className="w-full">Submit</Button>
+          <Button disabled={isLoading} className="w-full">
+            Submit
+          </Button>
         </Form>
       </div>
     </div>

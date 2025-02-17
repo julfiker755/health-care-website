@@ -50,16 +50,18 @@ export const getLocalStroage = (key: string) => {
 };
 
 // delay Time
-export const delay = (ms: number) => (
-  new Promise(resolve => setTimeout(resolve, ms))
-);
+export const delay = (ms: number = 4000) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
 
 // placeholder Image
-export const PlaceholderImg=(width:number=600,height:number=400):string=>{
-  return `https://placehold.co/${width}x${height}.png`
-}
+export const PlaceholderImg = (
+  width: number = 600,
+  height: number = 400
+): string => {
+  return `https://placehold.co/${width}x${height}.png`;
+};
 
-// PathRoute 
+// PathRoute
 export const PathRoute = (route: string) => {
   let path = "";
   switch (route) {
