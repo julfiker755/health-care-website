@@ -74,7 +74,8 @@ export default function Doctors() {
                 </div>
               ) : data?.doctors?.length > 0 ? (
                 data?.doctors?.map((item: any) => (
-                  <div key={item.id} className="border rounded-md p-2">
+                 <Link href={`/doctors/${item.id}`} key={item.id}>
+                     <div  className="border rounded-md p-2">
                     <div className="relative">
                       <Image
                         src="https://doccure.dreamstechnologies.com/html/template/assets/img/doctors/doctor-02.jpg"
@@ -104,6 +105,7 @@ export default function Doctors() {
                       </div>
                     </div>
                   </div>
+                 </Link>
                 ))
               ) : (
                 <div className="col-span-3">

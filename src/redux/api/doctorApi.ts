@@ -70,6 +70,21 @@ const doctorsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.doctorSpecialty, tagTypes.specialities],
     }),
+    getDoctorSchedule: build.query({
+      query: () => ({
+        url: "/doctor/my-schedule/collect",
+        method: "GET",
+      }),
+      providesTags: [tagTypes.doctorSchedule],
+    }),
+    createDoctorSchedule: build.mutation({
+      query: (data) => ({
+        url: "/doctor/schedule-store",
+        method: "POST",
+        data,
+      }),
+      invalidatesTags: [tagTypes.schedule],
+    }),
   }),
 });
 
@@ -82,4 +97,6 @@ export const {
   useCreateDoctorSpecialtyMutation,
   useGetDoctorSpecialtyQuery,
   useDeleteDoctorSpecialtyMutation,
+  useCreateDoctorScheduleMutation,
+  useGetDoctorScheduleQuery
 } = doctorsApi;

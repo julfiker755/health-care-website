@@ -11,8 +11,8 @@ export const RandomString = () => {
 };
 
 // dateTime
-export const formatDate = (date: any) => {
-  return dayjs(date).format("DD MMM YYYY");
+export const formatDate = (date: any,type:string="DD MMM YYYY") => {
+  return dayjs(date).format(type);
 };
 export const formatTime = (date: any) => {
   return dayjs(date).format("h:s A");
@@ -22,7 +22,7 @@ export const formatDateTime = (date: any) => {
   return dayjs(date).format("h:s A - DD MMM YYYY");
 };
 
-// fromData
+// fromData payload
 export const modifyPayload = (values: any) => {
   const obj = { ...values };
   const file = obj["file"];
@@ -82,3 +82,5 @@ export const PathRoute = (route: string) => {
   }
   return path;
 };
+
+
