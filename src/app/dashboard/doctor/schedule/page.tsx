@@ -1,5 +1,5 @@
 "use client";
-import { Badge, Button, Input, TableCell, TableRow } from "@/components/ui";
+import { Badge, Button,TableCell, TableRow } from "@/components/ui";
 import useConfirmation from "@/components/context/delete-modal";
 import {
   DroupdownActions,
@@ -8,32 +8,25 @@ import {
   TableNoItem,
   TableSkeleton,
 } from "@/components/reusable";
-import { useDebonunced } from "@/redux/hooks";
 import { useState } from "react";
 import { ShowToast } from "@/helpers";
 import Link from "next/link";
-import {
-  useDeleteScheduleMutation,
-  useGetAllScheduleQuery,
-} from "@/redux/api/scheduleApi";
+import { useDeleteDoctorScheduleMutation, useGetDoctorScheduleQuery } from "@/redux/api/doctorApi";
 
 
 export default function Doctors() {
   const { confirm } = useConfirmation();
-  const [search, setSearch] = useState<string>("");
   const [isPage, setIsPage] = useState<number>(1);
   const query: Record<string, any> = { page: isPage };
-  const debouncedTerm = useDebonunced({ searchQuery: search, delay: 600 });
-  if (!!debouncedTerm) query["search"] = search;
-  const { data, isLoading } = useGetAllScheduleQuery({ ...query });
-  const [deleteSchedule] = useDeleteScheduleMutation();
+  const { data, isLoading } =  useGetDoctorScheduleQuery({...query})
+  const [deleteDoctorSchedule] = useDeleteDoctorScheduleMutation();
 
-  const headers = ["Day", "Date", "Start Time", "End Time", "Status", "Action"];
+  const headers = ["Day", "Date", "Start Time", "End Time", "Booked", "Action"];
 
   const handleDelete = async (id: string) => {
     const confirmed = await confirm();
     if (confirmed) {
-      const res = await deleteSchedule(id).unwrap();
+      const res = await deleteDoctorSchedule(id).unwrap();
       if (res?.id) {
         ShowToast({
           type: "success",
@@ -46,13 +39,7 @@ export default function Doctors() {
 
   return (
     <div>
-      <ul className="flex justify-between items-center">
-        <li>
-          <Input
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Date hare..."
-          ></Input>
-        </li>
+      <ul className="flex justify-end items-center">
         <li>
           <Button>
             <Link href="/dashboard/doctor/schedule/store">Add Schedule</Link>
@@ -64,6 +51,16 @@ export default function Doctors() {
           title="All Schedule"
           description="Manage your Schedule and view their details"
           headers={headers}
+          pagination={
+            data?.meta?.total > data?.meta?.limit && (
+              <Pagination
+                page={isPage}
+                totalPage={data?.meta?.total}
+                onPageChange={setIsPage}
+                per_page={data?.meta?.limit}
+              />
+            )
+          }
         >
           {isLoading ? (
             <TableSkeleton colSpan={headers?.length} />
@@ -75,8 +72,8 @@ export default function Doctors() {
                 <TableCell>{item.startTime}</TableCell>
                 <TableCell>{item.endTime}</TableCell>
                 <TableCell>
-                  <Badge variant={item.status == "BOOKED" ? "yes" : "no"}>
-                    {item.status == "BOOKED" ? "Booked" : "UnBooked"}
+                  <Badge variant={item.isBooked == false ? "no" : "yes"}>
+                    {item.isBooked == false ? "No" : "Yes"}
                   </Badge>
                 </TableCell>
                 <TableCell>

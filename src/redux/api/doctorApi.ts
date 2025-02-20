@@ -71,10 +71,17 @@ const doctorsApi = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes.doctorSpecialty, tagTypes.specialities],
     }),
     getDoctorSchedule: build.query({
-      query: () => ({
+      query: (arg: Record<string, any>) => ({
         url: "/doctor/my-schedule/collect",
         method: "GET",
+        params: arg,
       }),
+      transformResponse: (response: any, meta: any) => {
+        return {
+          schedules: response,
+          meta,
+        };
+      },
       providesTags: [tagTypes.doctorSchedule],
     }),
     createDoctorSchedule: build.mutation({
@@ -83,7 +90,14 @@ const doctorsApi = baseApi.injectEndpoints({
         method: "POST",
         data,
       }),
-      invalidatesTags: [tagTypes.schedule],
+      invalidatesTags: [tagTypes.schedule, tagTypes.doctorSchedule],
+    }),
+    deleteDoctorSchedule: build.mutation({
+      query: (id) => ({
+        url: `/doctor/schedule/remove/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [tagTypes.doctorSchedule],
     }),
   }),
 });
@@ -98,5 +112,6 @@ export const {
   useGetDoctorSpecialtyQuery,
   useDeleteDoctorSpecialtyMutation,
   useCreateDoctorScheduleMutation,
-  useGetDoctorScheduleQuery
+  useGetDoctorScheduleQuery,
+  useDeleteDoctorScheduleMutation
 } = doctorsApi;
