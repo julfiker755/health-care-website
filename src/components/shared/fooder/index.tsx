@@ -1,5 +1,3 @@
-import assets from '@/assets'
-import Image from 'next/image'
 import React from 'react'
 import { MapPin, Phone, Mail } from 'lucide-react';
 import Link from 'next/link';
@@ -9,12 +7,7 @@ export default function Fooder() {
     <div className='container'>
        <div className='grid grid-cols-1 lg:grid-cols-9 gap-10'>
          <div className='col-span-3'>
-         <Image
-          src={assets.images.logo}
-          width={150}
-          height={100}
-          alt="logo"
-        />
+         <h1 className="text-2xl font-extrabold text-[#0e82fd] mb-1">Health Care</h1>
         <p className="text-[15px]">Easily book your medical appointments with Doccure. Connect with healthcare professionals, manage your schedule, and focus on your well-being</p>
          </div>
          <div className='col-span-2'>

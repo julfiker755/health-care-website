@@ -31,8 +31,8 @@ export default function Navber() {
   return (
     <nav className="container">
       <div className="flex justify-between items-center py-2">
-        <div className="w-[140px] h-[35px] flex items-center">
-          <Image src={assets.images.logo} width={140} height={100} alt="logo" />
+        <div className="flex items-center">
+            <h1 className="text-2xl font-extrabold text-[#0e82fd]">Health Care</h1>
         </div>
         <ul className="hidden lg:flex space-x-5">
           {items?.map((item: any) => (

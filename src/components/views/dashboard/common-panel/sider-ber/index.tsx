@@ -45,13 +45,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: sidebarProps) => {
         <div className="flex items-center justify-between px-6 py-2">
           <div className="w-[140px] h-[30px] flex items-center">
             <Link href="/">
-              <Image
-                src={assets.images.logo2}
-                className=""
-                width={140}
-                height={100}
-                alt="logo"
-              />
+            <h1 className="text-2xl font-extrabold text-[white]">Health Care</h1>
             </Link>
           </div>
           <button
