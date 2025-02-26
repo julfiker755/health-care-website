@@ -1,13 +1,14 @@
+"use client"
 import React from 'react';
 import { AlignJustify } from 'lucide-react';
 import { sidebarProps } from '../sider-ber';
 import Search from '../search';
-import dynamic from 'next/dynamic';
+import AccessAuth from '@/components/common/access-auth';
+
 
 
 
 const Header = ({sidebarOpen,setSidebarOpen}:sidebarProps) => {
-  const  AuthDiv = dynamic(() => import('@/components/common/access-auth'), { ssr: false })
     return (
         <div className='sticky top-0 z-[9] flex w-full bg-[#038bd9]/95
          py-2 shadow-1'>
@@ -30,7 +31,7 @@ const Header = ({sidebarOpen,setSidebarOpen}:sidebarProps) => {
           {/* right side */}
          <div>
          {/* <AuthDiv className='text-white'/> */}
-         <AuthDiv className='text-white'/>
+         <AccessAuth/>
          </div>
       </div>
     </header>
