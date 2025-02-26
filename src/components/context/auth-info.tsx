@@ -1,10 +1,5 @@
 import { decodedToken } from "@/services/auth.services";
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { AuthProps } from "@/types";
 import Cookies from "js-cookie";
 
@@ -35,8 +30,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return unsubscribe;
   }, []);
 
+  // Memoize the context value to prevent unnecessary re-renders
+  const contextValue = useMemo(() => ({ authInfo, setAuthInfo }), [authInfo, setAuthInfo]);
+
   return (
-    <AuthContext.Provider value={{ authInfo, setAuthInfo }}>
+    <AuthContext.Provider value={contextValue}>
       {children}
     </AuthContext.Provider>
   );
