@@ -24,7 +24,16 @@ const patientApi = baseApi.injectEndpoints({
         data,
       }),
     }),
+    updatePatient: build.mutation({
+      query: (data) => ({
+        url: "/patient/update",
+        method: "PUT",
+        ContentType: "multipart/form-data",
+        data,
+      }),
+      invalidatesTags: [tagTypes.user],
+    }),
   }),
 });
 
-export const { useCreatePatientMutation, useGetAllPatientQuery } = patientApi;
+export const { useCreatePatientMutation, useGetAllPatientQuery,useUpdatePatientMutation } = patientApi;

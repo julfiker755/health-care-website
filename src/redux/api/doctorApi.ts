@@ -22,7 +22,7 @@ const doctorsApi = baseApi.injectEndpoints({
         url: `/doctor/${id}`,
         method: "GET",
       }),
-      providesTags: [tagTypes.doctor],
+      providesTags: [tagTypes.singleDoctor],
     }),
     createDoctor: build.mutation({
       query: (data) => ({

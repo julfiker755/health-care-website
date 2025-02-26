@@ -7,7 +7,7 @@ import { IconStarFilled } from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
 import { useDebonunced } from "@/redux/hooks";
 import { useRouter } from "next/navigation";
-import { formatDate } from "@/lib/utils";
+import { formatDate, PlaceholderImg } from "@/lib/utils";
 import { Input } from "@/components/ui";
 import Image from "next/image";
 import Link from "next/link";
@@ -78,9 +78,13 @@ export default function Doctors() {
                      <div  className="border rounded-md p-2">
                     <div className="relative">
                       <Image
-                        src="https://doccure.dreamstechnologies.com/html/template/assets/img/doctors/doctor-02.jpg"
+                        src={
+                          item.profilePhoto !== null
+                            ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${item.profilePhoto}`
+                            : PlaceholderImg()
+                        }
                         alt="77"
-                        className="m-auto relative"
+                        className="m-auto relative rounded-sm"
                         width={200}
                         height={100}
                         style={{
@@ -96,12 +100,12 @@ export default function Doctors() {
                       <ul>
                         <li className="text-lg font-medium">{item.name}</li>
                         <li className="text-gray-600 text-sm">
-                          Maxillofacial Surgery
+                           {item.qualification}
                         </li>
                       </ul>
                       <div className="bg-[#1C5B91] flex items-center gap-[2px] w-fit h-fit text-white px-2 rounded-md text-sm">
                         <IconStarFilled size={16} />
-                        4.8
+                        {item.averageRating}
                       </div>
                     </div>
                   </div>

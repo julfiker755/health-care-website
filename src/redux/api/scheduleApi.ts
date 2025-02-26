@@ -17,6 +17,13 @@ const scheduleApi = baseApi.injectEndpoints({
       },
       providesTags: [tagTypes.schedule],
     }),
+    getAllDoctorSchedule: build.query({
+      query: () => ({
+        url: "/schedule/doctor-schedule-all",
+        method: "GET"
+      }),
+      providesTags: [tagTypes.commonSchedule],
+    }),
     createSchedule: build.mutation({
       query: (data) => ({
         url: "/schedule/store",
@@ -37,6 +44,7 @@ const scheduleApi = baseApi.injectEndpoints({
 
 export const {
  useGetAllScheduleQuery,
+ useGetAllDoctorScheduleQuery,
  useCreateScheduleMutation,
  useDeleteScheduleMutation
 } = scheduleApi
