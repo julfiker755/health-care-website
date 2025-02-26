@@ -3,9 +3,7 @@ import useAuth from "@/components/context/auth-info";
 import { Button } from "@/components/ui/button";
 import { AlignJustify, X } from "lucide-react";
 import React, { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
-import assets from "@/assets";
 import dynamic from "next/dynamic";
 
 interface Navprops {
@@ -24,7 +22,6 @@ export default function Navber() {
   const items: Navprops[] = [
     { id: crypto.randomUUID(), name: "Home", path: "/" },
     { id: crypto.randomUUID(), name: "Doctors", path: "/doctors" },
-    { id: crypto.randomUUID(), name: "Patients", path: "/" },
     { id: crypto.randomUUID(), name: "Blog", path: "/" },
   ];
 
@@ -32,7 +29,9 @@ export default function Navber() {
     <nav className="container">
       <div className="flex justify-between items-center py-2">
         <div className="flex items-center">
-            <h1 className="text-2xl font-extrabold text-[#0e82fd]">Health Care</h1>
+           <Link href={"/"}>
+           <h1 className="text-2xl font-extrabold text-[#0e82fd]">Health Care</h1>
+           </Link>
         </div>
         <ul className="hidden lg:flex space-x-5">
           {items?.map((item: any) => (

@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 import { useDebonunced } from "@/redux/hooks";
 import { useRouter } from "next/navigation";
 import { formatDate, PlaceholderImg } from "@/lib/utils";
-import { Input } from "@/components/ui";
+import { Input, Skeleton } from "@/components/ui";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -69,47 +69,56 @@ export default function Doctors() {
           <div className="mt-5">
             <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
               {isLoading ? (
-                <div className="col-span-3">
-                  <h1>Loading...</h1>
-                </div>
-              ) : data?.doctors?.length > 0 ? (
-                data?.doctors?.map((item: any) => (
-                 <Link href={`/doctors/${item.id}`} key={item.id}>
-                     <div  className="border rounded-md p-2">
+                [...Array(6)].map((_, index) => (
+                  <div key={index} className="border border-gray-100 rounded-md p-2">
                     <div className="relative">
-                      <Image
-                        src={
-                          item.profilePhoto !== null
-                            ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${item.profilePhoto}`
-                            : PlaceholderImg()
-                        }
-                        alt="77"
-                        className="m-auto relative rounded-sm"
-                        width={200}
-                        height={100}
-                        style={{
-                          width: "100%",
-                          display: "block",
-                          margin: "auto",
-                          maxWidth: "100%",
-                          height: "180px",
-                        }}
-                      ></Image>
+                      <Skeleton className="w-full h-[180px]" />
                     </div>
                     <div className="py-2 flex justify-between">
-                      <ul>
-                        <li className="text-lg font-medium">{item.name}</li>
-                        <li className="text-gray-600 text-sm">
-                           {item.qualification}
-                        </li>
-                      </ul>
-                      <div className="bg-[#1C5B91] flex items-center gap-[2px] w-fit h-fit text-white px-2 rounded-md text-sm">
-                        <IconStarFilled size={16} />
-                        {item.averageRating}
+                      <Skeleton className="w-[120px] h-[20]" />
+                      <Skeleton className="w-[80px] h-[20px]" />
+                    </div>
+                    <Skeleton className="w-[120px] h-[20px]" />
+                  </div>
+                ))
+              ) : data?.doctors?.length > 0 ? (
+                data?.doctors?.map((item: any) => (
+                  <Link href={`/doctors/${item.id}`} key={item.id}>
+                    <div className="border rounded-md p-2">
+                      <div className="relative">
+                        <Image
+                          src={
+                            item.profilePhoto !== null
+                              ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${item.profilePhoto}`
+                              : PlaceholderImg()
+                          }
+                          alt="77"
+                          className="m-auto relative rounded-sm"
+                          width={200}
+                          height={100}
+                          style={{
+                            width: "100%",
+                            display: "block",
+                            margin: "auto",
+                            maxWidth: "100%",
+                            height: "180px",
+                          }}
+                        ></Image>
+                      </div>
+                      <div className="py-2 flex justify-between">
+                        <ul>
+                          <li className="text-lg font-medium">{item.name}</li>
+                          <li className="text-gray-600 text-sm">
+                            {item.qualification}
+                          </li>
+                        </ul>
+                        <div className="bg-[#1C5B91] flex items-center gap-[2px] w-fit h-fit text-white px-2 rounded-md text-sm">
+                          <IconStarFilled size={16} />
+                          {item.averageRating}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                 </Link>
+                  </Link>
                 ))
               ) : (
                 <div className="col-span-3">

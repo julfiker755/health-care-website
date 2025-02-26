@@ -87,8 +87,8 @@ const menuItem: MenuItemProps = {
     },
     {
       name: "Appointment",
-      icon: UserRound,
-      path: "/dashboard/doctor/patient",
+      icon: Dock,
+      path: "/dashboard/doctor/appointment",
     },
     {
       name: "Schedule",
