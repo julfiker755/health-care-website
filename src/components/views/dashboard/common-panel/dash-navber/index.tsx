@@ -31,7 +31,7 @@ const Header = ({sidebarOpen,setSidebarOpen}:sidebarProps) => {
           {/* right side */}
          <div>
          {/* <AuthDiv className='text-white'/> */}
-         <AccessAuth/>
+         <AccessAuth className='text-white'/>
          </div>
       </div>
     </header>
