@@ -5,11 +5,12 @@ import { NoItemData, Title } from "@/components/reusable";
 import useConfirmation from "@/components/context/delete-modal";
 import { useCreateAppointmentMutation } from "@/redux/api/appointmentApi";
 import { useGetAllDoctorScheduleQuery } from "@/redux/api/scheduleApi";
-import { PlaceholderImg } from "@/lib/utils";
+import { delay, PlaceholderImg } from "@/lib/utils";
 import { Button } from "@/components/ui";
 import { ShowToast } from "@/helpers";
 import Image from "next/image";
 import Link from "next/link";
+import useAuth from "@/components/context/auth-info";
 
 interface ParamsProps {
   params: {
@@ -18,6 +19,7 @@ interface ParamsProps {
 }
 
 export default function Doctor({ params: { id } }: ParamsProps) {
+  const { authInfo } = useAuth();
   const { confirm } = useConfirmation();
   const { data, isLoading } = useGetSingleDoctorQuery(id);
   const [createAppointment, { isLoading: createLoading }] =
@@ -25,6 +27,14 @@ export default function Doctor({ params: { id } }: ParamsProps) {
   const { data: doctorSchedule } = useGetAllDoctorScheduleQuery({});
 
   const hanldeAppointment = async (schedule_id: string) => {
+    if (authInfo == null) {
+      ShowToast({
+        type: "error",
+        title: "Permission Denied",
+        description: "Please log in to continue to the next step.",
+      });
+      return;
+    }
     const confirmed = await confirm({
       title: "Confirm Appointment",
       description:
