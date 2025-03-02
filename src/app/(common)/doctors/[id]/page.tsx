@@ -1,12 +1,12 @@
 "use client";
 import { useGetSingleDoctorQuery } from "@/redux/api/doctorApi";
 import { MessageCircle, Phone, Video } from "lucide-react";
-import { NoItemData, Title } from "@/components/reusable";
+import { NoItemData } from "@/components/reusable";
 import useConfirmation from "@/components/context/delete-modal";
 import { useCreateAppointmentMutation } from "@/redux/api/appointmentApi";
 import { useGetAllDoctorScheduleQuery } from "@/redux/api/scheduleApi";
 import useAuth from "@/components/context/auth-info";
-import { delay, PlaceholderImg } from "@/lib/utils";
+import { PlaceholderImg } from "@/lib/utils";
 import { Button } from "@/components/ui";
 import { ShowToast } from "@/helpers";
 import Image from "next/image";
@@ -21,9 +21,8 @@ interface ParamsProps {
 export default function Doctor({ params: { id } }: ParamsProps) {
   const { authInfo } = useAuth();
   const { confirm } = useConfirmation();
-  const { data, isLoading } = useGetSingleDoctorQuery(id);
-  const [createAppointment, { isLoading: createLoading }] =
-    useCreateAppointmentMutation();
+  const { data } = useGetSingleDoctorQuery(id);
+  const [createAppointment] = useCreateAppointmentMutation();
   const { data: doctorSchedule } = useGetAllDoctorScheduleQuery({});
 
   const hanldeAppointment = async (schedule_id: string) => {

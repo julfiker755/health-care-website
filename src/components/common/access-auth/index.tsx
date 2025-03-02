@@ -41,7 +41,7 @@ export const RoleName = (route: string) => {
 // PathRoute
 const AccessAuth = ({ className }: { className?: string }) => {
   const { setAuthInfo } = useAuth();
-  const { data: profile, isLoading } = useGetSingleProfileQuery({});
+  const { data: profile } = useGetSingleProfileQuery({});
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const router = useRouter();
   // Profile submenu data

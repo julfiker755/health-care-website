@@ -38,7 +38,7 @@ export default function Navbar() {
       const hasScrolled = window.scrollY > 0;
       navbar?.classList.toggle("shadow-md", hasScrolled);
       navbar?.classList.toggle("shadow-gray-200/60", hasScrolled);
-      controls.start({
+      controls?.start({
         top: hasScrolled ? "0px" : "-50px",
         transition: { duration: 0.8 },
       });
