@@ -1,15 +1,15 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
 import { useGetSingleProfileQuery } from "@/redux/api/commonApi";
 import { cn, localStroageRemove, PathRoute } from "@/lib/utils";
 import { deleteCookies } from "@/services/actions/deleteCookies";
-import useAuth from "@/components/context/auth-info";
 import { authKey, authToken, refreshKey } from "@/contants";
+import { AnimatePresence, motion } from "motion/react";
+import useAuth from "@/components/context/auth-info";
 import { useRouter } from "next/navigation";
 import { UserRound } from "lucide-react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-
 
 interface ProfileProps {
   id: number;
@@ -43,27 +43,7 @@ const AccessAuth = ({ className }: { className?: string }) => {
   const { setAuthInfo } = useAuth();
   const { data: profile, isLoading } = useGetSingleProfileQuery({});
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const triggerRef = useRef<HTMLButtonElement>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-
-  // Close on outside click
-  useEffect(() => {
-    const clickHandler = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        triggerRef.current &&
-        !dropdownRef.current.contains(event.target as Node) &&
-        !triggerRef.current.contains(event.target as Node)
-      ) {
-        setDropdownOpen(false);
-      }
-    };
-
-    document.addEventListener("click", clickHandler);
-    return () => document.removeEventListener("click", clickHandler);
-  }, []);
-
   // Profile submenu data
   const profileSubData: ProfileProps[] = [
     {
@@ -85,13 +65,11 @@ const AccessAuth = ({ className }: { className?: string }) => {
     router.refresh();
     router.push("/");
   };
+
   return (
     <div className="relative">
       {/* Dropdown Toggle */}
-      <button
-        ref={triggerRef}
-        className="flex items-center gap-2 cursor-default"
-      >
+      <button className="flex items-center gap-2 cursor-default">
         <span className="hidden text-right lg:block">
           <span
             className={cn(
@@ -119,37 +97,42 @@ const AccessAuth = ({ className }: { className?: string }) => {
               alt={profile?.profilePhoto?.toString() + "-icon"}
             />
           ) : (
-            <UserRound className={cn("text-gray-500",className)} size={30} />
+            <UserRound className={cn("text-gray-500", className)} size={30} />
           )}
         </span>
       </button>
 
       {/* Dropdown Menu */}
-      {dropdownOpen && (
-        <div
-          ref={dropdownRef}
-          className="absolute z-[99] right-0 mt-4 flex w-[200px] flex-col rounded-lg border border-gray-200 bg-white shadow-md transition-all"
-        >
-          <ul className="flex flex-col gap-5 border-b border-gray-200 px-5 py-4">
-            {profileSubData.map((item) => (
-              <li key={item.id}>
-                <Link
-                  href={item.path}
-                  className="flex items-center  text-sm font-medium text-gray-700 transition-colors hover:text-blue-500"
-                >
-                  {item.pathname}
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <button
-            onClick={() => handleLogOut()}
-            className="flex items-center gap-3.5 px-6 py-3 text-sm font-medium text-gray-700 transition-colors hover:text-red-500 w-full text-left"
+      <AnimatePresence initial={false}>
+        {dropdownOpen && (
+          <motion.div
+            className="absolute z-[99] right-0 mt-4 flex w-[200px] flex-col rounded-lg border border-gray-200 bg-white shadow-md transition-all"
+            initial={{ opacity: 0, scale: 0, transformOrigin: "top right" }}
+            animate={{ opacity: 1, scale: 1, transformOrigin: "top right" }}
+            exit={{ opacity: 0, scale: 0, transformOrigin: "top right" }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
           >
-            Log Out
-          </button>
-        </div>
-      )}
+            <ul className="flex flex-col gap-5 border-b border-gray-200 px-5 py-4">
+              {profileSubData.map((item) => (
+                <li key={item.id}>
+                  <Link
+                    href={item.path}
+                    className="flex items-center  text-sm font-medium text-gray-700 transition-colors hover:text-blue-500"
+                  >
+                    {item.pathname}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <button
+              onClick={() => handleLogOut()}
+              className="flex items-center gap-3.5 px-6 py-3 text-sm font-medium text-gray-700 transition-colors hover:text-red-500 w-full text-left"
+            >
+              Log Out
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

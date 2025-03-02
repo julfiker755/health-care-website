@@ -5,12 +5,12 @@ import { NoItemData, Title } from "@/components/reusable";
 import useConfirmation from "@/components/context/delete-modal";
 import { useCreateAppointmentMutation } from "@/redux/api/appointmentApi";
 import { useGetAllDoctorScheduleQuery } from "@/redux/api/scheduleApi";
+import useAuth from "@/components/context/auth-info";
 import { delay, PlaceholderImg } from "@/lib/utils";
 import { Button } from "@/components/ui";
 import { ShowToast } from "@/helpers";
 import Image from "next/image";
 import Link from "next/link";
-import useAuth from "@/components/context/auth-info";
 
 interface ParamsProps {
   params: {
@@ -58,7 +58,7 @@ export default function Doctor({ params: { id } }: ParamsProps) {
     }
   };
   const currentData = data?.schedule?.filter((item: any) => {
-    const matchingSchedule = doctorSchedule.find(
+    const matchingSchedule = doctorSchedule?.find(
       (schedule: any) => schedule.scheduleId === item.id
     );
     return matchingSchedule && !matchingSchedule.isBooked;
