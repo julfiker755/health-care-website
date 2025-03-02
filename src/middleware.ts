@@ -53,7 +53,6 @@ export const config = {
     "/register",
     "/auth/reset-password",
     "/auth/forgot-password",
-    "/dashboard/:page*",
-    "/doctors/:page*",
+    "/dashboard/:page*"
   ],
 };
