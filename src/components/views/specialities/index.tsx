@@ -4,6 +4,7 @@ import { Title } from "@/components/reusable";
 import { Skeleton } from "@/components/ui";
 import Image from "next/image";
 import React from "react";
+import { Fade } from "@/components/animation";
 
 export default function Specialities() {
   const { data, isLoading } = useGetAllSpecialitiesQuery({});
@@ -26,8 +27,9 @@ export default function Specialities() {
           ))
         ) : !!data?.specialities?.length ? (
           <>
-            {data?.specialities?.slice(0,6).map((item: any, index: any) => (
-              <div
+            {data?.specialities?.slice(0, 6).map((item: any, index: any) => (
+              <Fade
+                animate="fade_left"
                 className="border rounded-md p-3 lg:flex items-center gap-1"
                 key={index}
               >
@@ -51,7 +53,7 @@ export default function Specialities() {
                     {item?.doctor?.length} Doctors
                   </h3>
                 </div>
-              </div>
+              </Fade>
             ))}
           </>
         ) : (

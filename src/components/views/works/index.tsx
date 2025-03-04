@@ -1,7 +1,9 @@
+"use client";
 import React from "react";
 import { Title } from "@/components/reusable";
 import assets from "@/assets";
 import Image from "next/image";
+import { Fade } from "@/components/animation";
 
 export default function Works() {
   const stepItems = [
@@ -30,21 +32,22 @@ export default function Works() {
   return (
     <div className="bg-[#F9FCFF] py-10 lg:py-20">
       <div className="container grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="self-center hidden lg:block">
-           <Image src={assets.images.solution.workImg}
-           className="rounded-md object-cover"
-               width={800}
-               height={100}
-               style={{
-                 width:'100%',
-                height:'335px',
-                 display: 'block',
-                 margin: 'auto',
-                 maxWidth: '100%',
-               }}
-               alt="solution"
-           />
-        </div>
+        <Fade animate="fade_left" className="self-center hidden lg:block">
+          <Image
+            src={assets.images.solution.workImg}
+            className="rounded-md object-cover"
+            width={800}
+            height={100}
+            style={{
+              width: "100%",
+              height: "335px",
+              display: "block",
+              margin: "auto",
+              maxWidth: "100%",
+            }}
+            alt="solution"
+          />
+        </Fade>
         <div className="col-span-2">
           <h1 className="text-sm text-[#0E82FD]">How it Works</h1>
           <Title
@@ -53,7 +56,7 @@ export default function Works() {
           ></Title>
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             {stepItems.map((item, index) => (
-              <div key={index} className="flex gap-2">
+              <Fade key={index} className="flex gap-2">
                 <div className="w-[120px] h-fit rounded-md lg:rounded-none lg:rounded-tr-xl lg:rounded-bl-xl bg-[#DBEFFE]">
                   <Image
                     className="m-auto h-[60px]"
@@ -67,7 +70,7 @@ export default function Works() {
                   <h1 className="text-lg font-medium">{item.title}</h1>
                   <p className="text-base text-[#374151]">{item.text}</p>
                 </div>
-              </div>
+              </Fade>
             ))}
           </div>
         </div>
