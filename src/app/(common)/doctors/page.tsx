@@ -45,13 +45,13 @@ export default function Doctors() {
           <FilterSec setIsFilter={setIsFilter} />
         </div>
         <div className="lg:col-span-6 rounded-md">
-          <div className="flex justify-between">
+          <div className="flex  justify-between">
             <Input
               onChange={(e) => setIsSearch(e.target.value)}
               className="w-fit"
-              placeholder="Doctors Search hare"
+              placeholder="Search hare.."
             ></Input>
-            <ul className="flex items-center gap-2">
+            <ul className="hidden lg:flex items-center gap-2">
               <li className="flex items-center gap-[2px] text-muted-foreground">
                 <h1 className="border w-fit p-[2px] rounded-sm">
                   <Calendar size={19} />
@@ -70,7 +70,10 @@ export default function Doctors() {
             <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
               {isLoading ? (
                 [...Array(6)].map((_, index) => (
-                  <div key={index} className="border border-gray-100 rounded-md p-2">
+                  <div
+                    key={index}
+                    className="border border-gray-100 rounded-md p-2"
+                  >
                     <div className="relative">
                       <Skeleton className="w-full h-[180px]" />
                     </div>

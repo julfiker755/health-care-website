@@ -58,9 +58,9 @@ export default function Doctor({ params: { id } }: ParamsProps) {
   };
   const currentData = data?.schedule?.filter((item: any) => {
     const matchingSchedule = doctorSchedule?.find(
-      (schedule: any) => schedule.scheduleId === item.id
+      (schedule: any) => schedule?.scheduleId === item?.id
     );
-    return matchingSchedule && !matchingSchedule.isBooked;
+    return matchingSchedule && !matchingSchedule?.isBooked;
   });
 
   return (

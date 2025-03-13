@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "motion/react";
 import useAuth from "@/components/context/auth-info";
 import { useRouter } from "next/navigation";
 import { UserRound } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -40,10 +40,25 @@ export const RoleName = (route: string) => {
 
 // PathRoute
 const AccessAuth = ({ className }: { className?: string }) => {
+  const contentRef = useRef<HTMLDivElement>(null);
   const { setAuthInfo } = useAuth();
   const { data: profile } = useGetSingleProfileQuery({});
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    if (!dropdownOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        contentRef.current &&
+        !contentRef.current?.contains(e.target as Node)
+      ) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, [dropdownOpen]);
   // Profile submenu data
   const profileSubData: ProfileProps[] = [
     {
@@ -59,8 +74,8 @@ const AccessAuth = ({ className }: { className?: string }) => {
   ];
   // handleLogOut
   const handleLogOut = () => {
-    localStroageRemove(authKey);
     deleteCookies([authToken, refreshKey]);
+    localStroageRemove(authKey);
     setAuthInfo(null);
     router.refresh();
     router.push("/");
@@ -106,6 +121,7 @@ const AccessAuth = ({ className }: { className?: string }) => {
       <AnimatePresence initial={false}>
         {dropdownOpen && (
           <motion.div
+            ref={contentRef}
             className="absolute z-[99] right-0 mt-4 flex w-[200px] flex-col rounded-lg border border-gray-200 bg-white shadow-md transition-all"
             initial={{ opacity: 0, scale: 0, transformOrigin: "top right" }}
             animate={{ opacity: 1, scale: 1, transformOrigin: "top right" }}

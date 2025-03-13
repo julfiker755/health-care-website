@@ -41,7 +41,7 @@ export default function CreateSchedule() {
       endTime: endTime1,
       duration: parseInt(duration),
     };
-   
+
     const res = await createSchedule(data).unwrap();
     if (res?.id) {
       ShowToast({
@@ -50,7 +50,7 @@ export default function CreateSchedule() {
         description: "You have schedule Store successfully",
       });
       await delay(4000);
-      router.refresh()
+      router.refresh();
       router.push("/dashboard/admin/schedule");
     }
   };
@@ -107,7 +107,9 @@ export default function CreateSchedule() {
           </div>
         </div>
         <div className="mt-10 flex justify-end">
-          <Button disabled={isLoading} onClick={() => handleSubmit()}>Submit</Button>
+          <Button disabled={isLoading} onClick={() => handleSubmit()}>
+            Submit
+          </Button>
         </div>
       </div>
     </div>

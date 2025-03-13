@@ -1,4 +1,4 @@
-import { tagTypes } from "../tag-types";
+import { tagTypes, tagTypesList } from "../tag-types";
 import { baseApi } from "./baseApi";
 
 const appointmentApi = baseApi.injectEndpoints({
@@ -25,10 +25,7 @@ const appointmentApi = baseApi.injectEndpoints({
         method: "POST",
         data,
       }),
-      invalidatesTags: [
-        tagTypes.singleDoctor,
-        tagTypes.doctorSchedule,
-      ],
+      invalidatesTags: [tagTypes.singleDoctor,tagTypes.commonSchedule],
     }),
   }),
 });
