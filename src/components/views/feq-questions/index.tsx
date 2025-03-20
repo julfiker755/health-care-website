@@ -43,7 +43,7 @@ export default function Works() {
   ];
 
   return (
-    <div className="bg-[#F9FCFF] py-10 lg:py-20">
+    <div className="py-10 lg:py-20">
       <div className="container">
         <div className="lg:pb-3">
           <h1 className="text-sm text-[#0E82FD]">Get Your Answer</h1>

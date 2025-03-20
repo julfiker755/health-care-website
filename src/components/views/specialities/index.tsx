@@ -10,7 +10,11 @@ export default function Specialities() {
   const { data, isLoading } = useGetAllSpecialitiesQuery({});
   return (
     <div className="container py-10 lg:py-20">
-      <Title className="pb-5" title="Specialities"></Title>
+      <Title
+        className="pb-5"
+        title="Specialities"
+        text="Personalized, expert care for holistic well-being"
+      ></Title>
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-4">
         {isLoading ? (
           [...Array(8)].map((_, index) => (

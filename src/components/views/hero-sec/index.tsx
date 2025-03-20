@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import heroImg from "@/assets/herosec.jpg";
 import { Search, Calendar } from "lucide-react";
 import { Button, CalendarTable } from "@/components/ui";
 import { AnimatedText, Fade } from "@/components/animation";
@@ -8,24 +7,7 @@ import { AnimatedText, Fade } from "@/components/animation";
 export default function HeroSec() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   return (
-    <div
-      style={{
-        backgroundImage: `url(${heroImg.src})`,
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-      }}
-      className="relative h-[calc(100vh-50px)]"
-    >
-      {/* <Image
-        src={heroImg}
-        alt="Hero Section"
-        layout="fill"
-        objectFit="cover"
-        objectPosition="center"
-        quality={75}
-        priority 
-      /> */}
+    <div className="bg-[url('/herosec.jpg')] bg-cover bg-no-repeat bg-center  relative h-[calc(100vh-48px)]">
       <div className="lg:container  h-full">
         <div className="w-full lg:w-1/2  lg:px-2 h-full">
           <div className="flex  backdrop-blur-[1px] bg-[#0087a960] flex-col items-start justify-center h-full">

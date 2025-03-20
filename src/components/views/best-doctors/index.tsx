@@ -12,8 +12,12 @@ import { Zoom } from "@/components/animation";
 export default function BestDoctors() {
   const { data, isLoading } = useGetAllDoctorQuery({});
   return (
-    <div className="container">
-      <Title className="pb-5" title="Best Doctors"></Title>
+    <div className="container pb-10 lg:pb-20">
+      <Title
+        className="pb-5"
+        title="Best Doctor"
+        text="Book online to connect with our trusted experts"
+      ></Title>
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-4">
         {isLoading ? (
           [...Array(4)].map((_, index) => (

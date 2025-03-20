@@ -15,7 +15,10 @@ export default function OurPartners() {
   ];
   return (
     <div className="container">
-      <Title title="Our Clinics Partners" />
+      <Title
+        title="Our Clinics Partners"
+        text="Explore Our Trusted Clinic Partners and Connect with Experts Today"
+      />
       <Marquee>
         <div className="flex gap-9">
           {partnerItem.map((item, index) => (
