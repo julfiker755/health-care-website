@@ -33,13 +33,19 @@ export default function BestDoctors() {
           [...Array(4)].map((_, index) => (
             <div key={index} className="border border-gray-100 rounded-md p-2">
               <div className="relative">
-                <Skeleton className="w-full h-[180px]" />
+                <Skeleton className="w-full h-[150px]" />
               </div>
-              <div className="py-2 flex justify-between">
-                <Skeleton className="w-[120px] h-[20]" />
-                <Skeleton className="w-[80px] h-[20px]" />
+              <div className="py-1 flex justify-between">
+                <Skeleton className="w-[120px] h-[18px]" />
+                <Skeleton className="w-[60px] h-[18px]" />
               </div>
-              <Skeleton className="w-[120px] h-[20px]" />
+              <Skeleton className="w-[160px] h-[18px]" />
+              <Skeleton className="w-[100px] mt-1 h-[15px]" />
+              <Skeleton className="w-full mt-1 h-[4px]" />
+              <div className="flex justify-between">
+                <Skeleton className="w-[80px] mt-1 h-[20px]" />
+                <Skeleton className="w-[80px] mt-1 h-[20px]" />
+              </div>
             </div>
           ))
         ) : data?.doctors?.length > 0 ? (
