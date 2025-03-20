@@ -6,9 +6,7 @@ import OurPartners from "@/components/views/our-partners";
 import HeroSec from "@/components/views/hero-sec";
 import Works from "@/components/views/works";
 
-
 function landingpage() {
-
   return (
     <>
       <HeroSec />
