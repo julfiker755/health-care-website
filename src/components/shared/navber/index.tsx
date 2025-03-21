@@ -116,7 +116,9 @@ export default function Navbar() {
             <ul className="flex flex-col items-center gap-4">
               {items.map((item) => (
                 <li key={item.id}>
-                  <Link href={item.path}>{item.name}</Link>
+                  <Link onClick={() => setIsOpen(false)} href={item.path}>
+                    {item.name}
+                  </Link>
                 </li>
               ))}
             </ul>
