@@ -10,3 +10,4 @@ export * from "./file-input";
 export * from "./from-input";
 export * from "./select";
 export * from "./rating";
+export * from "./blog-card";

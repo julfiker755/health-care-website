@@ -29,7 +29,7 @@ export default function Navbar() {
   const items: Navprops[] = [
     { id: crypto.randomUUID(), name: "Home", path: "/" },
     { id: crypto.randomUUID(), name: "Doctors", path: "/doctors" },
-    { id: crypto.randomUUID(), name: "Blog", path: "/" },
+    { id: crypto.randomUUID(), name: "Blog", path: "/blog" },
   ];
 
   useEffect(() => {

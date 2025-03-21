@@ -2,11 +2,14 @@
 import { AlignJustify, LayoutDashboard, Calendar } from "lucide-react";
 import { NoItemData, Pagination } from "@/components/reusable";
 import { useGetAllDoctorQuery } from "@/redux/api/doctorApi";
-import { BigDocCard, SmallDocCard } from "@/components/reusable/card";
+import {
+  BigDocCard,
+  SmallDocCard,
+  SmallDocSkeleton,
+} from "@/components/reusable/card";
 import FilterSec from "@/components/common/filter-sec";
-import { useMediaQuery } from "react-responsive";
 import React, { useEffect, useState } from "react";
-import { Input, Skeleton } from "@/components/ui";
+import { Input } from "@/components/ui";
 import { useDebonunced } from "@/redux/hooks";
 import { useRouter } from "next/navigation";
 import { formatDate } from "@/lib/utils";
@@ -14,11 +17,11 @@ import Link from "next/link";
 
 export default function Doctors() {
   const router = useRouter();
-  const [isShow, setIsShow] = useState("big");
+  const [isShow, setIsShow] = useState("small");
   const [isFilter, setIsFilter] = useState<any>({});
   const [isSearch, setIsSearch] = useState<string>("");
   const [isPage, setIsPage] = useState<number>(1);
-  const isLimit = isShow === "big" ? 4 : 6;
+  const isLimit = isShow === "small" ? 6 : 4;
   const query: Record<string, any> = { page: isPage, limit: isLimit };
   const debouncedTerm = useDebonunced({ searchQuery: isSearch, delay: 600 });
   if (!!debouncedTerm) query["search"] = isSearch;
@@ -34,11 +37,11 @@ export default function Doctors() {
   }, [isFilter?.title, router]);
 
   // MediaQuery to avoid infinite re-renders
-  const isSmallScreen = useMediaQuery({ query: "(max-width:640px)" });
-  useEffect(() => {
-    if (isSmallScreen) setIsShow("small");
-    else setIsShow("big");
-  }, [isSmallScreen]);
+  // const isSmallScreen = useMediaQuery({ query: "(max-width:640px)" });
+  // useEffect(() => {
+  //   if (isSmallScreen) setIsShow("small");
+  //   else setIsShow("big");
+  // }, [isSmallScreen]);
 
   return (
     <div>
@@ -73,20 +76,20 @@ export default function Doctors() {
                 {formatDate(new Date())}
               </li>
               <li
-                onClick={() => setIsShow("small")}
-                className={`${
-                  isShow === "small" && "bg-[#0087BE] !text-white"
-                } text-black text-muted-foreground border w-fit p-[5px] rounded-sm cursor-pointer`}
-              >
-                <LayoutDashboard size={18} />
-              </li>
-              <li
                 onClick={() => setIsShow("big")}
                 className={`${
                   isShow === "big" && "bg-[#0087BE] !text-white"
                 } text-black  text-muted-foreground border w-fit p-[5px] rounded-sm cursor-pointer`}
               >
                 <AlignJustify size={18} />
+              </li>
+              <li
+                onClick={() => setIsShow("small")}
+                className={`${
+                  isShow === "small" && "bg-[#0087BE] !text-white"
+                } text-black text-muted-foreground border w-fit p-[5px] rounded-sm cursor-pointer`}
+              >
+                <LayoutDashboard size={18} />
               </li>
             </ul>
           </div>
@@ -97,17 +100,7 @@ export default function Doctors() {
               }  gap-4`}
             >
               {isLoading ? (
-                [...Array(6)].map((_, index) => (
-                  <div
-                    key={index}
-                    className="border border-gray-100 rounded-md p-2"
-                  >
-                    <div className="relative flex gap-3">
-                      <Skeleton className="w-full h-[130px]" />
-                      <Skeleton className="w-[400px] h-[130px]" />
-                    </div>
-                  </div>
-                ))
+                <SmallDocSkeleton />
               ) : data?.doctors?.length > 0 ? (
                 data?.doctors?.map((item: any) =>
                   isShow === "big" ? (
