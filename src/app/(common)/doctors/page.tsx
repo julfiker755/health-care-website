@@ -1,6 +1,6 @@
 "use client";
 import { AlignJustify, LayoutDashboard, Calendar } from "lucide-react";
-import { NoItemData, Pagination } from "@/components/reusable";
+import { Breadcrumb, NoItemData, Pagination } from "@/components/reusable";
 import { useGetAllDoctorQuery } from "@/redux/api/doctorApi";
 import {
   BigDocCard,
@@ -45,12 +45,12 @@ export default function Doctors() {
 
   return (
     <div>
-      <div className="text-center  py-14">
+      <Breadcrumb>
         <h1 className="text-xl lg:text-3xl font-bold">Doctor List</h1>
         <h2 className="text-sm">
           <Link href={"/"}>Home</Link> / Doctor List
         </h2>
-      </div>
+      </Breadcrumb>
       <div className="container grid grid-cols-1 lg:grid-cols-8 gap-5 pb-12">
         <div className="border p-3 h-[calc(100%-58px)] rounded-md lg:col-span-2">
           <h1 className="text-lg font-medium py-1">Filter</h1>

@@ -9,6 +9,7 @@ import { Title } from "@/components/reusable";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import Slider from "react-slick";
+import { Fade } from "@/components/animation";
 
 const testimonialItem = [
   {
@@ -110,13 +111,13 @@ export default function Testimonials() {
   return (
     <div className="container pb-10 lg:pb-20">
       <Title title="Testimonials" text="15k Users Trust healthCare Worldwide" />
-      <div>
+      <Fade>
         <Slider {...settings}>
           {testimonialItem.map((item, index) => (
             <TestimonialCard key={index} {...item} />
           ))}
         </Slider>
-      </div>
+      </Fade>
       <style jsx global>{`
         .slick-prev,
         .slick-next {

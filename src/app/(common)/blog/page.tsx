@@ -1,5 +1,5 @@
 import assets from "@/assets";
-import { BlogCard, BlogLatestCard } from "@/components/reusable";
+import { BlogCard, BlogLatestCard, Breadcrumb } from "@/components/reusable";
 import Link from "next/link";
 import React from "react";
 
@@ -87,12 +87,12 @@ const blogItem = [
 export default function Blogs() {
   return (
     <div className="pb-20">
-      <div className="text-center  py-14">
+      <Breadcrumb>
         <h1 className="text-xl lg:text-3xl font-bold">Blog List</h1>
         <h2 className="text-sm">
           <Link href={"/"}>Home</Link> / Blog List
         </h2>
-      </div>
+      </Breadcrumb>
       <div className="container">
         <div className="grid grid-cols-1 lg:grid-cols-6 gap-6">
           <div className="lg:col-span-4">

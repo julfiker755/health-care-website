@@ -1,7 +1,7 @@
 "use client";
 import { useGetSingleDoctorQuery } from "@/redux/api/doctorApi";
 import { MessageCircle, Phone, Video } from "lucide-react";
-import { NoItemData } from "@/components/reusable";
+import { Breadcrumb, NoItemData } from "@/components/reusable";
 import useConfirmation from "@/components/context/delete-modal";
 import { useCreateAppointmentMutation } from "@/redux/api/appointmentApi";
 import { useGetAllDoctorScheduleQuery } from "@/redux/api/scheduleApi";
@@ -65,12 +65,12 @@ export default function Doctor({ params: { id } }: ParamsProps) {
 
   return (
     <div>
-      <div className="text-center py-12">
+      <Breadcrumb>
         <h1 className="text-xl lg:text-3xl font-bold">Doctor Profile</h1>
         <h2 className="text-sm">
           <Link href={"/doctors"}>Doctors</Link> / Doctor Profile
         </h2>
-      </div>
+      </Breadcrumb>
       <div className="container space-y-5">
         <div className="border rounded-md p-3">
           <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
