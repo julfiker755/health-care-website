@@ -25,20 +25,15 @@ import blog3Img from "@/assets/blog/blog3.jpg";
 import blog4Img from "@/assets/blog/blog4.jpg";
 import blog5Img from "@/assets/blog/blog5.jpg";
 import blog6Img from "@/assets/blog/blog6.jpg";
-import logo from "@/assets/logo.svg";
-import logo2 from "@/assets/logo2.svg";
+
 
 const assets = {
-  images: {
-    logo: logo,
-    logo2: logo2,
-    solution: {
-      workImg,
-      findImg,
-      profileImg,
-      bookImg,
-      receiveImg,
-    },
+  solution: {
+    workImg,
+    findImg,
+    profileImg,
+    bookImg,
+    receiveImg,
   },
   partner: {
     partner1,

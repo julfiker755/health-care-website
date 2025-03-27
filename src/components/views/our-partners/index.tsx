@@ -34,7 +34,7 @@ export default function OurPartners() {
                   height: "30px",
                 }}
                 className="text-black"
-                alt={item?.img?.toString()}
+                alt={item?.id + "-img"}
                 src={item.img}
               />
             </div>

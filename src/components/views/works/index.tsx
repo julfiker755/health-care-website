@@ -10,22 +10,22 @@ export default function Works() {
     {
       title: "Find a Doctor",
       text: "Locate doctors by specialization, location, or availability to suit your needs.",
-      image: assets.images.solution.findImg,
+      image: assets.solution.findImg,
     },
     {
       title: "View Doctor Profiles",
       text: "Access detailed profiles to make informed choices for your healthcare.",
-      image: assets.images.solution.profileImg,
+      image: assets.solution.profileImg,
     },
     {
       title: "Book an Appointment",
       text: "Choose your preferred doctor, pick a suitable time slot, and confirm your booking.",
-      image: assets.images.solution.bookImg,
+      image: assets.solution.bookImg,
     },
     {
       title: "Receive Care",
       text: "Share your health concerns and get personalized advice and solutions from the doctor.",
-      image: assets.images.solution.receiveImg,
+      image: assets.solution.receiveImg,
     },
   ];
 
@@ -34,7 +34,7 @@ export default function Works() {
       <div className="container grid grid-cols-1 lg:grid-cols-3 gap-8">
         <Fade animate="fade_left" className="self-center hidden lg:block">
           <Image
-            src={assets.images.solution.workImg}
+            src={assets.solution.workImg}
             className="rounded-md object-cover"
             width={800}
             height={100}
