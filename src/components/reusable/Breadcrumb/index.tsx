@@ -16,7 +16,7 @@ export function Breadcrumb({ children, className }: breadcrumbProps) {
     >
       {children}
       <Image
-        className="absolute top-0 left-0"
+        className="hidden lg:block absolute top-0 left-0"
         src={breadcrumb01}
         width={300}
         height={100}
@@ -26,7 +26,7 @@ export function Breadcrumb({ children, className }: breadcrumbProps) {
         alt="image1"
       />
       <Image
-        className="absolute top-0 right-0"
+        className="hidden lg:block absolute top-0 right-0"
         src={breadcrumb02}
         width={300}
         height={100}
