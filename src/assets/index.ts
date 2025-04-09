@@ -25,6 +25,8 @@ import blog3Img from "@/assets/blog/blog3.jpg";
 import blog4Img from "@/assets/blog/blog4.jpg";
 import blog5Img from "@/assets/blog/blog5.jpg";
 import blog6Img from "@/assets/blog/blog6.jpg";
+import stripe from "@/assets/payment/stripe.svg"
+import sslcommerz from "@/assets/payment/sslcommerz.png"
 
 
 const assets = {
@@ -61,6 +63,10 @@ const assets = {
     ProImg5: blogProImg5,
     ProImg6: blogProImg6,
   },
+  payment:{
+    stripe,
+    sslcommerz
+  }
 };
 
 export default assets;
