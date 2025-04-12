@@ -27,6 +27,10 @@ import blog5Img from "@/assets/blog/blog5.jpg";
 import blog6Img from "@/assets/blog/blog6.jpg";
 import stripe from "@/assets/payment/stripe.svg"
 import sslcommerz from "@/assets/payment/sslcommerz.png"
+import clinic1 from "@/assets/clinics/clinic1.jpg"
+import clinic2 from "@/assets/clinics/clinic2.jpg"
+import clinic3 from "@/assets/clinics/clinic3.jpg"
+import clinic4 from "@/assets/clinics/clinic4.jpg"
 
 
 const assets = {
@@ -66,6 +70,12 @@ const assets = {
   payment:{
     stripe,
     sslcommerz
+  },
+  clinic:{
+    clinic1,
+    clinic2,
+    clinic3,
+    clinic4
   }
 };
 
