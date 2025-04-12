@@ -14,7 +14,7 @@ export function Stepper({ stepItem, currentStep }: stepperProps) {
   return (
     <div className="relative w-full max-w-xl lg:mx-auto px-4">
       {/* Line behind steps */}
-      <div className="absolute left-[8%] top-0 w-0.5 h-full lg:top-4 lg:left-[12.5%] lg:right-[12.5%] lg:w-auto lg:h-0.5 bg-gray-300 z-0" />
+      <div className="absolute left-[31px] top-0 w-0.5 h-full lg:top-4 lg:left-[12.5%] lg:right-[12.5%] lg:w-auto lg:h-0.5 bg-gray-300 z-0" />
 
       {/* Line for completed steps */}
       {/* big */}
@@ -27,14 +27,14 @@ export function Stepper({ stepItem, currentStep }: stepperProps) {
       />
       {/* small*/}
       <div
-        className="block lg:hidden absolute left-[8%] top-0 w-0.5 bg-blue-600 z-0 transition-all duration-300"
+        className="block lg:hidden absolute left-[32px] top-0 w-0.5 bg-blue-600 z-0 transition-all duration-300"
         style={{
-          left: "8%",
+          left: "31px",
           height: `${((currentStep - 1) / (stepItem.length - 1)) * 100}%`,
         }}
       />
 
-      <div className="flex-col lg:flex-row flex space-y-3 lg:space-y-0 lg:justify-between lg:items-center relative z-10">
+      <div className="flex-col  lg:flex-row flex space-y-3 lg:space-y-0 lg:justify-between lg:items-center relative z-10">
         {stepItem.map((step) => {
           const isCompleted = step.id < currentStep;
           const isActive = step.id === currentStep;
@@ -45,7 +45,7 @@ export function Stepper({ stepItem, currentStep }: stepperProps) {
               className="flex gap-x-1 lg:gap-x-0 lg:flex-col items-center"
             >
               <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center font-semibold text-sm transition-colors duration-300 ${
+                className={`w-8 h-8 relative rounded-full flex items-center justify-center font-semibold text-sm transition-colors duration-300 ${
                   isCompleted
                     ? "bg-blue-600 text-white border-2 border-blue-600"
                     : isActive

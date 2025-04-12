@@ -54,21 +54,23 @@ export default function Booking() {
   return (
     <div className="py-12 max-w-3xl m-auto">
       <Stepper stepItem={steps} currentStep={currentStep} />
-      <div className="bg-[#f9f9f9] p-4 mt-6 rounded-md">
-        <AppointmentProfile />
-        <div className="bg-white my-3 px-3 py-4 rounded-md">
+      <div className="bg-[#f9f9f9] p-4 mt-5 rounded-md">
+        {currentStep !== 5 && <AppointmentProfile />}
+        <div className="bg-white my-3 px-3 pt-4 rounded-md">
           {renderStepComponent()}
-          <div className="flex justify-between mt-6">
-            <Button onClick={handleBack} disabled={currentStep === 1}>
-              Back
-            </Button>
-            <Button
-              onClick={handleNext}
-              disabled={currentStep === steps.length}
-            >
-              {currentStep === steps.length ? "Finish" : "Next"}
-            </Button>
-          </div>
+          {currentStep !== 5 && (
+            <div className="flex justify-between pb-4 mt-6">
+              <Button onClick={handleBack} disabled={currentStep === 1}>
+                Back
+              </Button>
+              <Button
+                onClick={handleNext}
+                disabled={currentStep === steps.length}
+              >
+                {currentStep === steps.length ? "Finish" : "Next"}
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </div>
