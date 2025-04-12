@@ -6,7 +6,7 @@ import { useCreateAppointmentMutation } from "@/redux/api/appointmentApi";
 import { useGetAllDoctorScheduleQuery } from "@/redux/api/scheduleApi";
 import useAuth from "@/components/context/auth-info";
 import { PlaceholderImg } from "@/lib/utils";
-import { Button } from "@/components/ui";
+import { Button, Textarea } from "@/components/ui";
 import { ShowToast } from "@/helpers";
 import Image from "next/image";
 import Link from "next/link";
@@ -320,9 +320,60 @@ export default function Doctor({ params: { id } }: ParamsProps) {
           </div>
           <div>
             <h1 className="font-medium text-xl mb-2">Reviews (200)</h1>
-            <div>
-              <h1>Review</h1>
+            <div className="border p-3 rounded-md">
+              <div className="flex items-center">
+                <div className="relative h-12 w-12 rounded-full overflow-hidden mr-2">
+                  <Image
+                    src={assets.blog.ProImg1}
+                    alt={"ff"}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <ul>
+                  <li className="font-medium">Dane jose</li>
+                  <li className="flex items-center text-sm">
+                    <RatingScore width={90} value={5} />
+                    <span>| 1 Months ago</span>{" "}
+                  </li>
+                </ul>
+              </div>
+              <p className="text-sm lg:text-base pt-3 text-gray-700">
+                Thank you for this informative article! I've had a couple of
+                hit-and-miss experiences with freelancers in the past, and I
+                realize now that I wasn't vetting them properly. Your checklist
+                for choosing the right freelancer is going to be my go-to from
+                now on
+              </p>
             </div>
+            {/* review exit box */}
+            {/* <div className="border mt-3 p-3 rounded-md">
+              <div className="flex items-center">
+                <div className="relative h-12 w-12 rounded-full overflow-hidden mr-2">
+                  <Image
+                    src={assets.blog.ProImg1}
+                    alt={"ff"}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <ul>
+                  <li className="font-medium">Dane jose</li>
+                  <li className="flex items-center text-sm">
+                    <RatingScore width={90} value={5} />
+                    <span></span>{" "}
+                  </li>
+                </ul>
+              </div>
+              <Textarea
+                className="mt-3"
+                placeholder="Enter Your Review hare"
+              ></Textarea>
+              <div className="flex gap-x-2 mt-3">
+                <Button>Submit</Button>
+                <Button variant={"danger"}>Reset</Button>
+              </div>
+            </div> */}
           </div>
         </div>
         <h1 className="pb-10"></h1>

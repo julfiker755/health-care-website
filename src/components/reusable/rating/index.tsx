@@ -9,10 +9,15 @@ const myStyles = {
   inactiveBoxColor: "#0e82fd7d",
 };
 
-export function RatingScore(value: any) {
+type RatingScoreProps = {
+  value: number;
+  width?: number;
+};
+
+export function RatingScore({ value, width = 115 }: RatingScoreProps) {
   return (
     <Rating
-      style={{ maxWidth: 115 }}
+      style={{ maxWidth: width }}
       value={value}
       itemStyles={myStyles}
       spaceBetween="small"
