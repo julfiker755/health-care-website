@@ -18,7 +18,8 @@ import { useUpdatePatientMutation } from "@/redux/api/patientApi";
 
 export default function Settings() {
   const { data: user, isLoading } = useGetSingleProfileQuery({});
-  const [updatePatient, { isLoading: saveloading }] = useUpdatePatientMutation();
+  const [updatePatient, { isLoading: saveloading }] =
+    useUpdatePatientMutation();
   const [updatePassword, { isLoading: updateLoading }] =
     useUpdatePasswordMutation();
   const [isTab, setIsTab] = useState("Profile");
@@ -30,12 +31,11 @@ export default function Settings() {
       gender: "",
       contactNumber: "",
       address: "",
-      age:"",
-      blood:""
+      age: "",
+      blood: "",
     },
   });
 
- 
   useEffect(() => {
     ProfileFrom.reset({
       name: user?.name,
@@ -55,8 +55,8 @@ export default function Settings() {
       contactNumber: values?.contactNumber,
       address: values?.address,
       gender: values?.gender,
-      blood:values?.blood,
-      age:parseInt(values?.age),
+      blood: values?.blood,
+      age: parseInt(values?.age),
     };
     const data = modifyPayload(dataItem);
     const res = await updatePatient(data).unwrap();

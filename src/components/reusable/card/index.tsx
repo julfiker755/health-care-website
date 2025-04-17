@@ -58,7 +58,7 @@ export function SmallDocCard({ item }: { item: any }) {
             </Link>
           </li>
           <li>
-            <Link href="/booking">
+            <Link href={`/booking/${item.id}`}>
               <Button className="rounded-full" size="sm">
                 Book Now
               </Button>

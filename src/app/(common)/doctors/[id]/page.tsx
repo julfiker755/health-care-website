@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import assets from "@/assets";
 
-interface ParamsProps {
+export interface ParamsProps {
   params: {
     id: string;
   };
@@ -188,9 +188,11 @@ export default function Doctor({ params: { id } }: ParamsProps) {
               15+ Awards
             </li>
             <li>
-              <Button className="rounded-full" size="sm">
-                Book Appointment
-              </Button>
+              <Link href={`/booking/${data?.id}`}>
+                <Button className="rounded-full" size="sm">
+                  Book Appointment
+                </Button>
+              </Link>
             </li>
           </ul>
         </div>
