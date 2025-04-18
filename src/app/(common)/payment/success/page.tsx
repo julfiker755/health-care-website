@@ -4,14 +4,14 @@ import { useGetSingleAppointmentQuery } from "@/redux/api/appointmentApi";
 import { useGetSingleDoctorQuery } from "@/redux/api/doctorApi";
 import { useGetAllPaymentQuery } from "@/redux/api/paymentApi";
 import { IconCircleCheckFilled } from "@tabler/icons-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { formatDate } from "@/lib/utils";
 import React, { useEffect, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function PaymentSuccess() {
-  const searchParams = useSearchParams();
+  const searchParams = new URLSearchParams(window.location.search);
   const session = searchParams.get("session_id");
   const router = useRouter();
 
