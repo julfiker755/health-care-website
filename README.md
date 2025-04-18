@@ -4,11 +4,6 @@
 ## Health Care
 
 ```sh
-super Admin
-Email:super@demo.com
-password:12345678
-```
-```sh
 Admin
 Email:admin@demo.com
 password:12345678
