@@ -6,14 +6,19 @@ import { useGetAllPaymentQuery } from "@/redux/api/paymentApi";
 import { IconCircleCheckFilled } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { formatDate } from "@/lib/utils";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function PaymentSuccess() {
-  const searchParams = new URLSearchParams(window.location.search);
-  const session = searchParams.get("session_id");
+  const [session, setSession] = useState<string | null>(null);
   const router = useRouter();
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const sessionId = params.get("session_id");
+    setSession(sessionId);
+  }, []);
 
   const query = useMemo(() => {
     return session ? { id: session } : {};
