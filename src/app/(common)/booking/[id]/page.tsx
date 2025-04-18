@@ -19,6 +19,7 @@ import {
   Step2Schedule,
   Step3Payment,
 } from "@/components/common/booking-step";
+import useAuth from "@/components/context/auth-info";
 
 const steps = [
   { id: 1, title: "Appointment" },
@@ -34,6 +35,7 @@ export type appointmentProps = {
 };
 
 export default function Booking({ params: { id } }: ParamsProps) {
+  const { authInfo } = useAuth();
   const { data: user } = useGetSingleProfileQuery({});
   const [createPayment] = useCreatePaymentMutation();
   const [updatePatient] = useUpdatePatientMutation();
@@ -60,8 +62,20 @@ export default function Booking({ params: { id } }: ParamsProps) {
       setCurrentStep((prev) => prev - 1);
     }
   };
-  //  AppointemntSubmit ****
-  const AppointemntSubmit = async () => {
+  // AppointmentSubmit
+  const AppointmentSubmit = () => {
+    if (!!authInfo?.email?.length) {
+      handleNext();
+    } else {
+      ShowToast({
+        type: "error",
+        title: "Login Required",
+        description: "You must be logged in to continue.",
+      });
+    }
+  };
+  //  ScheduleSubmit ****
+  const ScheduleSubmit = async () => {
     const scheduleData: any = {
       doctorId: id,
       scheduleId: appointment.scheduleId,
@@ -129,7 +143,7 @@ export default function Booking({ params: { id } }: ParamsProps) {
               <Button onClick={handleBack} disabled={currentStep === 1}>
                 Back
               </Button>
-              <Button onClick={handleNext}>Next</Button>
+              <Button onClick={() => AppointmentSubmit()}>Next</Button>
             </Step1Appointment>
           )}
           {/* step 2 */}
@@ -143,7 +157,7 @@ export default function Booking({ params: { id } }: ParamsProps) {
               <Button
                 onClick={() =>
                   !!appointment.scheduleId
-                    ? AppointemntSubmit()
+                    ? ScheduleSubmit()
                     : ShowToast({
                         type: "error",
                         title: "Schedule Required",
