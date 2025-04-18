@@ -95,7 +95,9 @@ export default function Booking({ params: { id } }: ParamsProps) {
 
   // hanldePayment
   const hanldePayment = async () => {
-    const stripe = await loadStripe(process.env.STRIPE_TEST_KEY as string);
+    const stripe = await loadStripe(
+      process.env.NEXT_PUBLIC_STRIPE_TEST_KEY as string
+    );
     if (!stripe) {
       throw new Error("Stripe failed to load.");
     }

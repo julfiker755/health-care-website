@@ -16,3 +16,5 @@ export type AuthProps = {
   iat: number;
   exp: number;
 };
+
+export type envProps = string | undefined

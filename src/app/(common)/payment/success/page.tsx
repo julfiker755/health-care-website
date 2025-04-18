@@ -4,7 +4,7 @@ import { useGetSingleAppointmentQuery } from "@/redux/api/appointmentApi";
 import { useGetSingleDoctorQuery } from "@/redux/api/doctorApi";
 import { useGetAllPaymentQuery } from "@/redux/api/paymentApi";
 import { IconCircleCheckFilled } from "@tabler/icons-react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { formatDate } from "@/lib/utils";
 import React, { useMemo } from "react";
 import Image from "next/image";
@@ -12,6 +12,7 @@ import Image from "next/image";
 export default function PaymentSuccess() {
   const searchParams = useSearchParams();
   const session = searchParams.get("session_id");
+  const router = useRouter();
 
   const query = useMemo(() => {
     return session ? { id: session } : {};
@@ -20,6 +21,10 @@ export default function PaymentSuccess() {
   const { data, isLoading, isError } = useGetAllPaymentQuery(query, {
     skip: !session,
   });
+
+  if (data?.appointmentId?.length == 0) {
+    router.push("/");
+  }
 
   const { appointmentId, doctorId, price } = data || {};
   const { data: doctorInfo } = useGetSingleDoctorQuery(doctorId);
