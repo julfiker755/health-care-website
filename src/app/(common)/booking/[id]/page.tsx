@@ -1,29 +1,30 @@
 "use client";
 import AppointmentProfile from "@/components/common/appointment-profile";
+import { useGetSingleDoctorQuery } from "@/redux/api/doctorApi";
+import { useUpdatePatientMutation } from "@/redux/api/patientApi";
+import { useCreateAppointmentMutation } from "@/redux/api/appointmentApi";
+import { useCreatePaymentMutation } from "@/redux/api/paymentApi";
+import { useGetSingleProfileQuery } from "@/redux/api/commonApi";
+import { ParamsProps } from "../../doctors/[id]/page";
+import { FieldValues } from "react-hook-form";
+import { modifyPayload } from "@/lib/utils";
+import { loadStripe } from "@stripe/stripe-js";
+import { Stepper } from "@/components/reusable";
+import { Button } from "@/components/ui";
+import React, { useState } from "react";
+import { ShowToast } from "@/helpers";
 import {
   Step1Appointment,
   Step2Information,
   Step2Schedule,
   Step3Payment,
-  Step4Confirmation,
 } from "@/components/common/booking-step";
-import { Stepper } from "@/components/reusable";
-import { Button } from "@/components/ui";
-import React, { useState } from "react";
-import { ParamsProps } from "../../doctors/[id]/page";
-import { useGetSingleDoctorQuery } from "@/redux/api/doctorApi";
-import { ShowToast } from "@/helpers";
-import { FieldValues } from "react-hook-form";
-import { modifyPayload } from "@/lib/utils";
-import { useUpdatePatientMutation } from "@/redux/api/patientApi";
-import { useCreateAppointmentMutation } from "@/redux/api/appointmentApi";
 
 const steps = [
   { id: 1, title: "Appointment" },
   { id: 2, title: "Schedule" },
   { id: 3, title: "Information" },
   { id: 4, title: "Payment" },
-  { id: 5, title: "Confirmation" },
 ];
 
 export type appointmentProps = {
@@ -33,10 +34,12 @@ export type appointmentProps = {
 };
 
 export default function Booking({ params: { id } }: ParamsProps) {
+  const { data: user } = useGetSingleProfileQuery({});
+  const [createPayment] = useCreatePaymentMutation();
   const [updatePatient] = useUpdatePatientMutation();
   const [createAppointment] = useCreateAppointmentMutation();
   const { data } = useGetSingleDoctorQuery(id);
-  const [currentStep, setCurrentStep] = useState(4);
+  const [currentStep, setCurrentStep] = useState(1);
   const [appId, setappId] = useState("");
   const [appointment, setIsAppointment] = useState<appointmentProps>({
     appointmentType: "clinic",
@@ -44,6 +47,8 @@ export default function Booking({ params: { id } }: ParamsProps) {
     scheduleId: "",
   });
 
+  // ClINIC
+  // ONLINE
   const handleNext = () => {
     if (currentStep < steps?.length) {
       setCurrentStep((prev) => prev + 1);
@@ -60,7 +65,7 @@ export default function Booking({ params: { id } }: ParamsProps) {
     const scheduleData: any = {
       doctorId: id,
       scheduleId: appointment.scheduleId,
-      appointmentType: appointment.appointmentType,
+      appointmentType: "ONLINE",
     };
     if (appointment.clinicId) {
       scheduleData.clinicId = appointment.clinicId;
@@ -87,6 +92,26 @@ export default function Booking({ params: { id } }: ParamsProps) {
       }
     }
   };
+
+  // hanldePayment
+  const hanldePayment = async () => {
+    const stripe = await loadStripe(process.env.STRIPE_TEST_KEY as string);
+    if (!stripe) {
+      throw new Error("Stripe failed to load.");
+    }
+
+    const body = {
+      doctorId: id,
+      appointmentId: appId,
+      price: data.appointmentFee,
+      email: user.email,
+    };
+    const res = await createPayment(body).unwrap();
+    if (res?.id) {
+      await stripe.redirectToCheckout({ sessionId: res.id });
+    }
+  };
+
   return (
     <div className="py-12 max-w-3xl m-auto">
       <Stepper stepItem={steps} currentStep={currentStep} />
@@ -130,7 +155,7 @@ export default function Booking({ params: { id } }: ParamsProps) {
           )}
           {/* step 3 */}
           {currentStep == 3 && (
-            <Step2Information handleSubmit={handleSubmit}>
+            <Step2Information user={user} handleSubmit={handleSubmit}>
               <Button onClick={handleBack}>Back</Button>
               <Button type="submit">Next</Button>
             </Step2Information>
@@ -139,15 +164,8 @@ export default function Booking({ params: { id } }: ParamsProps) {
           {currentStep == 4 && (
             <Step3Payment price={data?.appointmentFee} appointmentId={appId}>
               <Button onClick={handleBack}>Back</Button>
-              <Button onClick={handleNext}>Next</Button>
+              <Button onClick={hanldePayment}>Next</Button>
             </Step3Payment>
-          )}
-          {/* step 5 */}
-          {currentStep == 5 && (
-            <Step4Confirmation>
-              <Button onClick={handleBack}>Back</Button>
-              <Button onClick={handleNext}>Next</Button>
-            </Step4Confirmation>
           )}
         </div>
       </div>

@@ -12,7 +12,7 @@ interface stepperProps {
 
 export function Stepper({ stepItem, currentStep }: stepperProps) {
   return (
-    <div className="relative w-full max-w-xl lg:mx-auto px-4">
+    <div className="relative w-full max-w-lg lg:mx-auto px-4">
       {/* Line behind steps */}
       <div className="absolute left-[31px] top-0 w-0.5 h-full lg:top-4 lg:left-[12.5%] lg:right-[12.5%] lg:w-auto lg:h-0.5 bg-gray-300 z-0" />
 

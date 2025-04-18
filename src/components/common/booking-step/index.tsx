@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Hospital, Blinds, BadgeCheck } from "lucide-react";
+import React, { useEffect } from "react";
+import { Hospital, Blinds } from "lucide-react";
 import Image from "next/image";
 import assets from "@/assets";
 import { Checkbox, Input, Label } from "@/components/ui";
-import { IconCircleCheckFilled } from "@tabler/icons-react";
 import { FromInput, NoItemData } from "@/components/reusable";
 import { appointmentProps } from "@/app/(common)/booking/[id]/page";
-import { useGetSingleProfileQuery } from "@/redux/api/commonApi";
 import { FieldValues, useForm } from "react-hook-form";
 import Form from "@/components/shared/from";
 import { childrenProps } from "@/app/(common)/layout";
@@ -179,9 +177,13 @@ export function Step2Schedule({
 // Step2Information
 interface InformationProps extends childrenProps {
   handleSubmit: (values: FieldValues) => void;
+  user: any;
 }
-export function Step2Information({ children, handleSubmit }: InformationProps) {
-  const { data: user, isLoading } = useGetSingleProfileQuery({});
+export function Step2Information({
+  children,
+  handleSubmit,
+  user,
+}: InformationProps) {
   const ProfileFrom = useForm({
     resolver: zodResolver(patientProfileSchema),
     defaultValues: {
@@ -258,9 +260,7 @@ interface paymentProps extends childrenProps {
 }
 
 export function Step3Payment({ children, appointmentId, price }: paymentProps) {
-  const { data } = useGetSingleAppointmentQuery(
-    "1990a600-ec21-41bf-b3c7-c5d3987d219b"
-  );
+  const { data } = useGetSingleAppointmentQuery(appointmentId);
 
   const gatewayItem = [
     {
@@ -348,71 +348,6 @@ export function Step3Payment({ children, appointmentId, price }: paymentProps) {
           <div className="flex justify-between text-sm">
             <span>Total</span>
             <span>${price}</span>
-          </div>
-        </div>
-      </div>
-      <div className="flex lg:col-span-2 justify-between mt-4">{children}</div>
-    </div>
-  );
-}
-export function Step4Confirmation({ children }: childrenProps) {
-  return (
-    <div>
-      <div className="flex gap-5 pb-2">
-        <div className="w-full">
-          <h1 className="flex gap-[2px] border-b pb-1 items-center">
-            {" "}
-            <IconCircleCheckFilled className="text-blue-600" size={21} />
-            Booking ConfiIrmed
-          </h1>
-          <h1 className="text-sm text-gray-500 py-4">
-            Your Booking has been Confirmed with Dr. Michael Brown be on time
-            before 15 Mins From the appointment Time
-          </h1>
-          <div>
-            <h1 className="font-semibold mb-2">Booking Info</h1>
-            <ul className="grid  grid-cols-1 lg:grid-cols-2 gap-6">
-              <li>
-                <h1 className="font-medium">Service</h1>
-                <h3 className="text-gray-500 text-sm">Cardiology (30 Mins)</h3>
-              </li>
-              <li>
-                <h1 className="font-medium">Additional Service</h1>
-                <h3 className="text-gray-500 text-sm">Echocardiograms</h3>
-              </li>
-              <li>
-                <h1 className="font-medium">Date & Time</h1>
-                <h3 className="text-gray-500 text-sm">
-                  10:00 - 11:00 AM, 15, Oct 2025
-                </h3>
-              </li>
-              <li>
-                <h1 className="font-medium">Appointment type</h1>
-                <h3 className="text-gray-500 text-sm">Clinic</h3>
-              </li>
-              <li>
-                <h1 className="font-medium">Clinic Name & Location</h1>
-                <h3 className="text-gray-500 text-sm">
-                  Wellness Path View Location
-                </h3>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="hidden lg:block w-[350px] m-auto justify-center">
-          <div>
-            <Image
-              src={
-                "https://doccure.dreamstechnologies.com/html/template/assets/img/icons/payment-qr.svg"
-              }
-              alt="item"
-              width={140}
-              height={100}
-              className="rounded-sm m-auto"
-            ></Image>
-            <h1 className="text-center text-gray-500 text-sm">
-              Scan this QR Code to Download the details of Appointment
-            </h1>
           </div>
         </div>
       </div>
