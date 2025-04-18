@@ -1,13 +1,9 @@
 "use client";
 import { useGetSingleDoctorQuery } from "@/redux/api/doctorApi";
 import { Breadcrumb, NoItemData, RatingScore } from "@/components/reusable";
-import useConfirmation from "@/components/context/delete-modal";
-import { useCreateAppointmentMutation } from "@/redux/api/appointmentApi";
 import { useGetAllDoctorScheduleQuery } from "@/redux/api/scheduleApi";
-import useAuth from "@/components/context/auth-info";
 import { PlaceholderImg } from "@/lib/utils";
-import { Button, Textarea } from "@/components/ui";
-import { ShowToast } from "@/helpers";
+import { Button } from "@/components/ui";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -27,43 +23,9 @@ export interface ParamsProps {
 }
 
 export default function Doctor({ params: { id } }: ParamsProps) {
-  const { authInfo } = useAuth();
-  const { confirm } = useConfirmation();
   const { data } = useGetSingleDoctorQuery(id);
-  const [createAppointment] = useCreateAppointmentMutation();
   const { data: doctorSchedule } = useGetAllDoctorScheduleQuery({});
 
-  const hanldeAppointment = async (schedule_id: string) => {
-    if (authInfo == null) {
-      ShowToast({
-        type: "error",
-        title: "Permission Denied",
-        description: "Please log in to continue to the next step.",
-      });
-      return;
-    }
-    const confirmed = await confirm({
-      title: "Confirm Appointment",
-      description:
-        "Are you sure you want to schedule this appointment? This action cannot be undone.",
-      confirmText: "Yes, Schedule",
-    });
-    const scheduleData = {
-      doctorId: id,
-      scheduleId: schedule_id,
-    };
-
-    if (confirmed) {
-      const res = await createAppointment(scheduleData).unwrap();
-      if (res?.data?.id) {
-        ShowToast({
-          type: "success",
-          title: "Store Successful",
-          description: "You have Appointment Store successfully",
-        });
-      }
-    }
-  };
   const currentData = data?.schedule?.filter((item: any) => {
     const matchingSchedule = doctorSchedule?.find(
       (schedule: any) => schedule?.scheduleId === item?.id
@@ -219,7 +181,6 @@ export default function Doctor({ params: { id } }: ParamsProps) {
               {data?.schedule?.length > 0 ? (
                 currentData.map((item: any, index: any) => (
                   <div
-                    onClick={() => hanldeAppointment(item.id)}
                     key={index}
                     className={`border py-2 transition-all text-center rounded-md cursor-pointer hover:border-[#0088beee]`}
                   >
