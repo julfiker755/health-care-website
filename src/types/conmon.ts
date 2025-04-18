@@ -9,6 +9,12 @@ export type ResponseSuccessProps = {
   meta?: MetaProps;
 };
 
+export type ParamsProps ={
+  params: {
+    id: string;
+  };
+}
+
 
 export type AuthProps = {
   email: string;

@@ -6,8 +6,9 @@ import { useGetAllPaymentQuery } from "@/redux/api/paymentApi";
 import { IconCircleCheckFilled } from "@tabler/icons-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { formatDate } from "@/lib/utils";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function PaymentSuccess() {
   const searchParams = useSearchParams();
@@ -22,9 +23,11 @@ export default function PaymentSuccess() {
     skip: !session,
   });
 
-  if (data?.appointmentId?.length == 0) {
-    router.push("/");
-  }
+  useEffect(() => {
+    if (data?.success == false) {
+      router.push("/");
+    }
+  }, [data?.success]);
 
   const { appointmentId, doctorId, price } = data || {};
   const { data: doctorInfo } = useGetSingleDoctorQuery(doctorId);
@@ -77,6 +80,13 @@ export default function PaymentSuccess() {
                 <h3 className="text-gray-500 text-sm">
                   Wellness Path View Location
                 </h3>
+              </li>
+              <li className="flex items-center">
+                <Link href="/dashboard/patient/appointment">
+                  <h1 className="text-xs px-1 py-[2px] border border-blue-600/80 rounded-full text-blue-600/80">
+                    See Appointment
+                  </h1>
+                </Link>
               </li>
             </ul>
           </div>
