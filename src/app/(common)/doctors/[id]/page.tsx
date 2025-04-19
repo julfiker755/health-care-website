@@ -6,6 +6,7 @@ import { PlaceholderImg } from "@/lib/utils";
 import { Button } from "@/components/ui";
 import Image from "next/image";
 import Link from "next/link";
+import { ParamsProps } from "@/types";
 import {
   MessageCircle,
   Phone,
@@ -15,13 +16,6 @@ import {
   Bookmark,
 } from "lucide-react";
 import assets from "@/assets";
-import QrCode from "../../store-qrcode";
-
-export interface ParamsProps {
-  params: {
-    id: string;
-  };
-}
 
 export default function Doctor({ params: { id } }: ParamsProps) {
   const { data } = useGetSingleDoctorQuery(id);

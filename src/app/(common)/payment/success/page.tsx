@@ -31,11 +31,11 @@ export default function PaymentSuccess() {
     skip: !session,
   });
 
-  // useEffect(() => {
-  //   if (data?.success == false) {
-  //     router.push("/");
-  //   }
-  // }, [data?.success]);
+  useEffect(() => {
+    if (data?.success == false) {
+      router.push("/");
+    }
+  }, [data?.success]);
 
   const { appointmentId, doctorId, price } = data || {};
   const { data: doctorInfo } = useGetSingleDoctorQuery(doctorId);
