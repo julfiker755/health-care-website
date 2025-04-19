@@ -16,6 +16,10 @@ export type ParamsProps ={
 }
 
 
+export interface childrenProps {
+  children: React.ReactNode;
+}
+
 export type AuthProps = {
   email: string;
   role: string;

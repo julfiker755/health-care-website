@@ -3,16 +3,19 @@ import AppointmentProfile from "@/components/common/appointment-profile";
 import { useGetSingleAppointmentQuery } from "@/redux/api/appointmentApi";
 import { useGetSingleDoctorQuery } from "@/redux/api/doctorApi";
 import { useGetAllPaymentQuery } from "@/redux/api/paymentApi";
+import React, { useEffect, useMemo, useState } from "react";
 import { IconCircleCheckFilled } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { formatDate } from "@/lib/utils";
-import React, { useEffect, useMemo, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
+import QrCode from "../../store-qrcode";
 
 export default function PaymentSuccess() {
   const [session, setSession] = useState<string | null>(null);
   const router = useRouter();
+
+  // const searchParams = useSearchParams();
+  // const session = searchParams.get("session_id");
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -24,19 +27,20 @@ export default function PaymentSuccess() {
     return session ? { id: session } : {};
   }, [session]);
 
-  const { data, isLoading, isError } = useGetAllPaymentQuery(query, {
+  const { data, isError } = useGetAllPaymentQuery(query, {
     skip: !session,
   });
 
-  useEffect(() => {
-    if (data?.success == false) {
-      router.push("/");
-    }
-  }, [data?.success]);
+  // useEffect(() => {
+  //   if (data?.success == false) {
+  //     router.push("/");
+  //   }
+  // }, [data?.success]);
 
   const { appointmentId, doctorId, price } = data || {};
   const { data: doctorInfo } = useGetSingleDoctorQuery(doctorId);
-  const { data: appInfo } = useGetSingleAppointmentQuery(appointmentId);
+  const { data: appInfo, isLoading: appLoading } =
+    useGetSingleAppointmentQuery(appointmentId);
   return (
     <div className="p-3 rounded-md my-6 bg-[#f9f9f9] max-w-3xl m-auto">
       <AppointmentProfile {...doctorInfo} />
@@ -97,20 +101,7 @@ export default function PaymentSuccess() {
           </div>
         </div>
         <div className="hidden lg:block w-[350px] m-auto justify-center">
-          <div>
-            <Image
-              src={
-                "https://doccure.dreamstechnologies.com/html/template/assets/img/icons/payment-qr.svg"
-              }
-              alt="item"
-              width={140}
-              height={100}
-              className="rounded-sm m-auto"
-            ></Image>
-            <h1 className="text-center text-gray-500 text-sm">
-              Scan this QR Code to Download the details of Appointment
-            </h1>
-          </div>
+          <QrCode id={doctorInfo?.id} loading={appLoading} />
         </div>
       </div>
     </div>

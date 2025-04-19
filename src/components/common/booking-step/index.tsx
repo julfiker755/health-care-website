@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Hospital, Blinds } from "lucide-react";
+import { Hospital, Blinds, Loader } from "lucide-react";
 import Image from "next/image";
 import assets from "@/assets";
 import { Checkbox, Input, Label } from "@/components/ui";
@@ -133,7 +133,7 @@ export function Step2Schedule({
   setIsAppointment,
   children,
 }: scheduleProps) {
-  const { data: doctorSchedule } = useGetAllDoctorScheduleQuery({});
+  const { data: doctorSchedule, isLoading } = useGetAllDoctorScheduleQuery({});
   const currentSchedule = schedule.filter((item: any) => {
     const matchingSchedule = doctorSchedule?.find(
       (schedule: any) => schedule?.scheduleId === item?.id
@@ -144,7 +144,12 @@ export function Step2Schedule({
     <div>
       <h1 className="font-medium mb-2">Select Schedule</h1>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
-        {schedule?.length > 0 ? (
+        {isLoading ? (
+          <h1 className="py-10 col-span-3">
+            {" "}
+            <Loader size={23} className="animate-spin text-[#2762cf] m-auto" />
+          </h1>
+        ) : schedule?.length > 0 ? (
           currentSchedule?.map((item: any, index: any) => (
             <div
               key={index}
@@ -161,7 +166,7 @@ export function Step2Schedule({
               <h1 className="text-[15px]">{item.date}</h1>
               <h1 className="text-sm">{item.day}</h1>
               <h1 className="text-sm">
-                {item.startTime}-{item.endTime}
+                {item?.startTime}-{item?.endTime}
               </h1>
             </div>
           ))

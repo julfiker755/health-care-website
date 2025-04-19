@@ -15,6 +15,7 @@ import {
   Bookmark,
 } from "lucide-react";
 import assets from "@/assets";
+import QrCode from "../../store-qrcode";
 
 export interface ParamsProps {
   params: {

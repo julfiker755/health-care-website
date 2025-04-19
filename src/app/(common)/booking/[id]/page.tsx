@@ -5,7 +5,6 @@ import { useUpdatePatientMutation } from "@/redux/api/patientApi";
 import { useCreateAppointmentMutation } from "@/redux/api/appointmentApi";
 import { useCreatePaymentMutation } from "@/redux/api/paymentApi";
 import { useGetSingleProfileQuery } from "@/redux/api/commonApi";
-import { ParamsProps } from "../../doctors/[id]/page";
 import { FieldValues } from "react-hook-form";
 import { modifyPayload } from "@/lib/utils";
 import { loadStripe } from "@stripe/stripe-js";
@@ -13,6 +12,7 @@ import { Stepper } from "@/components/reusable";
 import { Button } from "@/components/ui";
 import React, { useState } from "react";
 import { ShowToast } from "@/helpers";
+import { ParamsProps } from "@/types";
 import {
   Step1Appointment,
   Step2Information,
@@ -40,7 +40,7 @@ export default function Booking({ params: { id } }: ParamsProps) {
   const [createPayment] = useCreatePaymentMutation();
   const [updatePatient] = useUpdatePatientMutation();
   const [createAppointment] = useCreateAppointmentMutation();
-  const { data } = useGetSingleDoctorQuery(id);
+  const { data} = useGetSingleDoctorQuery(id);
   const [currentStep, setCurrentStep] = useState(1);
   const [appId, setappId] = useState("");
   const [appointment, setIsAppointment] = useState<appointmentProps>({
