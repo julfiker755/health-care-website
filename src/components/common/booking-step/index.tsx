@@ -134,7 +134,7 @@ export function Step2Schedule({
   children,
 }: scheduleProps) {
   const { data: doctorSchedule, isLoading } = useGetAllDoctorScheduleQuery({});
-  const currentSchedule = schedule.filter((item: any) => {
+  const currentSchedule = schedule?.filter((item: any) => {
     const matchingSchedule = doctorSchedule?.find(
       (schedule: any) => schedule?.scheduleId === item?.id
     );
