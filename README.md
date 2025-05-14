@@ -1,4 +1,4 @@
-## 📂 Repository
+## 📂 Server Repository
 
 🔗 [SQL Version Here](https://github.com/julfiker755/health-care-server)
 🔗 [NoSQL Version Here](https://github.com/julfiker755/health-care-nosql-server)
