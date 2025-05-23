@@ -33,20 +33,14 @@ export default function Works() {
     <div className="bg-[#F9FCFF] py-10 lg:py-20">
       <div className="container grid grid-cols-1 lg:grid-cols-3 gap-8">
         <Fade animate="fade_left" className="self-center hidden lg:block">
-          <Image
-            src={assets.solution.workImg}
-            className="rounded-md object-cover"
-            width={800}
-            height={100}
-            style={{
-              width: "100%",
-              height: "335px",
-              display: "block",
-              margin: "auto",
-              maxWidth: "100%",
-            }}
-            alt="solution"
-          />
+          <div className="relative h-[336px] w-full rounded-md  overflow-hidden">
+            <Image
+              src={assets.solution.workImg}
+              alt="solution"
+              fill
+              className="object-cover cursor-pointer  [transition:1.5s] duration-300  hover:scale-105"
+            />
+          </div>
         </Fade>
         <div className="col-span-2">
           <h1 className="text-sm text-[#0E82FD]">How it Works</h1>

@@ -46,10 +46,13 @@ export default function Doctors() {
   return (
     <div>
       <Breadcrumb>
-        <h1 className="text-xl lg:text-3xl font-bold">Doctor List</h1>
-        <h2 className="text-sm">
-          <Link href={"/"}>Home</Link> / Doctor List
-        </h2>
+        <h1 className="text-3xl font-extrabold text-gray-800 mb-2">
+          List of All Doctors
+        </h1>
+        <p className="text-sm text-gray-600 max-w-sm mx-auto">
+          Discover our diverse team of skilled doctors and specialists,
+          committed to providing
+        </p>
       </Breadcrumb>
       <div className="container grid grid-cols-1 lg:grid-cols-8 gap-5 pb-12">
         <div className="border p-3 h-[calc(100%-58px)] rounded-md lg:col-span-2">

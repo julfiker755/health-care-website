@@ -88,10 +88,13 @@ export default function Blogs() {
   return (
     <div className="pb-20">
       <Breadcrumb>
-        <h1 className="text-xl lg:text-3xl font-bold">Blog List</h1>
-        <h2 className="text-sm">
-          <Link href={"/"}>Home</Link> / Blog List
-        </h2>
+        <h1 className="text-3xl font-extrabold text-gray-800 mb-2">
+          Explore Our Blog
+        </h1>
+        <p className="text-sm text-gray-600 max-w-sm mx-auto">
+          Dive into the latest insights and trends in healthcare, wellness, and
+          technology.
+        </p>
       </Breadcrumb>
       <div className="container">
         <div className="grid grid-cols-1 lg:grid-cols-6 gap-6">

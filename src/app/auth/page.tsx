@@ -15,7 +15,7 @@ import setAuthToken from "@/services/actions/setAuthToken";
 import Link from "next/link";
 
 export default function AuthPage() {
-  const {setAuthInfo}=useAuth()
+  const { setAuthInfo } = useAuth();
   const [userLogin, { isLoading }] = useUserLoginMutation();
   const from = useForm({
     resolver: zodResolver(authSchema),
@@ -30,8 +30,8 @@ export default function AuthPage() {
     if (res?.accessToken) {
       setLocalStroage(authKey, res.accessToken);
       const user = decodedToken(res.accessToken);
-      setAuthInfo(user)
-      setAuthToken(authToken,res.authToken, {
+      setAuthInfo(user);
+      setAuthToken(authToken, res.authToken, {
         route: user.role,
       });
       ShowToast({
