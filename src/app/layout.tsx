@@ -3,15 +3,12 @@ import { Inter } from "next/font/google";
 import Providers from "@/helpers/providers";
 import "@/styles/globals.css";
 
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Doctors",
+  title: "Health Care",
   description: "A platform for doctors",
 };
-
-
 
 export default function RootLayout({
   children,
