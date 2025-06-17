@@ -101,3 +101,7 @@ export const patientProfileSchema = z.object({
   contactNumber: z.string().nonempty("Contact Number is required"),
   address: z.string().nonempty("Address is required"),
 });
+
+export const newsSehema = z.object({
+  title: z.string().nonempty("title is required"),
+});

@@ -6,7 +6,8 @@ import {
   UsersRound,
   PackagePlus,
   NotepadText,
-  Dock
+  Dock,
+  Newspaper,
 } from "lucide-react";
 
 interface MenuSubProps {
@@ -101,6 +102,11 @@ const menuItem: MenuItemProps = {
       path: "/dashboard/doctor/specialities",
     },
     {
+      name: "Blog",
+      icon: Newspaper,
+      path: "/dashboard/doctor/blog",
+    },
+    {
       name: "Settings",
       icon: Settings,
       path: "/dashboard/doctor/settings",
@@ -111,11 +117,13 @@ const menuItem: MenuItemProps = {
       name: "Dashboard",
       icon: LayoutDashboard,
       path: "/dashboard/patient",
-    },{
+    },
+    {
       name: "Appointment",
       icon: Dock,
       path: "/dashboard/patient/appointment",
-    },{
+    },
+    {
       name: "Settings",
       icon: Settings,
       path: "/dashboard/patient/settings",

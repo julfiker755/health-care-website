@@ -21,7 +21,6 @@ import {
   useGetDoctorSpecialtyQuery,
 } from "@/redux/api/doctorApi";
 
-
 type SelectOptionProps = {
   label: string;
   value: string;
@@ -77,8 +76,6 @@ export default function Specialities() {
     }
   }, [data?.specialities, specialities, isSuccess]);
 
-
-  
   return (
     <div>
       <Table

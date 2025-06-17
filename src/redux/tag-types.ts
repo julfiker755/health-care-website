@@ -11,7 +11,8 @@ export enum tagTypes {
   doctorSchedule="doctorSchedule",
   appointment="appointment",
   singleAppointment="singleAppointment",
-  commonSchedule="commonSchedule"
+  commonSchedule="commonSchedule",
+  news="news"
 }
 
 export const tagTypesList = [
@@ -27,5 +28,6 @@ export const tagTypesList = [
   tagTypes.appointment,
   tagTypes.singleAppointment,
   tagTypes.singleDoctor,
-  tagTypes.commonSchedule
+  tagTypes.commonSchedule,
+  tagTypes.news
 ];

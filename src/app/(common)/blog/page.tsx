@@ -1,6 +1,5 @@
 import assets from "@/assets";
 import { BlogCard, BlogLatestCard, Breadcrumb } from "@/components/reusable";
-import Link from "next/link";
 import React from "react";
 
 const blogItem = [

@@ -66,9 +66,9 @@ export default function Settings() {
       currentWorkingPlace: values?.currentWorkingPlace,
       gender: values?.gender,
       file: values?.file,
-      appointmentFee:parseInt(values.appointmentFee),
-      experience:parseInt(values.experience),
-      qualification:values.qualification,
+      appointmentFee: parseInt(values.appointmentFee),
+      experience: parseInt(values.experience),
+      qualification: values.qualification,
     };
     const data = modifyPayload(dataItem);
     const res = await updateDoctor(data).unwrap();
