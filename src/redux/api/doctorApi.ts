@@ -1,7 +1,7 @@
 import { tagTypes } from "../tag-types";
 import { baseApi } from "./baseApi";
 
-const doctorsApi = baseApi.injectEndpoints({
+export const doctorsApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getAllDoctor: build.query({
       query: (arg: Record<string, any>) => ({

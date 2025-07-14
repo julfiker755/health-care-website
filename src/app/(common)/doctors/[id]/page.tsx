@@ -1,12 +1,10 @@
-"use client";
-import { useGetSingleDoctorQuery } from "@/redux/api/doctorApi";
-import { Breadcrumb, NoItemData, RatingScore } from "@/components/reusable";
-import { useGetAllDoctorScheduleQuery } from "@/redux/api/scheduleApi";
-import { PlaceholderImg } from "@/lib/utils";
-import { Button } from "@/components/ui";
-import Image from "next/image";
+import { doctorsApi } from "@/redux/api/doctorApi";
+import { Breadcrumb, RatingScore } from "@/components/reusable";
 import Link from "next/link";
 import { ParamsProps } from "@/types";
+import { makeStore } from "@/redux/store";
+import { Button } from "@/components/ui";
+import Image from "next/image";
 import {
   MessageCircle,
   Phone,
@@ -15,18 +13,71 @@ import {
   Target,
   Bookmark,
 } from "lucide-react";
+import { PlaceholderImg } from "@/lib/utils";
+import DoctorSchedule from "@/components/common/doctor-schedule";
 import assets from "@/assets";
+import { Metadata } from "next";
 
-export default function Doctor({ params: { id } }: ParamsProps) {
-  const { data } = useGetSingleDoctorQuery(id);
-  const { data: doctorSchedule } = useGetAllDoctorScheduleQuery({});
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const store = makeStore();
+  const { data: doctor } = await store.dispatch(
+    doctorsApi.endpoints.getSingleDoctor.initiate(params.id)
+  );
 
-  const currentData = data?.schedule?.filter((item: any) => {
-    const matchingSchedule = doctorSchedule?.find(
-      (schedule: any) => schedule?.scheduleId === item?.id
-    );
-    return matchingSchedule && !matchingSchedule?.isBooked;
-  });
+  const name = doctor?.name || doctor?.displayName || "Medical Specialist";
+  const doctorName = `Dr. ${name}`;
+  const specialties =
+    doctor?.specialities?.map((s: any) => s.title).join(", ") ||
+    "General Physician";
+  const location = doctor?.address || "Unknown Location";
+  const profilePhoto = doctor?.profilePhoto
+    ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${doctor.profilePhoto}`
+    : "https://yourdomain.com/default-doctor.jpg";
+
+  return {
+    title: `${doctorName} - ${specialties} | MediBook`,
+    description: `Book appointments with ${doctorName}, ${specialties} in ${location}. Read reviews, schedule online.`,
+    alternates: {
+      canonical: `https://yourdomain.com/doctors/${params.id}`,
+    },
+    openGraph: {
+      title: `${doctorName} - ${specialties}`,
+      description: doctor?.bio?.substring(0, 100) || `Book ${doctorName} now.`,
+      url: `https://yourdomain.com/doctors/${params.id}`,
+      images: [
+        {
+          url: profilePhoto,
+          width: 300,
+          height: 300,
+          alt: `${doctorName} profile`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${doctorName} - ${specialties}`,
+      description: `Book appointments with ${doctorName} in ${location}`,
+      images: [profilePhoto],
+    },
+    keywords: [
+      doctorName,
+      specialties,
+      `${specialties} near me`,
+      `doctor ${location}`,
+      "book doctor appointment",
+    ],
+  };
+}
+
+export default async function Doctor({ params: { id } }: ParamsProps) {
+  const store = makeStore();
+  const { data } = await store.dispatch(
+    doctorsApi.endpoints.getSingleDoctor.initiate(id)
+  );
 
   const clinicItem = [
     assets.clinic.clinic1,
@@ -34,6 +85,7 @@ export default function Doctor({ params: { id } }: ParamsProps) {
     assets.clinic.clinic3,
     assets.clinic.clinic4,
   ];
+
   return (
     <div>
       <Breadcrumb>
@@ -172,26 +224,7 @@ export default function Doctor({ params: { id } }: ParamsProps) {
           {/* schedule */}
           <div>
             <h1 className="font-medium text-xl mb-2">Availability</h1>
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-              {data?.schedule?.length > 0 ? (
-                currentData.map((item: any, index: any) => (
-                  <div
-                    key={index}
-                    className={`border py-2 transition-all text-center rounded-md cursor-pointer hover:border-[#0088beee]`}
-                  >
-                    <h1 className="text-[15px]">{item.date}</h1>
-                    <h1 className="text-sm">{item.day}</h1>
-                    <h1 className="text-sm">
-                      {item.startTime}-{item.endTime}
-                    </h1>
-                  </div>
-                ))
-              ) : (
-                <div className="col-span-4">
-                  <NoItemData className="py-11" title="No schedule Found" />
-                </div>
-              )}
-            </div>
+            <DoctorSchedule data={data} />
             <hr className="my-4" />
           </div>
           <div>
@@ -306,32 +339,32 @@ export default function Doctor({ params: { id } }: ParamsProps) {
             </div>
             {/* review exit box */}
             {/* <div className="border mt-3 p-3 rounded-md">
-              <div className="flex items-center">
-                <div className="relative h-12 w-12 rounded-full overflow-hidden mr-2">
-                  <Image
-                    src={assets.blog.ProImg1}
-                    alt={"ff"}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <ul>
-                  <li className="font-medium">Dane jose</li>
-                  <li className="flex items-center text-sm">
-                    <RatingScore width={90} value={5} />
-                    <span></span>{" "}
-                  </li>
-                </ul>
+            <div className="flex items-center">
+              <div className="relative h-12 w-12 rounded-full overflow-hidden mr-2">
+                <Image
+                  src={assets.blog.ProImg1}
+                  alt={"ff"}
+                  fill
+                  className="object-cover"
+                />
               </div>
-              <Textarea
-                className="mt-3"
-                placeholder="Enter Your Review hare"
-              ></Textarea>
-              <div className="flex gap-x-2 mt-3">
-                <Button>Submit</Button>
-                <Button variant={"danger"}>Reset</Button>
-              </div>
-            </div> */}
+              <ul>
+                <li className="font-medium">Dane jose</li>
+                <li className="flex items-center text-sm">
+                  <RatingScore width={90} value={5} />
+                  <span></span>{" "}
+                </li>
+              </ul>
+            </div>
+            <Textarea
+              className="mt-3"
+              placeholder="Enter Your Review hare"
+            ></Textarea>
+            <div className="flex gap-x-2 mt-3">
+              <Button>Submit</Button>
+              <Button variant={"danger"}>Reset</Button>
+            </div>
+          </div> */}
           </div>
         </div>
         <h1 className="pb-10"></h1>
