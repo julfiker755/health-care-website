@@ -1,6 +1,8 @@
 import assets from "@/assets";
 import { BlogCard, BlogLatestCard, Breadcrumb } from "@/components/reusable";
+import { makeStore } from "@/redux/store";
 import React from "react";
+import { doctorsApi } from "@/redux/api/doctorApi";
 
 const blogItem = [
   {
@@ -83,9 +85,23 @@ const blogItem = [
   },
 ];
 
-export default function Blogs() {
+export default async function Blogs() {
+  const store = makeStore();
+  // Prefetch on server
+  await store.dispatch(doctorsApi.endpoints.getAllDoctor.initiate({}));
+
+  const { data: doctor } = doctorsApi.endpoints.getAllDoctor.select({})(
+    store.getState()
+  );
+
+  // Optional log for debugging
+  console.log("Doctors from SSR:", doctor);
+
   return (
     <div className="pb-20">
+      {/* {doctor?.doctors.map((item: any, idx: any) => (
+        <h1 key={idx}>{item.name}</h1>
+      ))} */}
       <Breadcrumb>
         <h1 className="text-3xl font-extrabold text-gray-800 mb-2">
           Explore Our Blog
